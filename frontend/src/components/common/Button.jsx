@@ -14,15 +14,25 @@ const Button = ({
   type = 'button',
   ...props
 }) => {
-  const baseStyles = 'inline-flex items-center justify-center font-medium rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-60 disabled:cursor-not-allowed disabled:shadow-none active:scale-[0.98]';
+const baseStyles =
+'inline-flex items-center justify-center font-semibold rounded-xl transition-all duration-300 hover:-translate-y-0.5 active:scale-95 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-60 disabled:cursor-not-allowed';
 
-  const variants = {
-    primary: 'bg-primary-600 hover:bg-primary-700 text-white shadow-md shadow-primary-600/25 focus:ring-primary-500 border border-transparent',
-    secondary: 'bg-secondary-600 hover:bg-secondary-700 text-white shadow-md shadow-secondary-600/20 focus:ring-secondary-500 border border-transparent',
-    outline: 'bg-transparent hover:bg-primary-50 text-primary-700 border-2 border-primary-600 focus:ring-primary-500',
-    ghost: 'bg-transparent hover:bg-slate-100 text-slate-700 focus:ring-slate-400 border border-transparent',
-    white: 'bg-white hover:bg-slate-50 text-primary-800 shadow-md focus:ring-white border border-slate-100',
-  };
+const variants = {
+  primary:
+    'bg-premium-orange hover:bg-premium-orangeDark text-white shadow-orange border border-transparent focus:ring-premium-orange transition-all duration-300',
+
+  secondary:
+    'bg-premium-charcoal hover:bg-black text-white border border-premium-border shadow-black transition-all duration-300',
+
+  outline:
+    'bg-transparent hover:bg-orange-50 text-premium-orange border-2 border-premium-orange focus:ring-premium-orange transition-all duration-300',
+
+  ghost:
+    'bg-transparent hover:bg-orange-50 text-slate-700 hover:text-premium-orange transition-all duration-300',
+
+  white:
+    'bg-white hover:bg-orange-50 text-premium-charcoal shadow-md border border-orange-100 transition-all duration-300',
+};
 
   const sizes = {
     sm: 'px-3.5 py-1.5 text-xs gap-1.5',

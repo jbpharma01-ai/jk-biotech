@@ -5,13 +5,21 @@ import { ChevronLeft, ChevronRight, ArrowRight, ChevronDown, ShieldCheck, Award,
 import Container from '../../components/common/Container';
 import Button from '../../components/common/Button';
 import { fadeUp, staggerContainer } from '../../animations/variants';
+import heroCapsule from '../../assets/images/hero/hero-capsule.png';
+import womenHealthcare  from '../../assets/images/hero/women-healthcare.png';
+import heroPediatric  from '../../assets/images/hero/pediatric-care.png';
 
 // Slide data – each slide has its own headline, description and gradient theme
 const HERO_SLIDES = [
   {
     id: 1,
     badge: 'WHO & GMP Certified Manufacturer',
-    heading: 'Advancing Healthcare Through Quality Pharmaceutical Solutions',
+    titleLines: [
+      "Advancing",
+      "Healthcare",
+      "Through",
+      "Quality Solutions"
+    ],
     subheading:
       'J K BIOTECH delivers precisely engineered, safe, and effective pharmaceutical formulations to healthcare professionals and patients across India and beyond.',
     theme: 'blue',
@@ -19,149 +27,92 @@ const HERO_SLIDES = [
     IllustrationComponent: 'slide1',
   },
   {
-    id: 2,
-    badge: 'Research & Innovation Driven',
-    heading: 'Pioneering Science That Transforms Patient Lives',
-    subheading:
-      'Our state-of-the-art R&D facilities and rigorous quality standards ensure every product meets the highest therapeutic and safety benchmarks.',
-    theme: 'teal',
-    IllustrationComponent: 'slide2',
+     id: 2,
+  badge: 'Women\'s Healthcare Solutions',
+
+  titleLines: [
+    "Empowering",
+    "Women's",
+    "Health",
+    "Every Day"
+  ],
+
+  subheading:
+    'Advanced formulations designed to support women\'s health with quality, safety, and innovation across every stage of life.',
+
+  theme: 'orange',
+
+  IllustrationComponent: 'womenHealthcare',
   },
   {
     id: 3,
-    badge: 'Trusted by Healthcare Professionals',
-    heading: 'Your Reliable Partner in Corporate Healthcare Excellence',
+    badge: "PEDIATRIC CARE SOLUTIONS",
+
+    titleLines: [
+    "Healthy",
+    "Childhood",
+    "Starts With",
+    "Trusted Care"
+  ],
+
     subheading:
-      'From capsules to injections, syrups to soft-gel capsules — J K BIOTECH offers a comprehensive range of 11 dosage form formulations trusted by doctors nationwide.',
-    theme: 'navy',
-    IllustrationComponent: 'slide3',
+      "Safe, effective and child-friendly formulations designed to support healthy growth, immunity and pediatric wellness with trusted pharmaceutical quality.",
+
+    IllustrationComponent: 'heroPediatric',
   },
 ];
 
 // Theme gradients per slide
 const THEME_MAP = {
-  blue: {
-    bg: 'from-slate-950 via-primary-950 to-slate-900',
-    accent: 'from-primary-500/20 to-secondary-500/10',
-    badge: 'bg-primary-500/15 border-primary-400/30 text-primary-300',
-    dot: 'bg-primary-400',
-    circle1: 'bg-primary-600/20',
-    circle2: 'bg-secondary-600/10',
-  },
-  teal: {
-    bg: 'from-slate-950 via-secondary-950 to-slate-900',
-    accent: 'from-secondary-500/20 to-primary-500/10',
-    badge: 'bg-secondary-500/15 border-secondary-400/30 text-secondary-300',
-    dot: 'bg-secondary-400',
-    circle1: 'bg-secondary-600/20',
-    circle2: 'bg-primary-600/10',
-  },
-  navy: {
-    bg: 'from-slate-950 via-slate-900 to-primary-950',
-    accent: 'from-primary-800/30 to-secondary-600/10',
-    badge: 'bg-white/10 border-white/20 text-slate-200',
-    dot: 'bg-white/60',
-    circle1: 'bg-primary-500/15',
-    circle2: 'bg-secondary-500/15',
+  premium: {
+    bg: "from-[#09090B] via-[#111111] to-[#2A1E16]",
+
+    accent: "from-[#FF7B00]/25 via-[#FF7B00]/10 to-transparent",
+
+    badge:
+      "bg-[#FF7B00]/10 border-[#FF7B00]/30 text-[#FFB15E]",
+
+    dot: "bg-[#FF7B00]",
+
+    circle1: "bg-[#FF7B00]/15",
+
+    circle2: "bg-[#FF7B00]/8",
   },
 };
 
 // Inline SVG pharmaceutical illustrations for each slide
 const Slide1Illustration = () => (
-  <svg viewBox="0 0 480 400" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-2xl">
-    <ellipse cx="240" cy="370" rx="160" ry="16" fill="#0c4a6e" opacity="0.4" />
-    {/* Large pill */}
-    <rect x="90" y="130" width="300" height="130" rx="65" fill="url(#pg1)" />
-    <rect x="90" y="130" width="155" height="130" rx="65" fill="url(#pg2)" />
-    <ellipse cx="246" cy="195" rx="2" ry="62" fill="white" opacity="0.15" />
-    {/* Small pills floating */}
-    <rect x="60" y="290" width="90" height="40" rx="20" fill="#0ea5e9" opacity="0.7" />
-    <rect x="60" y="290" width="46" height="40" rx="20" fill="#0369a1" opacity="0.7" />
-    <rect x="330" y="60" width="80" height="36" rx="18" fill="#10b981" opacity="0.7" />
-    <rect x="330" y="60" width="41" height="36" rx="18" fill="#047857" opacity="0.7" />
-    {/* Molecule dots */}
-    <circle cx="60" cy="80" r="12" fill="#38bdf8" opacity="0.5" />
-    <circle cx="400" cy="300" r="18" fill="#34d399" opacity="0.4" />
-    <circle cx="420" cy="90" r="8" fill="#7dd3fc" opacity="0.6" />
-    <circle cx="50" cy="220" r="7" fill="#6ee7b7" opacity="0.5" />
-    {/* Cross symbol */}
-    <rect x="215" y="30" width="16" height="56" rx="8" fill="white" opacity="0.15" />
-    <rect x="200" y="45" width="46" height="16" rx="8" fill="white" opacity="0.15" />
-    <defs>
-      <linearGradient id="pg1" x1="90" y1="195" x2="390" y2="195" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#1e40af" />
-        <stop offset="1" stopColor="#0ea5e9" />
-      </linearGradient>
-      <linearGradient id="pg2" x1="90" y1="195" x2="245" y2="195" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#1e3a8a" />
-        <stop offset="1" stopColor="#1d4ed8" />
-      </linearGradient>
-    </defs>
-  </svg>
+  <img
+    src={heroCapsule}
+    alt="Hero Capsule"
+    className="w-full h-full object-contain animate-heroFloat"
+    draggable={false}
+  />
 );
 
-const Slide2Illustration = () => (
-  <svg viewBox="0 0 480 400" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-2xl">
-    <ellipse cx="240" cy="370" rx="160" ry="16" fill="#064e3b" opacity="0.4" />
-    {/* Flask */}
-    <path d="M170 80 L170 210 L100 330 Q90 350 110 360 L370 360 Q390 350 380 330 L310 210 L310 80 Z" fill="url(#fg1)" opacity="0.9" />
-    <path d="M170 80 L170 210 L100 330 Q90 350 110 360 L240 360 L240 80 Z" fill="url(#fg2)" opacity="0.5" />
-    {/* Liquid */}
-    <ellipse cx="240" cy="320" rx="100" ry="28" fill="#34d399" opacity="0.4" />
-    <ellipse cx="240" cy="310" rx="80" ry="20" fill="#6ee7b7" opacity="0.3" />
-    {/* Bubbles */}
-    <circle cx="200" cy="290" r="8" fill="#a7f3d0" opacity="0.6" />
-    <circle cx="240" cy="260" r="5" fill="#6ee7b7" opacity="0.5" />
-    <circle cx="270" cy="285" r="6" fill="#34d399" opacity="0.5" />
-    {/* Flask neck rect */}
-    <rect x="168" y="70" width="144" height="20" rx="8" fill="#059669" opacity="0.6" />
-    {/* Stars / sparkles */}
-    <circle cx="80" cy="100" r="8" fill="#10b981" opacity="0.5" />
-    <circle cx="400" cy="150" r="12" fill="#0ea5e9" opacity="0.4" />
-    <circle cx="420" cy="300" r="7" fill="#34d399" opacity="0.6" />
-    <defs>
-      <linearGradient id="fg1" x1="170" y1="220" x2="310" y2="360" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#065f46" />
-        <stop offset="1" stopColor="#10b981" />
-      </linearGradient>
-      <linearGradient id="fg2" x1="170" y1="220" x2="240" y2="360" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#047857" />
-        <stop offset="1" stopColor="#059669" />
-      </linearGradient>
-    </defs>
-  </svg>
+const WomenHealthcareIllustration = () => (
+  <img
+    src={womenHealthcare}
+    alt="Women's Healthcare"
+    className="w-full h-full object-contain animate-heroFloat"
+    draggable={false}
+  />
 );
 
-const Slide3Illustration = () => (
-  <svg viewBox="0 0 480 400" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-2xl">
-    <ellipse cx="240" cy="370" rx="160" ry="16" fill="#0a3f68" opacity="0.3" />
-    {/* Shield */}
-    <path d="M240 40 L380 100 L380 220 Q380 320 240 370 Q100 320 100 220 L100 100 Z" fill="url(#sg1)" />
-    <path d="M240 40 L380 100 L380 220 Q380 320 240 370 L240 40 Z" fill="url(#sg2)" opacity="0.5" />
-    {/* Check mark */}
-    <path d="M175 215 L220 260 L305 175" stroke="white" strokeWidth="18" strokeLinecap="round" strokeLinejoin="round" opacity="0.9" />
-    {/* Stars */}
-    <circle cx="80" cy="150" r="10" fill="#38bdf8" opacity="0.5" />
-    <circle cx="400" cy="250" r="14" fill="#34d399" opacity="0.4" />
-    <circle cx="420" cy="80" r="7" fill="#7dd3fc" opacity="0.6" />
-    <circle cx="60" cy="300" r="8" fill="#6ee7b7" opacity="0.5" />
-    <defs>
-      <linearGradient id="sg1" x1="100" y1="200" x2="380" y2="200" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#1e3a8a" />
-        <stop offset="1" stopColor="#006fb8" />
-      </linearGradient>
-      <linearGradient id="sg2" x1="240" y1="40" x2="380" y2="370" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#1d4ed8" opacity="0.8" />
-        <stop offset="1" stopColor="#0ea5e9" opacity="0.3" />
-      </linearGradient>
-    </defs>
-  </svg>
+const PediatricCareIllustration = () => (
+  <img
+    src={heroPediatric}
+    alt="Pediatric Care"
+    className="w-full h-full object-contain animate-heroFloat"
+    draggable={false}
+  />
 );
+
 
 const ILLUSTRATIONS = {
   slide1: Slide1Illustration,
-  slide2: Slide2Illustration,
-  slide3: Slide3Illustration,
+  womenHealthcare: WomenHealthcareIllustration,
+  heroPediatric: PediatricCareIllustration,
 };
 
 // Stat badges shown in hero
@@ -187,8 +138,13 @@ const HeroSection = () => {
 
   // Auto-slide every 5 seconds
   useEffect(() => {
+      console.log("Auto Slider Running", isPaused);
+
     if (isPaused) return;
+    
     intervalRef.current = setInterval(goNext, 5000);
+        console.log("Next Slide");
+
     return () => clearInterval(intervalRef.current);
   }, [isPaused, goNext]);
 
@@ -203,22 +159,38 @@ const HeroSection = () => {
   }, [goNext, goPrev]);
 
   const slide = HERO_SLIDES[currentSlide];
-  const theme = THEME_MAP[slide.theme];
+  const theme = THEME_MAP.premium;
   const Illustration = ILLUSTRATIONS[slide.IllustrationComponent];
+// const handleMouseEnter = () => {
+//   if (window.innerWidth >= 1024) {
+//     setIsPaused(true);
+//   }
+// };
 
+// const handleMouseLeave = () => {
+//   if (window.innerWidth >= 1024) {
+//     setIsPaused(false);
+//   }
+// };
   return (
     <section
-      className={`relative min-h-screen flex items-center bg-gradient-to-br ${theme.bg} overflow-hidden`}
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
+      className={`relative min-h-screen flex items-center overflow-hidden bg-[#09090B]`}
+      // onMouseEnter={() => setIsPaused(true)}
+      // onMouseLeave={() => setIsPaused(false)}
       aria-label="Hero section"
     >
       {/* Decorative background circles */}
-      <div className={`absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full ${theme.circle1} blur-3xl pointer-events-none`} />
-      <div className={`absolute -bottom-40 -left-40 w-[500px] h-[500px] rounded-full ${theme.circle2} blur-3xl pointer-events-none`} />
+      {/* Main Orange Glow */}
+      <div className="absolute top-1/2 right-0 -translate-y-1/2 w-[650px] h-[650px] rounded-full bg-[#FF7B00]/20 blur-[170px]" />
+
+      {/* Small Glow Top */}
+      <div className="absolute top-20 right-40 w-72 h-72 rounded-full bg-[#FFB15E]/10 blur-[120px]" />
+
+      {/* Bottom Glow */}
+      <div className="absolute bottom-0 left-0 w-96 h-96 rounded-full bg-[#FF7B00]/10 blur-[150px]" />
 
       {/* Subtle dot grid pattern */}
-      <div className="absolute inset-0 opacity-[0.04] bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:28px_28px] pointer-events-none" />
+      <div className="absolute inset-0 opacity-[0.025] bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:34px_34px]" />
 
       <Container className="relative z-10 py-20 sm:py-24 lg:py-0 lg:min-h-screen lg:flex lg:items-center">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center w-full">
@@ -231,13 +203,13 @@ const HeroSection = () => {
               initial="hidden"
               animate="visible"
               exit={{ opacity: 0, y: -20, transition: { duration: 0.3 } }}
-              className="flex flex-col gap-6 max-w-xl"
+              className="flex flex-col gap-8 max-w-2xl"
             >
               {/* Badge */}
               <motion.span
                 variants={fadeUp}
                 custom={0}
-                className={`inline-flex items-center gap-2 self-start px-4 py-2 rounded-full border text-xs font-bold uppercase tracking-wider backdrop-blur-sm ${theme.badge}`}
+                className={`inline-flex items-center gap-2 self-start px-5 py-2.5 rounded-full border text-sm font-bold uppercase tracking-wider backdrop-blur-sm ${theme.badge}`}
               >
                 <ShieldCheck className="w-3.5 h-3.5" />
                 {slide.badge}
@@ -247,16 +219,26 @@ const HeroSection = () => {
               <motion.h1
                 variants={fadeUp}
                 custom={0.1}
-                className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold leading-[1.15] tracking-tight text-white font-heading"
+                className="font-heading text-white font-extrabold leading-[1.05] tracking-tight"
               >
-                {slide.heading}
+                {slide.titleLines.map((line, index) => (
+                  <span
+                    key={index}
+                    className={`block text-4xl sm:text-5xl lg:text-6xl xl:text-7xl ${index === slide.titleLines.length - 1
+                        ? "text-premium-orange"
+                        : "text-white"
+                      }`}
+                  >
+                    {line}
+                  </span>
+                ))}
               </motion.h1>
 
               {/* Sub description */}
               <motion.p
                 variants={fadeUp}
                 custom={0.2}
-                className="text-slate-300 text-base sm:text-lg leading-relaxed max-w-lg"
+                className="text-gray-300 text-lg lg:text-xl leading-8 leading-relaxed max-w-lg"
               >
                 {slide.subheading}
               </motion.p>
@@ -265,7 +247,7 @@ const HeroSection = () => {
               <motion.div
                 variants={fadeUp}
                 custom={0.3}
-                className="flex flex-wrap gap-4 pt-2"
+                className="flex flex-wrap gap-4 pt-4"
               >
                 <Link to="/products">
                   <Button
@@ -273,7 +255,7 @@ const HeroSection = () => {
                     size="lg"
                     icon={ArrowRight}
                     iconPosition="right"
-                    className="shadow-xl shadow-primary-600/30 hover:scale-[1.03] active:scale-[0.98]"
+                    className="shadow-orange hover:shadow-orangeLg hover:scale-[1.03] active:scale-[0.98]"
                   >
                     Explore Products
                   </Button>
@@ -298,7 +280,7 @@ const HeroSection = () => {
                 {HERO_STATS.map(({ icon: Icon, label, value }) => (
                   <div key={label} className="flex items-center gap-2.5">
                     <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
-                      <Icon className="w-4 h-4 text-sky-300" />
+                      <Icon className="w-4 h-4 text-premium-orange" />
                     </div>
                     <div>
                       <div className="text-white font-bold text-sm leading-none">{value}</div>
@@ -321,8 +303,21 @@ const HeroSection = () => {
               aria-hidden="true"
             >
               {/* Glowing ring behind illustration */}
-              <div className={`absolute inset-0 rounded-full bg-gradient-to-br ${theme.accent} blur-2xl scale-90`} />
-              <div className="relative w-full max-w-md xl:max-w-lg aspect-square">
+              {/* Main Orange Glow */}
+              <div className="absolute w-[520px] h-[520px] rounded-full bg-[#FF7B00]/20 blur-[140px]" />
+
+              {/* Green Medical Glow */}
+              <div className="absolute top-16 right-10 w-44 h-44 rounded-full bg-[#22C55E]/10 blur-[90px]" />
+
+              {/* Soft White Glow */}
+              <div className="absolute bottom-10 left-10 w-32 h-32 rounded-full bg-white/5 blur-[70px]" />
+              <div className="relative w-full max-w-[620px] aspect-square animate-heroFloat drop-shadow-[0_35px_80px_rgba(255,123,0,.35)]">
+                {/* <img
+                  src={Illustration}
+                  alt={slide.heading}
+                  className="w-full h-full object-contain select-none"
+                  draggable={false}
+                /> */}
                 <Illustration />
               </div>
             </motion.div>

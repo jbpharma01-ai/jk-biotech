@@ -92,6 +92,21 @@ export default {
         "3xl": "1.5rem",
       },
 
+      keyframes: {
+        productScroll: {
+          "0%": {
+            transform: "translateX(0)",
+          },
+          "100%": {
+            transform: "translateX(-50%)",
+          },
+        },
+      },
+
+      animation: {
+        "product-scroll": "productScroll 30s linear infinite",
+      },
+
     },
   },
 

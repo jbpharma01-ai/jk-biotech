@@ -272,7 +272,7 @@ const HeroSection = () => {
               </motion.div>
 
               {/* Stats Row */}
-              <motion.div
+              {/* <motion.div
                 variants={fadeUp}
                 custom={0.4}
                 className="flex flex-wrap gap-5 pt-4 border-t border-white/10 mt-2"
@@ -288,7 +288,7 @@ const HeroSection = () => {
                     </div>
                   </div>
                 ))}
-              </motion.div>
+              </motion.div> */}
             </motion.div>
           </AnimatePresence>
 
@@ -326,7 +326,7 @@ const HeroSection = () => {
       </Container>
 
       {/* Slider Controls */}
-      <div className="absolute bottom-8 left-0 right-0 z-20">
+      <div className="absolute bottom-3 left-0 right-0 z-20">
         <Container>
           <div className="flex items-center justify-between">
 
@@ -370,7 +370,7 @@ const HeroSection = () => {
       </div>
 
       {/* Scroll Down Indicator */}
-      <motion.div
+      {/* <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5 }}
@@ -384,7 +384,7 @@ const HeroSection = () => {
         >
           <ChevronDown className="w-5 h-5" />
         </motion.div>
-      </motion.div>
+      </motion.div> */}
     </section>
   );
 };

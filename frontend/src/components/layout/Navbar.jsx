@@ -16,6 +16,8 @@ import {
   Sparkles,
   Pill
 } from 'lucide-react';
+import jkLogo from '../../assets/images/logo/jk-logo.png';
+
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -89,19 +91,17 @@ const Navbar = () => {
         <Container className="flex items-center justify-between">
           
           {/* Logo Section */}
-          <Link to="/" className="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-lg p-1">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-premium-orange via-[#D65A00] to-[#2B2B2B] flex items-center justify-center text-white shadow-md shadow-primary-600/20 group-hover:scale-105 transition-transform">
-              <Pill className="w-6 h-6 text-orange-100" />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-xl font-extrabold tracking-tight text-slate-900 font-heading leading-tight group-hover:text-premium-orange transition-colors">
-                J K BIOTECH
-              </span>
-              <span className="text-[10px] font-bold uppercase tracking-widest text-premium-orange leading-none mt-0.5">
-                Pharmaceuticals
-              </span>
-            </div>
-          </Link>
+          <Link
+  to="/"
+  className="group flex items-center focus:outline-none focus:ring-2 focus:ring-premium-orange rounded-lg"
+>
+  <img
+    src={jkLogo}
+    alt="J K Biotech"
+    className="w-[50px] lg:w-[70px] h-auto object-contain transition-transform duration-300 group-hover:scale-105"
+    draggable={false}
+  />
+</Link>
 
           {/* Desktop Navigation Links */}
           <div className="hidden lg:flex items-center gap-1">
@@ -241,7 +241,7 @@ const Navbar = () => {
                           to={item.path}
                           className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#FFF7ED] transition-all duration-300 ease-out group/item"
                         >
-                          <div className="w-8 h-8 rounded-lg bg-orange-100 group-hover/item:text-premium-orange text-premium-orange group-hover/item:text-white flex items-center justify-center flex-shrink-0 transition-colors">
+                          <div className="w-8 h-8 rounded-lg bg-orange-100 text-premium-orange group-hover/item:bg-premium-orange group-hover/item:text-white flex items-center justify-center flex-shrink-0 transition-all duration-300">
                             <Icon className="w-4 h-4" />
                           </div>
                           <div>
@@ -352,7 +352,7 @@ const Navbar = () => {
               </div>
 
               {/* DOWNLOADS Mobile Accordion */}
-              <div className="border border-slate-100 rounded-2xl overflow-hidden">
+              {/* <div className="border border-slate-100 rounded-2xl overflow-hidden">
                 <button
                   type="button"
                   onClick={() => setMobileAccordion(mobileAccordion === 'downloads' ? null : 'downloads')}
@@ -381,7 +381,7 @@ const Navbar = () => {
                     })}
                   </div>
                 )}
-              </div>
+              </div> */}
 
               <Link
                 to="/contact"

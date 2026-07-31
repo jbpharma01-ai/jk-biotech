@@ -67,10 +67,10 @@ const Navbar = () => {
               <Mail className="w-3.5 h-3.5 text-premium-orange" />
               <span>{COMPANY_INFO.email}</span>
             </a>
-            {/* <div className="flex items-center gap-1.5 text-slate-400">
-              <Clock className="w-3.5 h-3.5 text-emerald-400" />
+            <div className="flex items-center gap-1.5 hover:text-premium-orange transition-colors">
+              <Clock className="w-3.5 h-3.5 text-premium-orange" />
               <span>{COMPANY_INFO.workingHours}</span>
-            </div> */}
+            </div>
           </div>
 
           <div className="flex items-center gap-4">
@@ -98,7 +98,7 @@ const Navbar = () => {
   <img
     src={jkLogo}
     alt="J K Biotech"
-    className="w-[50px] lg:w-[70px] h-auto object-contain transition-transform duration-300 group-hover:scale-105"
+    className="w-[60px] lg:w-[80px] h-auto object-contain transition-transform duration-300 group-hover:scale-105"
     draggable={false}
   />
 </Link>

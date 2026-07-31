@@ -43,7 +43,7 @@ export const COMPANY_INFO = {
   email: 'info@jkbiotech.in',
   salesEmail: 'sales@jkbiotech.com',
   address: 'Office no 22, First floor, Satyam Arcade, Near Intas Pharma, Opposite Moraiya patiya, Ahmedabad-382213',
-  // workingHours: 'Mon - Sat: 10:00 AM - 7:00 PM',
+  workingHours: 'Mon - Sat: 10:00 AM - 7:30 PM',
   certifications: ['GMP Certified', 'WHO Compliant', 'ISO 9001:2015'],
   social: {
     linkedin: 'https://linkedin.com',

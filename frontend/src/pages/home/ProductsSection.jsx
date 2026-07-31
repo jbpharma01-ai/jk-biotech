@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import Container from "../../components/common/Container";
 import { fadeUp } from "../../animations/variants";
-import PRODUCTS from "../../data/products";
+import PRODUCTS from "../../constants/products";
 import HomeProductCard from "../../components/common/HomeProductCard";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";

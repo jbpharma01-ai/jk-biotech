@@ -1,211 +1,317 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import Container from '../common/Container';
-import { PRODUCT_CATEGORIES, DOWNLOAD_CATEGORIES, COMPANY_INFO } from '../../constants/navigation';
+import React from "react";
+import { Link } from "react-router-dom";
+import Container from "../common/Container";
+import jkLogo from '../../assets/images/logo/jk-logo.png';
 import {
-  Pill,
   MapPin,
   Phone,
   Mail,
-  Clock,
-  ShieldCheck,
-  ChevronRight,
-  ArrowUp,
-  Linkedin,
   Facebook,
-  Twitter,
-  Instagram
-} from 'lucide-react';
+  Instagram,
+  Linkedin,
+  Youtube,
+} from "lucide-react";
+import { motion } from "framer-motion";
+import { fadeUp, staggerContainer } from "../../animations/variants";
+
+const QUICK_LINKS = [
+  { name: "Home", path: "/" },
+  { name: "About", path: "/about" },
+  { name: "Products", path: "/products" },
+  { name: "Downloads", path: "/downloads" },
+  { name: "Contact", path: "/contact" },
+];
+
+const PRODUCT_LINKS = [
+  "Tablets",
+  "Capsules",
+  "Syrups",
+  "Injectables",
+  "Drops",
+  "Powders",
+];
+
+const CONTACT = {
+  address: "Office no 22, First floor, Satyam Arcade, Near Intas Pharma, Opposite Moraiya patiya, Ahmedabad-382213",
+  phone: "+91 7383936095",
+  email: "info@jkbiotech.in",
+};
+
+const SOCIAL_LINKS = [
+  {
+    icon: Facebook,
+    href: "#",
+  },
+  {
+    icon: Instagram,
+    href: "#",
+  },
+  {
+    icon: Linkedin,
+    href: "#",
+  },
+  {
+    icon: Youtube,
+    href: "#",
+  },
+];
 
 const Footer = () => {
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
   return (
-    <footer className="bg-slate-950 text-slate-300 pt-16 pb-8 border-t border-slate-800 relative overflow-hidden">
-      {/* Background Decorative Accent */}
-      <div className="absolute top-0 right-1/4 w-96 h-96 rounded-full bg-primary-600/10 blur-3xl pointer-events-none"></div>
+    <motion.footer
+      variants={staggerContainer}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+      className="relative bg-gradient-to-b from-[#FFF9F3] via-white to-[#FFF4EA] text-slate-900 overflow-hidden border-t border-orange-100"
+    >
+      <motion.div
+        animate={{
+          scale: [1, 1.12, 1],
+          opacity: [0.15, 0.35, 0.15],
+        }}
+        transition={{
+          duration: 8,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        className="absolute -top-32 left-0 w-72 h-72 bg-orange-300 blur-[120px]"
+      />
+      <motion.div
+        animate={{
+          scale: [1.08, 1, 1.08],
+          opacity: [0.2, 0.08, 0.2],
+        }}
+        transition={{
+          duration: 10,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        className="absolute bottom-0 right-0 w-80 h-80 bg-orange-200 blur-[120px]"
+      />
+
+      {/* Premium Top Gradient */}
+      <div className="h-[2px] bg-gradient-to-r from-transparent via-premium-orange to-transparent" />
+
 
       <Container>
-        {/* Main Footer Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-slate-800">
-          
-          {/* Column 1: Company Profile (2 cols on large screens) */}
-          <div className="lg:col-span-2 space-y-5">
-            <Link to="/" className="inline-flex items-center gap-3 group">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-secondary-500 flex items-center justify-center text-white shadow-md">
-                <Pill className="w-6 h-6 text-white" />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-2xl font-extrabold tracking-tight text-white font-heading">
-                  J K BIOTECH
-                </span>
-                <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-400">
-                  Pharmaceuticals
-                </span>
-              </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-y-14 gap-x-20 py-20">
+          <div className="lg:pr-8">
+
+            {/* Logo */}
+
+            <Link
+              to="/"
+              className="inline-block"
+            >
+              <img
+                src={jkLogo}
+                alt="JK Biotech"
+                className="h-24 w-auto transition-all duration-500 hover:scale-105 hover:rotate-1"
+              />
             </Link>
 
-            <p className="text-slate-400 text-sm leading-relaxed max-w-md">
-              J K BIOTECH is a premier corporate pharmaceutical manufacturing enterprise dedicated to manufacturing high-quality WHO-GMP compliant formulations, empowering global healthcare through innovation and trust.
+            {/* Description */}
+
+            <p className="mt-6 max-w-[280px] text-[15px] leading-7 text-slate-600 font-semibold">
+              Better healthcare for everyone.
             </p>
 
-            {/* Certifications Badges */}
-            <div className="flex flex-wrap gap-2 pt-2">
-              {COMPANY_INFO.certifications.map((cert, idx) => (
-                <span
-                  key={idx}
-                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-xs font-semibold text-emerald-400"
-                >
-                  <ShieldCheck className="w-3.5 h-3.5" />
-                  {cert}
-                </span>
-              ))}
+            <div className="mt-7 inline-flex items-center rounded-full border border-orange-200 bg-orange-50 px-4 py-2 text-xs font-semibold tracking-wide text-premium-orange shadow-sm">
+              WHO-GMP Certified
             </div>
 
-            {/* Social Icons */}
-            <div className="flex items-center gap-3 pt-2">
-              <a
-                href={COMPANY_INFO.social.linkedin}
-                target="_blank"
-                rel="noreferrer"
-                aria-label="LinkedIn"
-                className="w-9 h-9 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-primary-600 hover:border-primary-600 transition-all"
-              >
-                <Linkedin className="w-4 h-4" />
-              </a>
-              <a
-                href={COMPANY_INFO.social.facebook}
-                target="_blank"
-                rel="noreferrer"
-                aria-label="Facebook"
-                className="w-9 h-9 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-primary-600 hover:border-primary-600 transition-all"
-              >
-                <Facebook className="w-4 h-4" />
-              </a>
-              <a
-                href={COMPANY_INFO.social.twitter}
-                target="_blank"
-                rel="noreferrer"
-                aria-label="Twitter"
-                className="w-9 h-9 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-primary-600 hover:border-primary-600 transition-all"
-              >
-                <Twitter className="w-4 h-4" />
-              </a>
-              <a
-                href={COMPANY_INFO.social.instagram}
-                target="_blank"
-                rel="noreferrer"
-                aria-label="Instagram"
-                className="w-9 h-9 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-primary-600 hover:border-primary-600 transition-all"
-              >
-                <Instagram className="w-4 h-4" />
-              </a>
+            <div className="mt-8 flex gap-4">
+
+              {SOCIAL_LINKS.map(({ icon: Icon, href }, index) => (
+
+                <a
+                  key={index}
+                  href={href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className=" group relative flex h-12 w-12 items-center justify-center rounded-full border border-orange-200 bg-white shadow-sm overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:rotate-6 hover:border-premium-orange hover:shadow-orangeLg "  >
+
+                  <>
+                    <span className="absolute inset-0 bg-premium-orange scale-0 rounded-full transition-transform duration-500 group-hover:scale-100"></span>
+
+                    <Icon className="relative z-10 h-5 w-5 text-slate-700 transition-all duration-500 group-hover:text-white group-hover:scale-110" />
+                  </>
+                </a>
+
+              ))}
+
             </div>
           </div>
 
-          {/* Column 2: Quick Links */}
-          <div className="space-y-4">
-            <h3 className="text-base font-bold text-white tracking-wider uppercase font-heading border-l-2 border-primary-500 pl-3">
+          {/* Quick Links */}
+
+          <motion.div
+            variants={fadeUp}
+          >
+
+            <h3 className="text-lg uppercase tracking-wide font-heading font-bold text-slate-900 mb-7">
               Quick Links
             </h3>
-            <ul className="space-y-2.5 text-sm">
-              <li>
-                <Link to="/" className="text-slate-400 hover:text-sky-400 flex items-center gap-1.5 transition-colors">
-                  <ChevronRight className="w-3.5 h-3.5 text-primary-500" />
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link to="/about" className="text-slate-400 hover:text-sky-400 flex items-center gap-1.5 transition-colors">
-                  <ChevronRight className="w-3.5 h-3.5 text-primary-500" />
-                  About J K Biotech
-                </Link>
-              </li>
-              <li>
-                <Link to="/products" className="text-slate-400 hover:text-sky-400 flex items-center gap-1.5 transition-colors">
-                  <ChevronRight className="w-3.5 h-3.5 text-primary-500" />
-                  Product Formulations
-                </Link>
-              </li>
-              <li>
-                <Link to="/downloads" className="text-slate-400 hover:text-sky-400 flex items-center gap-1.5 transition-colors">
-                  <ChevronRight className="w-3.5 h-3.5 text-primary-500" />
-                  Visual Aids & Downloads
-                </Link>
-              </li>
-              <li>
-                <Link to="/contact" className="text-slate-400 hover:text-sky-400 flex items-center gap-1.5 transition-colors">
-                  <ChevronRight className="w-3.5 h-3.5 text-primary-500" />
-                  Contact Us
-                </Link>
-              </li>
-            </ul>
-          </div>
 
-          {/* Column 3: Products Dosage Categories */}
-          <div className="space-y-4">
-            <h3 className="text-base font-bold text-white tracking-wider uppercase font-heading border-l-2 border-primary-500 pl-3">
-              Dosage Formulations
-            </h3>
-            <ul className="grid grid-cols-1 gap-2 text-sm">
-              {PRODUCT_CATEGORIES.slice(0, 7).map((cat) => (
-                <li key={cat.slug}>
-                  <Link to={cat.path} className="text-slate-400 hover:text-sky-400 flex items-center gap-1.5 transition-colors">
-                    <ChevronRight className="w-3.5 h-3.5 text-secondary-500" />
-                    {cat.name}
+            <ul className="space-y-5">
+
+              {QUICK_LINKS.map((link) => (
+
+                <li key={link.name}>
+
+                  <Link
+                    to={link.path}
+                    className="group flex items-center gap-2 text-slate-600 hover:text-premium-orange transition-all duration-300"
+                  >
+                    <span className="text-premium-orange transition-transform duration-300 group-hover:translate-x-1">
+                      ›
+                    </span>
+                    <span>{link.name}</span>
+
                   </Link>
+
                 </li>
+
               ))}
+
             </ul>
-          </div>
 
-          {/* Column 4: Contact & Location */}
-          <div className="space-y-4">
-            <h3 className="text-base font-bold text-white tracking-wider uppercase font-heading border-l-2 border-primary-500 pl-3">
-              Corporate Office
-            </h3>
-            <ul className="space-y-3 text-sm text-slate-400">
-              <li className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 text-primary-400 flex-shrink-0 mt-0.5" />
-                <span>{COMPANY_INFO.address}</span>
-              </li>
-              <li className="flex items-center gap-3">
-                <Phone className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-                <a href={`tel:${COMPANY_INFO.phone}`} className="hover:text-white transition-colors">
-                  {COMPANY_INFO.phone}
-                </a>
-              </li>
-              <li className="flex items-center gap-3">
-                <Mail className="w-4 h-4 text-sky-400 flex-shrink-0" />
-                <a href={`mailto:${COMPANY_INFO.email}`} className="hover:text-white transition-colors">
-                  {COMPANY_INFO.email}
-                </a>
-              </li>
-              <li className="flex items-center gap-3">
-                {/* <Clock className="w-4 h-4 text-amber-400 flex-shrink-0" /> */}
-                {/* <span>{COMPANY_INFO.workingHours}</span> */}
-              </li>
-            </ul>
-          </div>
+          </motion.div>
 
-        </div>
+          {/* Products */}
 
-        {/* Bottom Bar: Copyright & Back To Top */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-          <p>© {new Date().getFullYear()} J K BIOTECH. All Rights Reserved. Designed for Corporate Pharmaceutical Excellence.</p>
-          
-          <button
-            onClick={scrollToTop}
-            className="inline-flex items-center gap-2 hover:text-sky-400 transition-colors focus:outline-none"
+          <motion.div
+            variants={fadeUp}
           >
-            <span>Back to top</span>
-            <ArrowUp className="w-4 h-4" />
-          </button>
+
+            <h3 className="text-lg font-heading font-bold text-slate-900 mb-6">
+              Our Products
+            </h3>
+
+            <ul className="space-y-4">
+
+              {PRODUCT_LINKS.map((item) => (
+
+                <li key={item}>
+
+                  <Link
+                    to="/products"
+                    className="group flex items-center gap-2 text-slate-600 hover:text-premium-orange transition-all duration-300"
+                  >
+                    <span className="w-0 group-hover:w-3 h-[2px] bg-premium-orange transition-all duration-300 rounded-full"></span>
+
+                    <span>{item}</span>
+
+                  </Link>
+
+                </li>
+
+              ))}
+
+            </ul>
+
+          </motion.div>
+
+          {/* Contact */}
+
+          <motion.div variants={fadeUp}>
+
+            <h3 className="text-lg font-heading font-bold text-slate-900 mb-6">
+              Contact Us
+            </h3>
+
+            <div className="space-y-5">
+
+              <div className="flex items-start gap-3">
+
+                <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-orange-50 border border-orange-100 shadow-sm">
+                  <MapPin className="w-5 h-5 text-premium-orange" />
+                </div>
+
+                <p className="text-slate-600 leading-6">
+                  {CONTACT.address}
+                </p>
+
+              </div>
+
+              <div className="flex items-center gap-3">
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-orange-50 border border-orange-100 shadow-sm">
+
+                  <Phone className="w-5 h-5 text-premium-orange flex-shrink-0" />
+
+                </div>
+                <a
+                  href={`tel:${CONTACT.phone}`}
+                  className="text-slate-600 hover:text-premium-orange hover:translate-x-1 inline-flex transition-all duration-300 transition-colors"
+                >
+                  {CONTACT.phone}
+                </a>
+
+              </div>
+
+              <div className="flex items-center gap-3">
+
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-orange-50 border border-orange-100 shadow-sm">
+                  <Mail className="w-5 h-5 text-premium-orange flex-shrink-0" />
+                </div>
+
+                <a
+                  href={`mailto:${CONTACT.email}`}
+                  className="text-slate-600 hover:text-premium-orange hover:translate-x-1 inline-flex transition-all duration-300 transition-colors"
+                >
+                  {CONTACT.email}
+                </a>
+
+              </div>
+
+            </div>
+
+          </motion.div>
+
         </div>
+
       </Container>
-    </footer>
+
+      <div className="border-t border-orange-100/80 bg-white/60 backdrop-blur-sm">
+
+        <Container>
+
+          <div className="py-6 flex flex-col md:flex-row justify-between items-center gap-4">
+
+            <p className="text-sm text-slate-500">
+
+              © {new Date().getFullYear()} JK Biotech Pvt. Ltd.
+              All Rights Reserved.
+
+            </p>
+
+            <div className="flex gap-10 text-sm">
+
+              <Link
+                to="/privacy-policy"
+                className="text-slate-500 hover:text-premium-orange transition-colors"
+              >
+                Privacy Policy
+              </Link>
+
+              <Link
+                to="/terms"
+                className="text-slate-500 hover:text-premium-orange transition-colors font-medium"
+              >
+                Terms & Conditions
+              </Link>
+
+            </div>
+
+          </div>
+
+        </Container>
+
+      </div>
+
+    </motion.footer>
   );
 };
 

@@ -35,9 +35,8 @@ const ScrollToTopButton = () => {
           transition={{ duration: 0.2 }}
           onClick={scrollToTop}
           aria-label="Scroll to top"
-          className="fixed bottom-6 right-6 z-50 p-3.5 rounded-full bg-primary-600 hover:bg-primary-700 text-white shadow-xl shadow-primary-600/30 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all hover:scale-110 active:scale-95 border border-white/20"
-        >
-          <ChevronUp className="w-5 h-5" />
+          className="group fixed bottom-6 right-6 z-50 p-3.5 rounded-full bg-premium-orange hover:bg-[#E36400] text-white shadow-xl shadow-orange-500/40 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 transition-all duration-300 hover:scale-110 active:scale-95 border border-orange-300/30"        >
+          <ChevronUp className="w-5 h-5 transition-transform duration-300 group-hover:-translate-y-0.5" />
         </motion.button>
       )}
     </AnimatePresence>

@@ -13,10 +13,9 @@ import {
   Award,
   Clock,
   ArrowRight,
-  Sparkles,
-  Pill
+  Sparkles
 } from 'lucide-react';
-import jkLogo from '../../assets/images/logo/jk-logo.png';
+import jkLogo from '/images/logo/jk-logo.png';
 
 
 const Navbar = () => {

@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, ArrowRight, ChevronDown, ShieldCheck, Award, Microscope } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowRight, ShieldCheck, Award, Microscope } from 'lucide-react';
 import Container from '../../components/common/Container';
 import Button from '../../components/common/Button';
 import { fadeUp, staggerContainer } from '../../animations/variants';
-import heroCapsule from '../../assets/images/hero/hero-capsule.png';
-import womenHealthcare  from '../../assets/images/hero/women-healthcare.png';
-import heroPediatric  from '../../assets/images/hero/pediatric-care.png';
+import heroCapsule from '/images/hero/hero-capsule.png';
+import womenHealthcare  from '/images/hero/women-healthcare.png';
+import heroPediatric  from '/images/hero/pediatric-care.png';
 
 // Slide data – each slide has its own headline, description and gradient theme
 const HERO_SLIDES = [

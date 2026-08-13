@@ -1,7 +1,28 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useParams } from 'react-router-dom';
 import PlaceholderPage from '../pages/PlaceholderPage';
 import HomePage from '../pages/home/HomePage';
+import AboutPage from '../pages/about/AboutPage';
+import ProductsPage from '../pages/ProductsPage';
+import ProductDetailsPage from '../pages/ProductDetailsPage';
+import PRODUCTS from '../constants/products';
+
+// Route dispatcher that differentiates category pages (/products/:category) vs product details pages (/products/:slug)
+const ProductRouteDispatcher = () => {
+  const { identifier } = useParams();
+
+  if (!identifier) return <ProductsPage />;
+
+  const isProductSlug = PRODUCTS.some(
+    (p) => p.slug && p.slug.toLowerCase() === identifier.toLowerCase()
+  );
+
+  if (isProductSlug) {
+    return <ProductDetailsPage />;
+  }
+
+  return <ProductsPage />;
+};
 
 const AppRoutes = () => {
   return (
@@ -10,196 +31,16 @@ const AppRoutes = () => {
       <Route path="/" element={<HomePage />} />
 
       {/* About Route */}
-      <Route
-        path="/about"
-        element={
-          <PlaceholderPage
-            title="About Us"
-            subtitle="Pioneering Pharmaceutical Manufacturing, Research & Innovation"
-            breadcrumbs={[{ label: 'About', path: '/about' }]}
-            type="general"
-          />
-        }
-      />
+      <Route path="/about" element={<AboutPage />} />
 
       {/* Main Products Catalog Route */}
-      <Route
-        path="/products"
-        element={
-          <PlaceholderPage
-            title="All Products"
-            subtitle="Comprehensive WHO-GMP Certified Pharmaceutical Formulations & Dosage Forms"
-            breadcrumbs={[{ label: 'Products', path: '/products' }]}
-            type="product"
-          />
-        }
-      />
+      <Route path="/products" element={<ProductsPage />} />
 
-      {/* Specific Product Category Routes (11 Dosage Forms) */}
-      <Route
-        path="/products/capsule"
-        element={
-          <PlaceholderPage
-            title="Capsule"
-            subtitle="High-grade Gelatin & Hydroxypropyl Methylcellulose Capsules"
-            breadcrumbs={[
-              { label: 'Products', path: '/products' },
-              { label: 'Capsule', path: '/products/capsule' },
-            ]}
-            type="product"
-          />
-        }
-      />
+      {/* Explicit Product Details Route (optional fallback) */}
+      <Route path="/products/detail/:slug" element={<ProductDetailsPage />} />
 
-      <Route
-        path="/products/drop"
-        element={
-          <PlaceholderPage
-            title="Drop"
-            subtitle="Pediatric Oral Drops & Ophthalmic Therapeutic Drops"
-            breadcrumbs={[
-              { label: 'Products', path: '/products' },
-              { label: 'Drop', path: '/products/drop' },
-            ]}
-            type="product"
-          />
-        }
-      />
-
-      <Route
-        path="/products/injection"
-        element={
-          <PlaceholderPage
-            title="Injection"
-            subtitle="Sterile Intravenous & Intramuscular Parenteral Injections"
-            breadcrumbs={[
-              { label: 'Products', path: '/products' },
-              { label: 'Injection', path: '/products/injection' },
-            ]}
-            type="product"
-          />
-        }
-      />
-
-      <Route
-        path="/products/powder"
-        element={
-          <PlaceholderPage
-            title="Powder"
-            subtitle="Oral Rehydration & Antibiotic Dry Powder Formulations"
-            breadcrumbs={[
-              { label: 'Products', path: '/products' },
-              { label: 'Powder', path: '/products/powder' },
-            ]}
-            type="product"
-          />
-        }
-      />
-
-      <Route
-        path="/products/sachet"
-        element={
-          <PlaceholderPage
-            title="Sachet"
-            subtitle="Single-Dose Nutritional, Probiotic & Mineral Sachets"
-            breadcrumbs={[
-              { label: 'Products', path: '/products' },
-              { label: 'Sachet', path: '/products/sachet' },
-            ]}
-            type="product"
-          />
-        }
-      />
-
-      <Route
-        path="/products/suppository"
-        element={
-          <PlaceholderPage
-            title="Suppository"
-            subtitle="Targeted Therapeutic Rectal & Vaginal Suppositories"
-            breadcrumbs={[
-              { label: 'Products', path: '/products' },
-              { label: 'Suppository', path: '/products/suppository' },
-            ]}
-            type="product"
-          />
-        }
-      />
-
-      <Route
-        path="/products/soft-gel-capsule"
-        element={
-          <PlaceholderPage
-            title="Soft Gel Capsule"
-            subtitle="Lipid-based Micronutrient & Essential Oil Softgel Capsules"
-            breadcrumbs={[
-              { label: 'Products', path: '/products' },
-              { label: 'Soft Gel Capsule', path: '/products/soft-gel-capsule' },
-            ]}
-            type="product"
-          />
-        }
-      />
-
-      <Route
-        path="/products/suspension"
-        element={
-          <PlaceholderPage
-            title="Suspension"
-            subtitle="Flavored Pediatric & Adult Liquid Suspensions"
-            breadcrumbs={[
-              { label: 'Products', path: '/products' },
-              { label: 'Suspension', path: '/products/suspension' },
-            ]}
-            type="product"
-          />
-        }
-      />
-
-      <Route
-        path="/products/syrup"
-        element={
-          <PlaceholderPage
-            title="Syrup"
-            subtitle="Multivitamin, Cough & Anti-Allergic Syrups"
-            breadcrumbs={[
-              { label: 'Products', path: '/products' },
-              { label: 'Syrup', path: '/products/syrup' },
-            ]}
-            type="product"
-          />
-        }
-      />
-
-      <Route
-        path="/products/tablet"
-        element={
-          <PlaceholderPage
-            title="Tablet"
-            subtitle="Film-Coated, Chewable & Sustained-Release Tablets"
-            breadcrumbs={[
-              { label: 'Products', path: '/products' },
-              { label: 'Tablet', path: '/products/tablet' },
-            ]}
-            type="product"
-          />
-        }
-      />
-
-      <Route
-        path="/products/liquid"
-        element={
-          <PlaceholderPage
-            title="Liquid"
-            subtitle="Oral Solutions, Elixirs & Antiseptic Liquids"
-            breadcrumbs={[
-              { label: 'Products', path: '/products' },
-              { label: 'Liquid', path: '/products/liquid' },
-            ]}
-            type="product"
-          />
-        }
-      />
+      {/* Dynamic Products Route: Category Page (/products/:category) or Product Details Page (/products/:slug) */}
+      <Route path="/products/:identifier" element={<ProductRouteDispatcher />} />
 
       {/* Downloads Main Route */}
       <Route

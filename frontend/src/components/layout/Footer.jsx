@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Container from "../common/Container";
-import jkLogo from '../../assets/images/logo/jk-logo.png';
+import jkLogo from '/images/logo/jk-logo.png';
 import {
   MapPin,
   Phone,

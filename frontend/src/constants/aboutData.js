@@ -1,4 +1,4 @@
-import aboutHero from '../../src/assets/images/hero/about-hero.png'
+import aboutHero from '/images/hero/about-hero.png'
 
 const aboutData = {
   hero: {

@@ -24,29 +24,7 @@ const PlaceholderPage = ({
       />
 
       <Container className="pt-12 sm:pt-16">
-        {/* Phase 2 Architecture Indicator Badge */}
-        <div className="mb-10 p-4 sm:p-6 rounded-2xl bg-white border border-primary-100 shadow-soft flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center flex-shrink-0">
-              <CheckCircle2 className="w-5 h-5" />
-            </div>
-            <div>
-              <h3 className="font-bold text-slate-900 text-sm sm:text-base">
-                {title} Route Initialized
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
-                Path: <code className="bg-slate-100 px-2 py-0.5 rounded text-primary-700 font-mono text-xs">{breadcrumbs[breadcrumbs.length - 1]?.path || '#'}</code>
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <span className="px-3 py-1 rounded-full bg-primary-50 text-primary-700 border border-primary-200 text-xs font-semibold">
-              Phase 2 Layout & Routing Ready
-            </span>
-          </div>
-        </div>
-
+        
         {/* Dynamic Placeholder Content based on Type */}
         {type === 'product' && (
           <div className="space-y-12">

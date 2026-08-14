@@ -83,7 +83,7 @@ const ProductDetailsPage = () => {
       <section className="py-6 border-b border-[#E5E7EB] bg-[#FFF8F0]">
         <Container>
           <div className="flex flex-wrap items-center justify-between gap-4">
-            <nav className="flex items-center gap-2 text-xs font-medium text-gray-400 tracking-wide">
+            <nav className="flex items-center gap-2 text-xs font-medium text-[#6B7280] tracking-wide">
               <Link to="/" className="hover:text-premium-orange transition-colors">
                 Home
               </Link>
@@ -99,7 +99,7 @@ const ProductDetailsPage = () => {
                 {formattedCategory}
               </Link>
               <ChevronRight className="w-3.5 h-3.5 text-gray-600" />
-              <span className="text-orange-300 font-semibold line-clamp-1">
+              <span className="text-premium-orange font-semibold line-clamp-1">
                 {product.name}
               </span>
             </nav>
@@ -117,7 +117,7 @@ const ProductDetailsPage = () => {
       </section>
 
       {/* Main Single Product Details Section */}
-      <section className="py-12 lg:py-16 bg-[#FFF8F0]">
+      <section className="pt-8 pb-12 lg:pt-10 lg:pb-16 bg-[#FFF8F0]">
         <Container>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
             {/* Left Column: Product Showcase Banner & Image */}
@@ -269,7 +269,7 @@ const ProductDetailsPage = () => {
 
           {/* Related Products Grid */}
           {relatedProducts.length > 0 && (
-            <div className="mt-20 pt-12 border-t border-[#E5E7EB]">
+            <div className="mt-16 pt-12 border-t border-[#E5E7EB]">
               <div className="flex items-center justify-between mb-6 sm:mb-8">
                 <div>
                   <span className="text-xs font-bold text-premium-orange uppercase tracking-wider">

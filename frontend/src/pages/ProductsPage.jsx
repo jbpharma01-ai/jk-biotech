@@ -68,7 +68,7 @@ const ProductsPage = () => {
   };
 
   return (
-    <div className="bg-premium-black text-gray-100 min-h-screen pt-4 pb-24">
+    <div className="text-gray-100 min-h-screen pt-4 pb-24">
       {/* Hero Header Section */}
       <section className="relative overflow-hidden py-14 lg:py-20 border-b border-premium-border/60 bg-gradient-to-b from-black via-premium-surface to-premium-black">
         {/* Background glow graphics */}

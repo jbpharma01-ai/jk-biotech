@@ -6,6 +6,7 @@ import AboutPage from '../pages/about/AboutPage';
 import ProductsPage from '../pages/ProductsPage';
 import ProductDetailsPage from '../pages/ProductDetailsPage';
 import PRODUCTS from '../constants/products';
+import ContactPage from '../pages/contact/ContactPage';
 
 // Route dispatcher that differentiates category pages (/products/:category) vs product details pages (/products/:slug)
 const ProductRouteDispatcher = () => {
@@ -104,14 +105,7 @@ const AppRoutes = () => {
       {/* Contact Route */}
       <Route
         path="/contact"
-        element={
-          <PlaceholderPage
-            title="Contact Us"
-            subtitle="Get in Touch with J K BIOTECH Corporate Sales & Franchise Team"
-            breadcrumbs={[{ label: 'Contact', path: '/contact' }]}
-            type="general"
-          />
-        }
+        element={<ContactPage />}
       />
 
       {/* 404 Fallback Route */}

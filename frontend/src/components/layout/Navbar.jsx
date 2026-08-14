@@ -235,9 +235,11 @@ const Navbar = () => {
                     {DOWNLOAD_CATEGORIES.map((item) => {
                       const Icon = item.icon;
                       return (
-                        <Link
+                        <a
                           key={item.slug}
-                          to={item.path}
+                          href={item.pdfUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#FFF7ED] transition-all duration-300 ease-out group/item"
                         >
                           <div className="w-8 h-8 rounded-lg bg-orange-100 text-premium-orange group-hover/item:bg-premium-orange group-hover/item:text-white flex items-center justify-center flex-shrink-0 transition-all duration-300">
@@ -251,7 +253,7 @@ const Navbar = () => {
                               {item.desc}
                             </div>
                           </div>
-                        </Link>
+                        </a>
                       );
                     })}
                   </motion.div>
@@ -349,38 +351,6 @@ const Navbar = () => {
                   </div>
                 )}
               </div>
-
-              {/* DOWNLOADS Mobile Accordion */}
-              {/* <div className="border border-slate-100 rounded-2xl overflow-hidden">
-                <button
-                  type="button"
-                  onClick={() => setMobileAccordion(mobileAccordion === 'downloads' ? null : 'downloads')}
-                  className="w-full px-4 py-3 bg-slate-50/80 flex items-center justify-between text-base font-bold text-slate-800"
-                >
-                  <span>DOWNLOADS</span>
-                  <ChevronDown className={`w-5 h-5 transition-transform ${
-                    mobileAccordion === 'downloads' ? 'rotate-180 text-premium-orange' : 'text-slate-400'
-                  }`} />
-                </button>
-
-                {mobileAccordion === 'downloads' && (
-                  <div className="p-3 bg-white space-y-1">
-                    {DOWNLOAD_CATEGORIES.map((item) => {
-                      const Icon = item.icon;
-                      return (
-                        <Link
-                          key={item.slug}
-                          to={item.path}
-                          className="flex items-center gap-3 p-2 rounded-lg text-sm font-medium text-slate-700"
-                        >
-                          <Icon className="w-4 h-4 text-premium-orange" />
-                          <span>{item.name}</span>
-                        </Link>
-                      );
-                    })}
-                  </div>
-                )}
-              </div> */}
 
               <Link
                 to="/contact"

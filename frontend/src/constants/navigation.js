@@ -30,9 +30,30 @@ export const PRODUCT_CATEGORIES = [
 ];
 
 export const DOWNLOAD_CATEGORIES = [
-  { name: 'Pediatrician', slug: 'pediatrician', path: '/downloads/pediatrician', icon: Baby, desc: 'Pediatric dosage charts, product brochures & visual aids' },
-  { name: 'Orthopedic', slug: 'orthopedic', path: '/downloads/orthopedic', icon: Bone, desc: 'Joint care, calcium & bone health product catalogs' },
-  { name: 'Gynecologist', slug: 'gynecologist', path: '/downloads/gynecologist', icon: HeartHandshake, desc: 'Women’s health, iron & prenatal care literature' }
+  {
+    name: 'Pediatrician',
+    slug: 'pediatrician',
+    path: '/downloads/pediatrician',
+    icon: Baby,
+    desc: 'Pediatric dosage charts, product brochures & visual aids',
+    pdfUrl: 'https://www.jkbiotech.in/apanel/assets/admin_assets/document/3c8820090867b1cb7ea21bc452fd86feNew%20PED%20catalogue.pdf',
+  },
+  {
+    name: 'Orthopedic',
+    slug: 'orthopedic',
+    path: '/downloads/orthopedic',
+    icon: Bone,
+    desc: 'Joint care, calcium & bone health product catalogs',
+    pdfUrl: 'https://www.jkbiotech.in/apanel/assets/admin_assets/document/58d28a8a771b3dfa042427d97f1eddfaNEW%20ORTHO.pdf',
+  },
+  {
+    name: 'Gynecologist',
+    slug: 'gynecologist',
+    path: '/downloads/gynecologist',
+    icon: HeartHandshake,
+    desc: 'Women’s health, iron & prenatal care literature',
+    pdfUrl: 'https://www.jkbiotech.in/apanel/assets/admin_assets/document/b92a85796250aa7fac1c0c4317c32452New%20GYN.pdf',
+  },
 ];
 
 export const COMPANY_INFO = {

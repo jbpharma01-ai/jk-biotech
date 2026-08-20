@@ -9,6 +9,8 @@ const {
   deactivateCategory,
 } = require('../controllers/categoryController');
 
+const upload = require('../middleware/upload');
+
 const router = express.Router();
 
 // Get all categories
@@ -20,10 +22,10 @@ router.get('/active', getActiveCategories);
 router.get('/:id', getCategoryById);
 
 // Create category
-router.post('/', createCategory);
+router.post('/', upload.single('image'), createCategory);
 
 // Update category
-router.put('/:id', updateCategory);
+router.put('/:id', upload.single('image'), updateCategory);
 
 // Deactivate category
 router.delete('/:id', deactivateCategory);

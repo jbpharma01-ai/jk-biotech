@@ -1,5 +1,7 @@
 const Category = require('../models/Category');
 
+const { uploadImage , deleteImage, } = require('./cloudinaryService');
+
 // Get all categories
 const getAllCategories = async () => {
   return await Category.find().sort({ displayOrder: 1, createdAt: -1 });
@@ -18,12 +20,54 @@ const getCategoryById = async (id) => {
 };
 
 // Create new category
-const createCategory = async (categoryData) => {
-  return await Category.create(categoryData);
+const createCategory = async (categoryData, imageFile = null) => {
+  let imageData = {
+    url: '',
+    publicId: '',
+    alt: '',
+  };
+
+  if (imageFile) {
+    const uploadedImage = await uploadImage(imageFile);
+
+    imageData = {
+      url: uploadedImage.url,
+      publicId: uploadedImage.publicId,
+      alt: categoryData.name || '',
+    };
+  }
+
+  return await Category.create({
+    ...categoryData,
+    image: imageData,
+  });
 };
 
 // Update category
-const updateCategory = async (id, categoryData) => {
+const updateCategory = async (id, categoryData, imageFile = null) => {
+  const existingCategory = await Category.findById(id);
+
+  if (!existingCategory) {
+    return null;
+  }
+
+  if (imageFile) {
+    const uploadedImage = await uploadImage(
+      imageFile,
+      'jk-biotech/categories'
+    );
+
+    if (existingCategory.image?.publicId) {
+      await deleteImage(existingCategory.image.publicId);
+    }
+
+    categoryData.image = {
+      url: uploadedImage.url,
+      publicId: uploadedImage.publicId,
+      alt: categoryData.name || existingCategory.name || '',
+    };
+  }
+
   return await Category.findByIdAndUpdate(
     id,
     categoryData,

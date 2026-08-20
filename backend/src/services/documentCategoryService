@@ -1,0 +1,60 @@
+const DocumentCategory = require('../models/DocumentCategory');
+
+// Get all document categories
+const getAllDocumentCategories = async () => {
+  return await DocumentCategory.find().sort({
+    displayOrder: 1,
+    createdAt: -1,
+  });
+};
+
+// Get active document categories
+const getActiveDocumentCategories = async () => {
+  return await DocumentCategory.find({ isActive: true }).sort({
+    displayOrder: 1,
+    createdAt: -1,
+  });
+};
+
+// Get single document category by ID
+const getDocumentCategoryById = async (id) => {
+  return await DocumentCategory.findById(id);
+};
+
+// Create document category
+const createDocumentCategory = async (categoryData) => {
+  return await DocumentCategory.create(categoryData);
+};
+
+// Update document category
+const updateDocumentCategory = async (id, categoryData) => {
+  return await DocumentCategory.findByIdAndUpdate(
+    id,
+    categoryData,
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+};
+
+// Deactivate document category
+const deactivateDocumentCategory = async (id) => {
+  return await DocumentCategory.findByIdAndUpdate(
+    id,
+    { isActive: false },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+};
+
+module.exports = {
+  getAllDocumentCategories,
+  getActiveDocumentCategories,
+  getDocumentCategoryById,
+  createDocumentCategory,
+  updateDocumentCategory,
+  deactivateDocumentCategory,
+};

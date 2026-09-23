@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, ChevronRight, Pill } from 'lucide-react';
@@ -8,12 +8,42 @@ import Button from '../components/common/Button';
 import PRODUCTS from '../constants/products';
 import { PRODUCT_CATEGORIES } from '../constants/navigation';
 import { fadeUp, staggerContainer } from '../animations/variants';
+import { fetchActiveProducts } from '../services/api';
 
 const ProductsPage = () => {
   const { identifier } = useParams();
-
   const categoryParam = identifier;
   const navigate = useNavigate();
+
+  const [apiProducts, setApiProducts] = useState(null);
+
+  useEffect(() => {
+    let isMounted = true;
+    fetchActiveProducts().then((data) => {
+      if (isMounted && data && Array.isArray(data) && data.length > 0) {
+        // Map backend product format to frontend component expected format
+        const formatted = data.map((p) => ({
+          id: p._id || p.id,
+          slug: p.slug,
+          category: typeof p.categoryId === 'object' ? p.categoryId?.slug || p.category : p.category,
+          name: p.name,
+          image: p.image?.url || p.image || '/images/products/capsule/IMG_1539.JPG',
+          shortDescription: p.shortDescription,
+          description: p.description,
+          composition: p.composition,
+          packaging: p.packaging,
+          dosageForm: p.dosageForm,
+          indications: p.indications,
+        }));
+        setApiProducts(formatted);
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const allProducts = apiProducts || PRODUCTS;
 
   // Helper to normalize category slugs for comparison
   const normalizeSlug = (slug) => {
@@ -35,9 +65,9 @@ const ProductsPage = () => {
     );
   }, [categoryParam, currentCategorySlug]);
 
-  // Filter products based on active category slug and search term
+  // Filter products based on active category slug
   const filteredProducts = useMemo(() => {
-    return PRODUCTS.filter((product) => {
+    return allProducts.filter((product) => {
       const productCatSlug = normalizeSlug(product.category);
 
       return (
@@ -45,7 +75,7 @@ const ProductsPage = () => {
         productCatSlug === currentCategorySlug
       );
     });
-  }, [currentCategorySlug]);
+  }, [allProducts, currentCategorySlug]);
 
   // Dynamic Header Title & Description
   const pageTitle = activeCategoryMeta
@@ -84,8 +114,7 @@ const ProductsPage = () => {
             <ChevronRight className="w-3.5 h-3.5 text-gray-600" />
             <Link
               to="/products"
-              className={`hover:text-premium-orange transition-colors ${!categoryParam ? 'text-premium-orange font-bold' : ''
-                }`}
+              className={`hover:text-premium-orange transition-colors ${!categoryParam ? 'text-premium-orange font-bold' : ''}`}
             >
               Products
             </Link>
@@ -121,19 +150,15 @@ const ProductsPage = () => {
                 {filteredProducts.length} Product{filteredProducts.length > 1 ? "s" : ""} Available
               </span>
             </div>
-            
           </div>
         </Container>
       </section>
 
       {/* Main Content Area */}
       <section className="relative overflow-hidden bg-[#FAFAFA] py-16 sm:py-20">
-
         <div className="pointer-events-none absolute -top-24 left-1/2 h-48 w-[70%] -translate-x-1/2 rounded-full bg-orange-200/20 blur-3xl" />
 
         <Container>
-          {/* Search & Category Filter Navigation Bar */}
-
           {/* Product Grid / Empty State */}
           <AnimatePresence mode="wait">
             {filteredProducts.length > 0 ? (
@@ -145,7 +170,7 @@ const ProductsPage = () => {
                 className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-10 justify-items-center"
               >
                 {filteredProducts.map((product) => (
-                  <motion.div key={product.id} variants={fadeUp}  className="w-full max-w-[360px]">
+                  <motion.div key={product.id || product.slug} variants={fadeUp} className="w-full max-w-[360px]">
                     <ProductCard product={product} />
                   </motion.div>
                 ))}

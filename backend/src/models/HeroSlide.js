@@ -8,6 +8,17 @@ const heroSlideSchema = new mongoose.Schema(
       trim: true,
     },
 
+    titleLines: {
+      type: [String],
+      default: [],
+    },
+
+    badge: {
+      type: String,
+      trim: true,
+      default: '',
+    },
+
     subtitle: {
       type: String,
       trim: true,

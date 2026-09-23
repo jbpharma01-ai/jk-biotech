@@ -1,14 +1,10 @@
 const documentCategoryService = require('../services/documentCategoryService');
-
 const asyncHandler = require('../utils/asyncHandler');
-
 const { successResponse, errorResponse } = require('../utils/response');
 
 // Get all document categories
 const getAllDocumentCategories = asyncHandler(async (req, res) => {
-  const categories =
-    await documentCategoryService.getAllDocumentCategories();
-
+  const categories = await documentCategoryService.getAllDocumentCategories();
   return successResponse(
     res,
     'Document categories fetched successfully',
@@ -19,9 +15,7 @@ const getAllDocumentCategories = asyncHandler(async (req, res) => {
 
 // Get active document categories
 const getActiveDocumentCategories = asyncHandler(async (req, res) => {
-  const categories =
-    await documentCategoryService.getActiveDocumentCategories();
-
+  const categories = await documentCategoryService.getActiveDocumentCategories();
   return successResponse(
     res,
     'Active document categories fetched successfully',
@@ -30,15 +24,26 @@ const getActiveDocumentCategories = asyncHandler(async (req, res) => {
   );
 });
 
-// Get single document category
+// Get single document category by ID
 const getDocumentCategoryById = asyncHandler(async (req, res) => {
-  const category =
-    await documentCategoryService.getDocumentCategoryById(req.params.id);
-
+  const category = await documentCategoryService.getDocumentCategoryById(req.params.id);
   if (!category) {
     return errorResponse(res, 'Document category not found', 404);
   }
+  return successResponse(
+    res,
+    'Document category fetched successfully',
+    category,
+    200
+  );
+});
 
+// Get single document category by Slug
+const getDocumentCategoryBySlug = asyncHandler(async (req, res) => {
+  const category = await documentCategoryService.getDocumentCategoryBySlug(req.params.slug);
+  if (!category) {
+    return errorResponse(res, 'Document category not found', 404);
+  }
   return successResponse(
     res,
     'Document category fetched successfully',
@@ -49,9 +54,7 @@ const getDocumentCategoryById = asyncHandler(async (req, res) => {
 
 // Create document category
 const createDocumentCategory = asyncHandler(async (req, res) => {
-  const category =
-    await documentCategoryService.createDocumentCategory(req.body);
-
+  const category = await documentCategoryService.createDocumentCategory(req.body);
   return successResponse(
     res,
     'Document category created successfully',
@@ -62,16 +65,13 @@ const createDocumentCategory = asyncHandler(async (req, res) => {
 
 // Update document category
 const updateDocumentCategory = asyncHandler(async (req, res) => {
-  const category =
-    await documentCategoryService.updateDocumentCategory(
-      req.params.id,
-      req.body
-    );
-
+  const category = await documentCategoryService.updateDocumentCategory(
+    req.params.id,
+    req.body
+  );
   if (!category) {
     return errorResponse(res, 'Document category not found', 404);
   }
-
   return successResponse(
     res,
     'Document category updated successfully',
@@ -82,15 +82,10 @@ const updateDocumentCategory = asyncHandler(async (req, res) => {
 
 // Deactivate document category
 const deactivateDocumentCategory = asyncHandler(async (req, res) => {
-  const category =
-    await documentCategoryService.deactivateDocumentCategory(
-      req.params.id
-    );
-
+  const category = await documentCategoryService.deactivateDocumentCategory(req.params.id);
   if (!category) {
     return errorResponse(res, 'Document category not found', 404);
   }
-
   return successResponse(
     res,
     'Document category deactivated successfully',
@@ -99,11 +94,27 @@ const deactivateDocumentCategory = asyncHandler(async (req, res) => {
   );
 });
 
+// Delete document category
+const deleteDocumentCategory = asyncHandler(async (req, res) => {
+  const category = await documentCategoryService.deleteDocumentCategory(req.params.id);
+  if (!category) {
+    return errorResponse(res, 'Document category not found', 404);
+  }
+  return successResponse(
+    res,
+    'Document category deleted successfully',
+    null,
+    200
+  );
+});
+
 module.exports = {
   getAllDocumentCategories,
   getActiveDocumentCategories,
   getDocumentCategoryById,
+  getDocumentCategoryBySlug,
   createDocumentCategory,
   updateDocumentCategory,
   deactivateDocumentCategory,
+  deleteDocumentCategory,
 };

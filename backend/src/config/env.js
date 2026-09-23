@@ -15,7 +15,11 @@ const config = {
 
   mongoUri: process.env.MONGO_URI,
 
-  jwtSecret: process.env.JWT_SECRET || '',
+  jwtSecret: process.env.JWT_SECRET || 'jk_biotech_jwt_secret_key_default_2026',
+  jwtExpiresIn: process.env.JWT_EXPIRES_IN || '7d',
+
+  adminEmail: process.env.ADMIN_EMAIL || 'admin@jkbiotech.in',
+  adminPassword: process.env.ADMIN_PASSWORD || 'Admin@JKBiotech2026',
 
   cloudinary: {
     cloudName: process.env.CLOUDINARY_CLOUD_NAME || '',

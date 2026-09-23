@@ -5,7 +5,6 @@ const { successResponse, errorResponse } = require('../utils/response');
 // Get all categories
 const getAllCategories = asyncHandler(async (req, res) => {
   const categories = await categoryService.getAllCategories();
-
   return successResponse(
     res,
     'Categories fetched successfully',
@@ -17,7 +16,6 @@ const getAllCategories = asyncHandler(async (req, res) => {
 // Get active categories for public website
 const getActiveCategories = asyncHandler(async (req, res) => {
   const categories = await categoryService.getActiveCategories();
-
   return successResponse(
     res,
     'Active categories fetched successfully',
@@ -26,14 +24,26 @@ const getActiveCategories = asyncHandler(async (req, res) => {
   );
 });
 
-// Get single category
+// Get single category by ID
 const getCategoryById = asyncHandler(async (req, res) => {
   const category = await categoryService.getCategoryById(req.params.id);
-
   if (!category) {
     return errorResponse(res, 'Category not found', 404);
   }
+  return successResponse(
+    res,
+    'Category fetched successfully',
+    category,
+    200
+  );
+});
 
+// Get single category by Slug
+const getCategoryBySlug = asyncHandler(async (req, res) => {
+  const category = await categoryService.getCategoryBySlug(req.params.slug);
+  if (!category) {
+    return errorResponse(res, 'Category not found', 404);
+  }
   return successResponse(
     res,
     'Category fetched successfully',
@@ -48,7 +58,6 @@ const createCategory = asyncHandler(async (req, res) => {
     req.body,
     req.file
   );
-
   return successResponse(
     res,
     'Category created successfully',
@@ -93,11 +102,29 @@ const deactivateCategory = asyncHandler(async (req, res) => {
   );
 });
 
+// Delete category
+const deleteCategory = asyncHandler(async (req, res) => {
+  const category = await categoryService.deleteCategory(req.params.id);
+
+  if (!category) {
+    return errorResponse(res, 'Category not found', 404);
+  }
+
+  return successResponse(
+    res,
+    'Category deleted successfully',
+    null,
+    200
+  );
+});
+
 module.exports = {
   getAllCategories,
   getActiveCategories,
   getCategoryById,
+  getCategoryBySlug,
   createCategory,
   updateCategory,
   deactivateCategory,
+  deleteCategory,
 };

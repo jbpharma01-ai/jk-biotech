@@ -1,34 +1,34 @@
 const express = require('express');
-
 const {
   getAllProducts,
   getActiveProducts,
   getProductById,
+  getProductBySlug,
+  getProductsByCategory,
+  getRelatedProducts,
   createProduct,
   updateProduct,
   deactivateProduct,
+  deleteProduct,
 } = require('../controllers/productController');
-
 const upload = require('../middleware/upload');
+const { protect } = require('../middleware/authMiddleware');
+const { validateObjectId } = require('../middleware/validation');
 
 const router = express.Router();
 
-// Get all products
-router.get('/', getAllProducts);
+// Public routes
+router.get('/', getActiveProducts);
+router.get('/all', getAllProducts);
+router.get('/slug/:slug', getProductBySlug);
+router.get('/category/:categoryIdentifier', getProductsByCategory);
+router.get('/:id/related', validateObjectId('id'), getRelatedProducts);
+router.get('/:id', validateObjectId('id'), getProductById);
 
-// Get active products for public website
-router.get('/active', getActiveProducts);
-
-// Get single product
-router.get('/:id', getProductById);
-
-// Create product
-router.post('/', upload.single('image'), createProduct);
-
-// Update product
-router.put('/:id', upload.single('image'), updateProduct);
-
-// Deactivate product
-router.delete('/:id', deactivateProduct);
+// Protected Admin routes
+router.post('/', protect, upload.single('image'), createProduct);
+router.put('/:id', protect, validateObjectId('id'), upload.single('image'), updateProduct);
+router.patch('/:id/deactivate', protect, validateObjectId('id'), deactivateProduct);
+router.delete('/:id', protect, validateObjectId('id'), deleteProduct);
 
 module.exports = router;

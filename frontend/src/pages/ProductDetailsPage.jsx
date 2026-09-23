@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -18,24 +18,61 @@ import Container from '../components/common/Container';
 import ProductCard from '../components/common/ProductCard';
 import Button from '../components/common/Button';
 import PRODUCTS from '../constants/products';
+import { fetchProductBySlug } from '../services/api';
 
 const ProductDetailsPage = () => {
-  // const { slug } = useParams();
   const { slug, identifier } = useParams();
-
   const productSlug = slug || identifier;
   const navigate = useNavigate();
+
+  const [product, setProduct] = useState(null);
   const [imageError, setImageError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Find product by slug (case-insensitive)
-  const product = PRODUCTS.find(
-    (p) =>
-      p.slug &&
-      p.slug.toLowerCase() === (productSlug || '').toLowerCase()
-  );
+  useEffect(() => {
+    let isMounted = true;
+    setIsLoading(true);
 
-  // 404 State if product not found
-  if (!product) {
+    if (productSlug) {
+      fetchProductBySlug(productSlug).then((apiData) => {
+        if (isMounted) {
+          if (apiData) {
+            const formatted = {
+              id: apiData._id || apiData.id,
+              slug: apiData.slug,
+              category: typeof apiData.categoryId === 'object' ? apiData.categoryId?.slug || '' : apiData.category || '',
+              categoryName: typeof apiData.categoryId === 'object' ? apiData.categoryId?.name || '' : '',
+              name: apiData.name,
+              image: apiData.image?.url || apiData.image || '/images/products/capsule/IMG_1539.JPG',
+              shortDescription: apiData.shortDescription,
+              description: apiData.description,
+              composition: apiData.composition,
+              packaging: apiData.packaging,
+              dosageForm: apiData.dosageForm,
+              indications: apiData.indications,
+            };
+            setProduct(formatted);
+          } else {
+            // Fallback to static constant
+            const fallback = PRODUCTS.find(
+              (p) => p.slug && p.slug.toLowerCase() === productSlug.toLowerCase()
+            );
+            setProduct(fallback || null);
+          }
+          setIsLoading(false);
+        }
+      });
+    } else {
+      setIsLoading(false);
+    }
+
+    return () => {
+      isMounted = false;
+    };
+  }, [productSlug]);
+
+  // 404 State if product not found and loading complete
+  if (!product && !isLoading) {
     return (
       <div className="bg-premium-black text-gray-100 min-h-screen py-24 flex items-center justify-center">
         <Container>
@@ -63,19 +100,32 @@ const ProductDetailsPage = () => {
     );
   }
 
-  // Related products from the same category
+  if (isLoading || !product) {
+    return (
+      <div className="bg-[#FFF8F0] min-h-screen py-32 flex items-center justify-center">
+        <div className="flex items-center gap-3 text-premium-orange font-bold">
+          <div className="w-6 h-6 border-2 border-premium-orange border-t-transparent rounded-full animate-spin"></div>
+          <span>Loading Product Details...</span>
+        </div>
+      </div>
+    );
+  }
+
+  // Related products from static constant or same category
   const relatedProducts = PRODUCTS.filter(
     (p) =>
       p.category &&
       product.category &&
       p.category.toLowerCase() === product.category.toLowerCase() &&
-      p.id !== product.id
+      p.slug !== product.slug
   ).slice(0, 3);
 
   // Format Category Label
-  const formattedCategory = product.category
-    ? product.category.replace(/-/g, ' ').toUpperCase()
-    : 'PHARMA';
+  const formattedCategory = product.categoryName
+    ? product.categoryName.toUpperCase()
+    : product.category
+      ? product.category.replace(/-/g, ' ').toUpperCase()
+      : 'PHARMA';
 
   return (
     <div className="bg-[#FFF8F0] text-[#111827] min-h-screen pt-4 pb-24">
@@ -291,7 +341,7 @@ const ProductDetailsPage = () => {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 {relatedProducts.map((relProduct) => (
-                  <ProductCard key={relProduct.id} product={relProduct} />
+                  <ProductCard key={relProduct.id || relProduct.slug} product={relProduct} />
                 ))}
               </div>
             </div>

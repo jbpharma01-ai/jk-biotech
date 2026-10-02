@@ -145,7 +145,7 @@ export const DocumentsListPage = () => {
               placeholder="Search document by title..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue/30 focus:bg-white transition"
+              className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-premium-orange/25 focus:border-premium-orange focus:bg-white transition"
             />
           </div>
 
@@ -156,7 +156,7 @@ export const DocumentsListPage = () => {
             <select
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
-              className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-blue/30 focus:bg-white transition"
+              className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-premium-orange/25 focus:border-premium-orange focus:bg-white transition"
             >
               <option value="all">All Categories ({documents.length})</option>
               {categories.map((c) => (
@@ -208,7 +208,7 @@ export const DocumentsListPage = () => {
                     <tr key={doc._id} className="hover:bg-slate-50/60 transition group">
                       <td className="py-4 px-6">
                         <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-xl bg-brand-blue/5 text-brand-blue flex items-center justify-center shrink-0">
+                          <div className="w-10 h-10 rounded-xl bg-orange-50 text-premium-orange flex items-center justify-center shrink-0">
                             <FileText className="w-5 h-5" />
                           </div>
                           <div>
@@ -259,7 +259,7 @@ export const DocumentsListPage = () => {
                               href={doc.file.url}
                               target="_blank"
                               rel="noreferrer"
-                              className="p-1.5 text-slate-400 hover:text-brand-blue hover:bg-slate-100 rounded-lg transition"
+                              className="p-1.5 text-slate-400 hover:text-premium-orange hover:bg-orange-50 rounded-lg transition"
                               title="Download / View Attachment"
                             >
                               <Download className="w-4 h-4" />
@@ -267,7 +267,7 @@ export const DocumentsListPage = () => {
                           )}
                           <button
                             onClick={() => handleEdit(doc)}
-                            className="p-1.5 text-slate-400 hover:text-brand-blue hover:bg-slate-100 rounded-lg transition"
+                            className="p-1.5 text-slate-400 hover:text-premium-orange hover:bg-orange-50 rounded-lg transition"
                             title="Edit Document Details"
                           >
                             <Edit2 className="w-4 h-4" />

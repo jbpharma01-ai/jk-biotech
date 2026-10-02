@@ -85,7 +85,7 @@ export const DashboardPage = () => {
       title: "Products Catalog",
       count: stats.products,
       icon: Pill,
-      color: "bg-blue-50 text-brand-blue border-blue-100",
+      color: "bg-orange-50 text-premium-orange border-orange-100",
       link: "/products",
       actionText: "Manage Products",
     },
@@ -93,7 +93,7 @@ export const DashboardPage = () => {
       title: "Categories",
       count: stats.categories,
       icon: Tags,
-      color: "bg-teal-50 text-brand-teal border-teal-100",
+      color: "bg-zinc-100 text-zinc-800 border-zinc-200",
       link: "/categories",
       actionText: "Manage Categories",
     },
@@ -101,7 +101,7 @@ export const DashboardPage = () => {
       title: "Downloads & Docs",
       count: stats.documents,
       icon: FileText,
-      color: "bg-purple-50 text-purple-600 border-purple-100",
+      color: "bg-orange-50/60 text-premium-orangeDark border-orange-100",
       link: "/documents",
       actionText: "View Documents",
     },
@@ -127,21 +127,22 @@ export const DashboardPage = () => {
   return (
     <div className="space-y-8">
       {/* Welcome header banner */}
-      <div className="bg-gradient-to-r from-brand-darkBg via-brand-blue to-brand-surface rounded-3xl p-6 sm:p-8 text-white shadow-xl shadow-brand-blue/10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div>
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-brand-teal text-xs font-semibold backdrop-blur-md mb-3 border border-white/10">
-            <CheckCircle2 className="w-3.5 h-3.5" /> System Connected & Ready
+      <div className="bg-gradient-to-r from-premium-black via-premium-charcoal to-premium-surface rounded-3xl p-6 sm:p-8 text-white border border-premium-border shadow-xl shadow-black/20 flex flex-col md:flex-row md:items-center justify-between gap-6 relative overflow-hidden">
+        <div className="absolute -right-16 -top-16 w-64 h-64 bg-premium-orange/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="relative z-10">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-premium-orange/15 text-premium-orange text-xs font-bold backdrop-blur-md mb-3 border border-premium-orange/30">
+            <CheckCircle2 className="w-3.5 h-3.5 text-premium-orange" /> System Connected & Ready
           </span>
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
             JK BIOTECH Management Dashboard
           </h1>
-          <p className="text-sm text-slate-300 mt-1 max-w-xl">
+          <p className="text-sm text-zinc-300 mt-1 max-w-xl">
             Control product catalogs, dosage categories, banner slides, and download certificates in real-time.
           </p>
         </div>
-        <div className="flex flex-wrap gap-3 shrink-0">
+        <div className="flex flex-wrap gap-3 shrink-0 relative z-10">
           <Link to="/products/new">
-            <Button variant="teal" size="md" icon={Plus}>
+            <Button variant="primary" size="md" icon={Plus}>
               New Product
             </Button>
           </Link>
@@ -178,7 +179,7 @@ export const DashboardPage = () => {
               <div className="mt-4 pt-3 border-t border-slate-100">
                 <Link
                   to={c.link}
-                  className="text-xs font-semibold text-brand-blue hover:text-brand-darkTeal flex items-center justify-between group"
+                  className="text-xs font-semibold text-premium-orange hover:text-premium-orangeDark flex items-center justify-between group"
                 >
                   <span>{c.actionText}</span>
                   <ArrowUpRight className="w-3.5 h-3.5 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -198,7 +199,7 @@ export const DashboardPage = () => {
           action={
             <Link
               to="/enquiries"
-              className="text-xs font-semibold text-brand-blue hover:text-brand-darkTeal flex items-center gap-1"
+              className="text-xs font-semibold text-premium-orange hover:text-premium-orangeDark flex items-center gap-1"
             >
               <span>View All</span>
               <ArrowUpRight className="w-3.5 h-3.5" />
@@ -256,7 +257,7 @@ export const DashboardPage = () => {
           action={
             <Link
               to="/products"
-              className="text-xs font-semibold text-brand-blue hover:text-brand-darkTeal flex items-center gap-1"
+              className="text-xs font-semibold text-premium-orange hover:text-premium-orangeDark flex items-center gap-1"
             >
               <span>View All</span>
               <ArrowUpRight className="w-3.5 h-3.5" />

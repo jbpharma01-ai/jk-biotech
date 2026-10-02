@@ -118,8 +118,8 @@ export const DocumentModal = ({ isOpen, doc, onClose, onSuccess }) => {
   }));
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-xs animate-in fade-in overflow-y-auto">
-      <div className="relative w-full max-w-xl bg-white rounded-3xl shadow-2xl border border-slate-100 overflow-hidden my-8">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in overflow-y-auto">
+      <div className="relative w-full max-w-xl bg-white rounded-3xl shadow-2xl border border-slate-200/80 overflow-hidden my-8">
         <div className="px-6 py-5 border-b border-slate-100 flex items-center justify-between">
           <div>
             <h3 className="text-lg font-bold text-slate-800">

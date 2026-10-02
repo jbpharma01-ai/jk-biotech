@@ -139,8 +139,8 @@ export const HeroSlideModal = ({ isOpen, slide, onClose, onSuccess }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-xs animate-in fade-in overflow-y-auto">
-      <div className="relative w-full max-w-xl bg-white rounded-3xl shadow-2xl border border-slate-100 overflow-hidden my-8">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in overflow-y-auto">
+      <div className="relative w-full max-w-xl bg-white rounded-3xl shadow-2xl border border-slate-200/80 overflow-hidden my-8">
         <div className="px-6 py-5 border-b border-slate-100 flex items-center justify-between">
           <div>
             <h3 className="text-lg font-bold text-slate-800">
@@ -177,7 +177,7 @@ export const HeroSlideModal = ({ isOpen, slide, onClose, onSuccess }) => {
               <button
                 type="button"
                 onClick={addTitleLine}
-                className="text-xs font-semibold text-brand-blue hover:text-brand-darkTeal flex items-center gap-1"
+                className="text-xs font-semibold text-premium-orange hover:text-premium-orangeDark flex items-center gap-1"
               >
                 <Plus className="w-3.5 h-3.5" /> Add Line
               </button>
@@ -189,7 +189,7 @@ export const HeroSlideModal = ({ isOpen, slide, onClose, onSuccess }) => {
                   placeholder={`Headline Line ${idx + 1}`}
                   value={line}
                   onChange={(e) => handleTitleLineChange(idx, e.target.value)}
-                  className="flex-1 rounded-xl border border-slate-200 px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue/30"
+                  className="flex-1 rounded-xl border border-slate-200 px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-premium-orange/25 focus:border-premium-orange"
                 />
                 {formData.titleLines.length > 1 && (
                   <button

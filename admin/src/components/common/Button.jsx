@@ -18,15 +18,21 @@ export const Button = ({
 
   const variants = {
     primary:
-      "bg-brand-blue hover:bg-brand-blue/90 text-white shadow-sm hover:shadow focus:ring-brand-blue/40 border border-transparent",
+      "bg-premium-orange hover:bg-premium-orangeDark text-white shadow-sm hover:shadow-orange focus:ring-premium-orange/40 border border-transparent font-semibold",
     secondary:
-      "bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 shadow-xs focus:ring-slate-300",
+      "bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 hover:border-slate-300 shadow-xs focus:ring-premium-orange/30",
+    dark:
+      "bg-premium-charcoal hover:bg-black text-white border border-premium-border shadow-black focus:ring-zinc-700 font-semibold",
     danger:
       "bg-rose-600 hover:bg-rose-700 text-white shadow-sm focus:ring-rose-500/40 border border-transparent",
     ghost:
-      "bg-transparent hover:bg-slate-100 text-slate-600 hover:text-slate-900 focus:ring-slate-300",
+      "bg-transparent hover:bg-orange-50 text-slate-600 hover:text-premium-orange focus:ring-premium-orange/30",
+    outline:
+      "bg-transparent hover:bg-orange-50 text-premium-orange border-2 border-premium-orange focus:ring-premium-orange/30 font-semibold",
     teal:
-      "bg-brand-teal hover:bg-brand-darkTeal text-white shadow-sm focus:ring-brand-teal/40 border border-transparent",
+      "bg-premium-orange hover:bg-premium-orangeDark text-white shadow-sm hover:shadow-orange focus:ring-premium-orange/40 border border-transparent font-semibold",
+    orange:
+      "bg-premium-orange hover:bg-premium-orangeDark text-white shadow-sm hover:shadow-orange focus:ring-premium-orange/40 border border-transparent font-semibold",
   };
 
   const sizes = {

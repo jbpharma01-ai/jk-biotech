@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { ArrowLeft, Save, Pill, CheckCircle2 } from "lucide-react";
 import { productService } from "../../services/productService";
@@ -178,8 +178,8 @@ export const ProductFormPage = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <Link
-            to="/products"
-            className="p-2 bg-white rounded-xl border border-slate-200 text-slate-500 hover:text-slate-800 hover:bg-slate-50 transition shadow-xs"
+            to="/dashboard"
+            className="p-2 bg-white rounded-xl border border-slate-200 text-slate-500 hover:text-premium-orange hover:border-orange-200 hover:bg-orange-50/50 transition shadow-xs"
           >
             <ArrowLeft className="w-5 h-5" />
           </Link>

@@ -39,9 +39,9 @@ export const FileUpload = ({
       )}
 
       {selectedFile ? (
-        <div className="flex items-center justify-between p-3.5 bg-brand-blue/5 border border-brand-blue/20 rounded-xl">
+        <div className="flex items-center justify-between p-3.5 bg-orange-50/70 border border-orange-200 rounded-xl">
           <div className="flex items-center gap-3 overflow-hidden">
-            <div className="w-9 h-9 rounded-lg bg-brand-blue/10 text-brand-blue flex items-center justify-center shrink-0">
+            <div className="w-9 h-9 rounded-lg bg-orange-100 text-premium-orange flex items-center justify-center shrink-0">
               <FileText className="w-5 h-5" />
             </div>
             <div className="truncate">
@@ -72,7 +72,7 @@ export const FileUpload = ({
                   href={currentFileUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="text-xs text-brand-blue hover:underline"
+                  className="text-xs text-premium-orange font-medium hover:underline"
                 >
                   View current file
                 </a>
@@ -82,7 +82,7 @@ export const FileUpload = ({
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="text-xs font-medium text-brand-blue hover:text-brand-darkTeal transition"
+            className="text-xs font-semibold text-premium-orange hover:text-premium-orangeDark transition"
           >
             Replace
           </button>
@@ -90,18 +90,18 @@ export const FileUpload = ({
       ) : (
         <div
           onClick={() => fileInputRef.current?.click()}
-          className={`cursor-pointer rounded-2xl border-2 border-dashed p-6 flex flex-col items-center justify-center gap-2 transition bg-white hover:bg-slate-50 text-slate-400 hover:text-brand-blue ${
+          className={`cursor-pointer rounded-2xl border-2 border-dashed p-6 flex flex-col items-center justify-center gap-2 transition bg-white hover:bg-orange-50/40 text-slate-400 hover:text-premium-orange group ${
             error
               ? "border-rose-300 bg-rose-50/20 text-rose-500"
-              : "border-slate-200 hover:border-brand-blue/50"
+              : "border-slate-200 hover:border-premium-orange/50"
           }`}
         >
-          <div className="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center text-slate-400">
+          <div className="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center text-slate-400 group-hover:text-premium-orange group-hover:bg-orange-50 transition">
             <UploadCloud className="w-6 h-6" />
           </div>
           <div className="text-center">
             <p className="text-sm font-medium text-slate-700">
-              <span className="text-brand-blue font-semibold">Click to upload document</span>
+              <span className="text-premium-orange font-semibold">Click to upload document</span>
             </p>
             <p className="text-xs text-slate-400 mt-0.5">{helperText}</p>
           </div>

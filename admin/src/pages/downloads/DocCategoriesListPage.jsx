@@ -136,7 +136,7 @@ export const DocCategoriesListPage = () => {
                   <tr key={cat._id} className="hover:bg-slate-50/60 transition group">
                     <td className="py-4 px-6">
                       <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
+                        <div className="w-9 h-9 rounded-xl bg-orange-50 text-premium-orange flex items-center justify-center shrink-0">
                           <FolderTree className="w-4 h-4" />
                         </div>
                         <div>
@@ -180,7 +180,7 @@ export const DocCategoriesListPage = () => {
                       <div className="flex items-center justify-end gap-1.5">
                         <button
                           onClick={() => handleEdit(cat)}
-                          className="p-1.5 text-slate-400 hover:text-brand-blue hover:bg-slate-100 rounded-lg transition"
+                          className="p-1.5 text-slate-400 hover:text-premium-orange hover:bg-orange-50 rounded-lg transition"
                           title="Edit Category"
                         >
                           <Edit2 className="w-4 h-4" />

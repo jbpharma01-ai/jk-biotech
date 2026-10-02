@@ -73,18 +73,18 @@ export const ImageUpload = ({
       ) : (
         <div
           onClick={() => fileInputRef.current?.click()}
-          className={`cursor-pointer rounded-2xl border-2 border-dashed p-6 flex flex-col items-center justify-center gap-2 transition bg-white hover:bg-slate-50 text-slate-400 hover:text-brand-blue ${
+          className={`cursor-pointer rounded-2xl border-2 border-dashed p-6 flex flex-col items-center justify-center gap-2 transition bg-white hover:bg-orange-50/40 text-slate-400 hover:text-premium-orange group ${
             error
               ? "border-rose-300 bg-rose-50/20 text-rose-500"
-              : "border-slate-200 hover:border-brand-blue/50"
+              : "border-slate-200 hover:border-premium-orange/50"
           }`}
         >
-          <div className="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center text-slate-400 group-hover:text-brand-blue">
+          <div className="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center text-slate-400 group-hover:text-premium-orange group-hover:bg-orange-50 transition">
             <ImageIcon className="w-6 h-6" />
           </div>
           <div className="text-center">
             <p className="text-sm font-medium text-slate-700">
-              <span className="text-brand-blue font-semibold">Click to upload</span> or drag and drop
+              <span className="text-premium-orange font-semibold">Click to upload</span> or drag and drop
             </p>
             <p className="text-xs text-slate-400 mt-0.5">{helperText}</p>
           </div>

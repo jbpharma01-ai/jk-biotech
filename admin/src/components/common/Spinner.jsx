@@ -10,7 +10,7 @@ export const Spinner = ({ size = "md", className = "", message }) => {
 
   return (
     <div className={`flex flex-col items-center justify-center py-12 gap-3 text-slate-400 ${className}`}>
-      <Loader2 className={`${sizeMap[size] || sizeMap.md} animate-spin text-brand-blue`} />
+      <Loader2 className={`${sizeMap[size] || sizeMap.md} animate-spin text-premium-orange`} />
       {message && <p className="text-xs font-medium text-slate-500">{message}</p>}
     </div>
   );

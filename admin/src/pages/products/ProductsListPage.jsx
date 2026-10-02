@@ -144,7 +144,7 @@ export const ProductsListPage = () => {
               placeholder="Search product, composition..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue/30 focus:bg-white transition"
+              className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-premium-orange/25 focus:border-premium-orange focus:bg-white transition"
             />
           </div>
 
@@ -153,7 +153,7 @@ export const ProductsListPage = () => {
             <select
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
-              className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-blue/30 focus:bg-white transition"
+              className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-premium-orange/25 focus:border-premium-orange focus:bg-white transition"
             >
               <option value="all">All Categories ({products.length})</option>
               {categories.map((c) => (
@@ -290,7 +290,7 @@ export const ProductsListPage = () => {
                         <div className="flex items-center justify-end gap-1.5">
                           <Link
                             to={`/products/edit/${p._id}`}
-                            className="p-1.5 text-slate-400 hover:text-brand-blue hover:bg-slate-100 rounded-lg transition"
+                            className="p-1.5 text-slate-400 hover:text-premium-orange hover:bg-orange-50 rounded-lg transition"
                             title="Edit Product"
                           >
                             <Edit2 className="w-4 h-4" />

@@ -7,6 +7,7 @@ import { Button } from "../../components/common/Button";
 import { Input } from "../../components/common/Input";
 import { Textarea } from "../../components/common/Textarea";
 import { Spinner } from "../../components/common/Spinner";
+import jkLogo from "../../assets/logo/jk-logo.png";
 
 export const CompanySettingsPage = () => {
   const [formData, setFormData] = useState({
@@ -160,6 +161,26 @@ export const CompanySettingsPage = () => {
                 value={formData.logoAlt}
                 onChange={(e) => setFormData((prev) => ({ ...prev, logoAlt: e.target.value }))}
               />
+            </div>
+
+            {/* Brand Logo Visual Indicator */}
+            <div className="p-4 bg-orange-50/40 rounded-2xl border border-orange-200/60 flex flex-col sm:flex-row items-center gap-4">
+              <div className="h-16 px-4 py-2 bg-white rounded-xl border border-slate-200 shadow-xs flex items-center justify-center shrink-0">
+                <img
+                  src={formData.logoUrl || jkLogo}
+                  alt={formData.logoAlt || "JK BIOTECH"}
+                  className="h-12 w-auto object-contain"
+                  onError={(e) => {
+                    e.currentTarget.src = jkLogo;
+                  }}
+                />
+              </div>
+              <div className="text-center sm:text-left">
+                <p className="text-xs font-bold text-slate-800">Original J K BIOTECH Brand Logo</p>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  Official high-resolution brand asset active across both frontend website and admin panel.
+                </p>
+              </div>
             </div>
           </div>
         </Card>

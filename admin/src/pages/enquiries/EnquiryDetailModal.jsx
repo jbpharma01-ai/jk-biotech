@@ -52,12 +52,12 @@ export const EnquiryDetailModal = ({ isOpen, enquiry, onClose, onSuccess, onDele
   ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-xs animate-in fade-in overflow-y-auto">
-      <div className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-slate-100 overflow-hidden my-8">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in overflow-y-auto">
+      <div className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-slate-200/80 overflow-hidden my-8">
         {/* Header */}
         <div className="px-6 py-5 border-b border-slate-100 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-brand-blue/10 text-brand-blue flex items-center justify-center font-bold">
+            <div className="w-10 h-10 rounded-xl bg-orange-100 text-premium-orange flex items-center justify-center font-bold">
               {enquiry.name?.[0]?.toUpperCase() || "E"}
             </div>
             <div>
@@ -81,9 +81,9 @@ export const EnquiryDetailModal = ({ isOpen, enquiry, onClose, onSuccess, onDele
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <a
               href={`mailto:${enquiry.email}`}
-              className="flex items-center gap-3 p-3 bg-slate-50 hover:bg-slate-100 rounded-2xl border border-slate-200 text-slate-700 transition group"
+              className="flex items-center gap-3 p-3 bg-slate-50 hover:bg-orange-50/50 rounded-2xl border border-slate-200 hover:border-orange-200 text-slate-700 transition group"
             >
-              <Mail className="w-4 h-4 text-brand-blue shrink-0" />
+              <Mail className="w-4 h-4 text-premium-orange shrink-0" />
               <div className="truncate">
                 <span className="text-[10px] uppercase font-bold text-slate-400 block">Email</span>
                 <span className="text-xs font-semibold text-slate-800 truncate block">
@@ -95,9 +95,9 @@ export const EnquiryDetailModal = ({ isOpen, enquiry, onClose, onSuccess, onDele
             {enquiry.phone ? (
               <a
                 href={`tel:${enquiry.phone}`}
-                className="flex items-center gap-3 p-3 bg-slate-50 hover:bg-slate-100 rounded-2xl border border-slate-200 text-slate-700 transition group"
+                className="flex items-center gap-3 p-3 bg-slate-50 hover:bg-orange-50/50 rounded-2xl border border-slate-200 hover:border-orange-200 text-slate-700 transition group"
               >
-                <Phone className="w-4 h-4 text-brand-teal shrink-0" />
+                <Phone className="w-4 h-4 text-premium-orange shrink-0" />
                 <div className="truncate">
                   <span className="text-[10px] uppercase font-bold text-slate-400 block">Phone</span>
                   <span className="text-xs font-semibold text-slate-800 truncate block">

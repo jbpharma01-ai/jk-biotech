@@ -145,7 +145,7 @@ export const HeroSlidesListPage = () => {
                     #{s.displayOrder || idx + 1}
                   </span>
                   {s.badge && (
-                    <span className="px-2.5 py-1 rounded-lg bg-brand-teal/90 text-white text-xs font-semibold backdrop-blur-md shadow-sm">
+                    <span className="px-2.5 py-1 rounded-lg bg-premium-orange/95 text-white text-xs font-semibold backdrop-blur-md shadow-sm">
                       {s.badge}
                     </span>
                   )}

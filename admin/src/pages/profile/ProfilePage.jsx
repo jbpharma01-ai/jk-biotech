@@ -21,7 +21,7 @@ export const ProfilePage = () => {
 
       <Card>
         <div className="flex flex-col sm:flex-row items-center gap-6 pb-6 border-b border-slate-100">
-          <div className="w-20 h-20 rounded-3xl bg-gradient-to-tr from-brand-blue to-brand-teal flex items-center justify-center text-white text-3xl font-bold shadow-lg shadow-brand-blue/20">
+          <div className="w-20 h-20 rounded-3xl bg-gradient-to-tr from-premium-orange to-premium-orangeLight flex items-center justify-center text-white text-3xl font-bold shadow-lg shadow-premium-orange/20">
             {user?.name?.[0]?.toUpperCase() || "A"}
           </div>
           <div className="text-center sm:text-left">

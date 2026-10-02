@@ -5,6 +5,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { useToast } from "../../hooks/useToast";
 import { Button } from "../../components/common/Button";
 import { Input } from "../../components/common/Input";
+import jkLogo from "../../assets/logo/jk-logo.png";
 
 export const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -44,20 +45,27 @@ export const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden">
+    <div className="min-h-screen bg-premium-black flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden selection:bg-premium-orange selection:text-white">
       {/* Decorative gradient background glows */}
-      <div className="absolute top-0 -left-40 w-96 h-96 bg-brand-blue/30 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 -right-40 w-96 h-96 bg-brand-teal/20 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-0 -left-40 w-96 h-96 bg-premium-orange/20 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 -right-40 w-96 h-96 bg-premium-orangeDark/15 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-premium-surface/30 rounded-full blur-3xl pointer-events-none" />
 
       <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10">
         <div className="flex flex-col items-center">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-brand-blue to-brand-teal flex items-center justify-center text-white font-bold text-2xl shadow-xl shadow-brand-blue/30 mb-4 border border-white/20">
-            JK
+          {/* Authentic JK BIOTECH Logo Container */}
+          <div className="w-24 h-24 rounded-2xl bg-white p-3 flex items-center justify-center shadow-2xl shadow-premium-orange/25 mb-4 border border-white/20">
+            <img
+              src={jkLogo}
+              alt="JK BIOTECH"
+              className="w-full h-full object-contain"
+              draggable={false}
+            />
           </div>
           <h2 className="text-center text-2xl sm:text-3xl font-bold tracking-tight text-white">
             JK BIOTECH
           </h2>
-          <p className="mt-1 text-center text-xs uppercase tracking-widest text-brand-teal font-semibold">
+          <p className="mt-1 text-center text-xs uppercase tracking-widest text-premium-orange font-bold">
             Administrative Management Portal
           </p>
         </div>
@@ -104,7 +112,7 @@ export const LoginPage = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   autoComplete="current-password"
-                  className="w-full rounded-xl border border-slate-200 hover:border-slate-300 pl-10 pr-10 py-2.5 text-sm bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-blue/30 focus:border-brand-blue transition"
+                  className="w-full rounded-xl border border-slate-200 hover:border-slate-300 pl-10 pr-10 py-2.5 text-sm bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-premium-orange/30 focus:border-premium-orange transition"
                 />
                 <button
                   type="button"
@@ -125,7 +133,7 @@ export const LoginPage = () => {
               variant="primary"
               size="lg"
               loading={loading}
-              className="w-full shadow-lg shadow-brand-blue/20"
+              className="w-full shadow-lg shadow-premium-orange/25"
               icon={ArrowRight}
             >
               Sign In to Dashboard
@@ -133,7 +141,7 @@ export const LoginPage = () => {
           </form>
 
           <div className="mt-6 pt-5 border-t border-slate-100 flex items-center justify-center gap-2 text-xs text-slate-500">
-            <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+            <ShieldCheck className="w-4 h-4 text-premium-orange shrink-0" />
             <span>Authorized JK BIOTECH Administrators Only</span>
           </div>
         </div>

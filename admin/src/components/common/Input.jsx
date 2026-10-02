@@ -33,7 +33,7 @@ export const Input = forwardRef(
             ref={ref}
             id={inputId}
             required={required}
-            className={`w-full rounded-xl border transition-all duration-150 text-sm bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-blue/30 focus:border-brand-blue disabled:bg-slate-50 disabled:text-slate-400 ${
+            className={`w-full rounded-xl border transition-all duration-150 text-sm bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-premium-orange/25 focus:border-premium-orange disabled:bg-slate-50 disabled:text-slate-400 ${
               Icon ? "pl-10 pr-3.5 py-2.5" : "px-3.5 py-2.5"
             } ${
               error

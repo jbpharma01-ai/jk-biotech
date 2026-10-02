@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 const Admin = require('../models/Admin');
 const config = require('../config/env');
 
@@ -65,7 +66,107 @@ const getAdminProfile = async (adminId) => {
   return admin;
 };
 
+
+// Change admin password
+const changeAdminPassword = async (
+  adminId,
+  currentPassword,
+  newPassword
+) => {
+  const admin = await Admin.findById(adminId).select('+password');
+
+  if (!admin) {
+    const error = new Error('Admin not found');
+    error.statusCode = 404;
+    throw error;
+  }
+
+  // Check current password
+  const isMatch = await admin.comparePassword(currentPassword);
+
+  if (!isMatch) {
+    const error = new Error('Current password is incorrect');
+    error.statusCode = 401;
+    throw error;
+  }
+
+  // Prevent using the same password
+  const isSamePassword = await admin.comparePassword(newPassword);
+
+  if (isSamePassword) {
+    const error = new Error(
+      'New password must be different from your current password'
+    );
+    error.statusCode = 400;
+    throw error;
+  }
+
+  // Set new password
+  admin.password = newPassword;
+
+  await admin.save();
+
+  return {
+    message: 'Password changed successfully',
+  };
+};
+
+
+// Reset password using recovery code
+const resetAdminPasswordWithRecoveryCode = async (
+  email,
+  recoveryCode,
+  newPassword
+) => {
+  const admin = await Admin.findOne({
+    email: email.toLowerCase(),
+  }).select('+password +recoveryCode');
+
+  if (!admin) {
+    const error = new Error('Invalid email or recovery code');
+    error.statusCode = 401;
+    throw error;
+  }
+
+  // Check recovery code
+  const isRecoveryCodeValid = await bcrypt.compare(
+    recoveryCode,
+    admin.recoveryCode
+  );
+
+  if (!isRecoveryCodeValid) {
+    const error = new Error('Invalid email or recovery code');
+    error.statusCode = 401;
+    throw error;
+  }
+
+  // Check whether new password is same as current password
+  const isSamePassword = await bcrypt.compare(
+    newPassword,
+    admin.password
+  );
+
+  if (isSamePassword) {
+    const error = new Error(
+      'New password must be different from your current password'
+    );
+    error.statusCode = 400;
+    throw error;
+  }
+
+  // Set new password
+  admin.password = newPassword;
+
+  await admin.save();
+
+  return {
+    message: 'Password reset successfully',
+  };
+};
+
 module.exports = {
   loginAdmin,
   getAdminProfile,
+  changeAdminPassword,
+  resetAdminPasswordWithRecoveryCode,
 };

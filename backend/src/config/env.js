@@ -26,6 +26,12 @@ const config = {
     apiKey: process.env.CLOUDINARY_API_KEY || '',
     apiSecret: process.env.CLOUDINARY_API_SECRET || '',
   },
+
+  email: {
+    user: process.env.EMAIL_USER,
+    password: process.env.EMAIL_PASSWORD,
+  },
+
 };
 
 module.exports = config;

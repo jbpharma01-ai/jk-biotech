@@ -32,6 +32,12 @@ const adminSchema = new mongoose.Schema(
       required: true,
     },
 
+    recoveryCode: {
+      type: String,
+      required: true,
+      select: false,
+    },
+
     status: {
       type: String,
       enum: ['active', 'inactive'],

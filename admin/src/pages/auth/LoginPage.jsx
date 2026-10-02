@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { Mail, Lock, Eye, EyeOff, ShieldCheck, ArrowRight } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
 import { useToast } from "../../hooks/useToast";
@@ -126,6 +126,15 @@ export const LoginPage = () => {
                   )}
                 </button>
               </div>
+            </div>
+
+            <div className="flex justify-end -mt-2">
+              <Link
+                to="/forgot-password"
+                className="text-sm font-semibold text-premium-orange hover:text-premium-orangeDark transition"
+              >
+                Forgot Password?
+              </Link>
             </div>
 
             <Button

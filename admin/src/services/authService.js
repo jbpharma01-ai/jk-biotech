@@ -10,4 +10,14 @@ export const authService = {
     const res = await api.get("/auth/me");
     return res.data;
   },
+
+  changePassword: async (passwordData) => {
+    const res = await api.post("/auth/change-password", passwordData);
+    return res.data;
+  },
+
+   resetPassword: async (passwordData) => {
+    const res = await api.post("/auth/reset-password", passwordData);
+    return res.data;
+  },
 };

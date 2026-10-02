@@ -15,12 +15,14 @@ import { DocumentsListPage } from "../pages/downloads/DocumentsListPage";
 import { EnquiriesListPage } from "../pages/enquiries/EnquiriesListPage";
 import { CompanySettingsPage } from "../pages/settings/CompanySettingsPage";
 import { ProfilePage } from "../pages/profile/ProfilePage";
+import { ForgotPasswordPage } from "../pages/auth/ForgotPasswordPage";
 
 export const AppRoutes = () => {
   return (
     <Routes>
       {/* Public Authentication Route */}
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
       {/* Protected Admin Routes */}
       <Route

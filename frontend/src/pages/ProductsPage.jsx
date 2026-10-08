@@ -6,16 +6,17 @@ import Container from '../components/common/Container';
 import ProductCard from '../components/common/ProductCard';
 import Button from '../components/common/Button';
 import PRODUCTS from '../constants/products';
-import { PRODUCT_CATEGORIES } from '../constants/navigation';
 import { fadeUp, staggerContainer } from '../animations/variants';
-import { fetchActiveProducts } from '../services/api';
+import { fetchActiveProducts , fetchActiveCategories, } from '../services/api';
 
 const ProductsPage = () => {
   const { identifier } = useParams();
   const categoryParam = identifier;
   const navigate = useNavigate();
 
-  const [apiProducts, setApiProducts] = useState(null);
+const [categories, setCategories] = useState([]);
+
+const [apiProducts, setApiProducts] = useState(null);
 
   useEffect(() => {
     let isMounted = true;
@@ -43,6 +44,27 @@ const ProductsPage = () => {
     };
   }, []);
 
+  useEffect(() => {
+    let isMounted = true;
+
+    fetchActiveCategories().then((data) => {
+      if (isMounted && Array.isArray(data)) {
+        const formattedCategories = data
+          .filter((category) => category.isActive !== false)
+          .sort(
+            (a, b) =>
+              (a.displayOrder || 0) - (b.displayOrder || 0)
+          );
+
+        setCategories(formattedCategories);
+      }
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   const allProducts = apiProducts || PRODUCTS;
 
   // Helper to normalize category slugs for comparison
@@ -59,11 +81,15 @@ const ProductsPage = () => {
 
   // Find active category object metadata from navigation constants
   const activeCategoryMeta = useMemo(() => {
-    if (!categoryParam || currentCategorySlug === 'all') return null;
-    return PRODUCT_CATEGORIES.find(
+    if (!categoryParam || currentCategorySlug === 'all') {
+      return null;
+    }
+
+    return categories.find(
       (cat) => normalizeSlug(cat.slug) === currentCategorySlug
     );
-  }, [categoryParam, currentCategorySlug]);
+  }, [categoryParam, currentCategorySlug, categories]);
+
 
   // Filter products based on active category slug
   const filteredProducts = useMemo(() => {
@@ -84,9 +110,11 @@ const ProductsPage = () => {
       ? `${categoryParam.replace(/-/g, ' ').toUpperCase()} Formulations`
       : 'All Pharmaceutical Products';
 
+
   const pageSubtitle = activeCategoryMeta
-    ? activeCategoryMeta.desc
+    ? activeCategoryMeta.description
     : 'Explore JK BIOTECH’s comprehensive portfolio of WHO-GMP certified high-potency formulations across 11 therapeutic dosage forms.';
+
 
   // Handle Tab Navigation
   const handleCategoryChange = (slug) => {

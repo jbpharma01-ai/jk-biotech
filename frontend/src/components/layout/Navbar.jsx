@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Container from '../common/Container';
 import Button from '../common/Button';
 import { PRODUCT_CATEGORIES, DOWNLOAD_CATEGORIES, COMPANY_INFO } from '../../constants/navigation';
+import { fetchActiveCategories } from '../../services/api';
 import {
   Menu,
   X,
@@ -13,10 +14,36 @@ import {
   Award,
   Clock,
   ArrowRight,
-  Sparkles
+  Sparkles,
+  Pill,
+  Droplet,
+  Syringe,
+  Boxes,
+  FileSpreadsheet,
+  ShieldAlert,
+  FlaskConical,
+  Wine,
+  Tablets,
+  TestTube,
+  Heart,
+  Star,
 } from 'lucide-react';
 import jkLogo from '/images/logo/jk-logo.png';
 
+const ICON_MAP = {
+  pill: Pill,
+  droplet: Droplet,
+  syringe: Syringe,
+  boxes: Boxes,
+  filespreadsheet: FileSpreadsheet,
+  shieldalert: ShieldAlert,
+  flaskconical: FlaskConical,
+  wine: Wine,
+  tablets: Tablets,
+  testtube: TestTube,
+  heart: Heart,
+  star: Star,
+};
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -24,6 +51,8 @@ const Navbar = () => {
   const [activeDropdown, setActiveDropdown] = useState(null); // 'products' | 'downloads' | null
   const [mobileAccordion, setMobileAccordion] = useState(null); // 'products' | 'downloads' | null
   
+  const [categories, setCategories] = useState([]);
+
   const location = useLocation();
 
   // Scroll listener for sticky navbar shadow
@@ -40,6 +69,36 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    let isMounted = true;
+
+    fetchActiveCategories().then((data) => {
+      if (isMounted && Array.isArray(data) && data.length > 0) {
+        const formattedCategories = data
+          .filter((category) => category.isActive !== false)
+          .sort(
+            (a, b) =>
+              (a.displayOrder || 0) - (b.displayOrder || 0)
+          )
+          .map((category) => ({
+            name: category.name,
+            slug: category.slug,
+            path: `/products/${category.slug}`,
+            icon:
+              ICON_MAP[String(category.icon || '').toLowerCase()] || Pill,
+            desc: category.description || '',
+          }));
+
+        setCategories(formattedCategories);
+      }
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+
   // Close mobile drawer on route change
   useEffect(() => {
     setIsMobileMenuOpen(false);
@@ -52,6 +111,9 @@ const Navbar = () => {
     if (path === '/') return location.pathname === '/';
     return location.pathname.startsWith(path);
   };
+
+  const productCategories =
+  categories.length > 0 ? categories : PRODUCT_CATEGORIES;
 
   return (
     <header className="sticky top-0 z-50 w-full transition-all duration-300 ease-out">
@@ -163,14 +225,14 @@ const Navbar = () => {
                     <div className="col-span-2 pb-2 mb-2 border-b border-slate-100 flex items-center justify-between">
                       <span className="text-xs font-bold uppercase tracking-wider text-premium-orange flex items-center gap-1.5">
                         <Sparkles className="w-3.5 h-3.5 text-premium-orange" />
-                        Dosage Form Formulations (11 Categories)
+                        Dosage Form Formulations ({productCategories.length} Categories)
                       </span>
                       <Link to="/products" className="text-xs font-semibold text-premium-orange hover:underline flex items-center gap-1">
                         View All Products <ArrowRight className="w-3 h-3" />
                       </Link>
                     </div>
 
-                    {PRODUCT_CATEGORIES.map((cat) => {
+                    {productCategories.map((cat) => {
                       const Icon = cat.icon;
                       return (
                         <Link
@@ -335,7 +397,7 @@ const Navbar = () => {
 
                 {mobileAccordion === 'products' && (
                   <div className="p-3 bg-white space-y-1 max-h-64 overflow-y-auto">
-                    {PRODUCT_CATEGORIES.map((cat) => {
+                    {productCategories.map((cat) => {
                       const Icon = cat.icon;
                       return (
                         <Link

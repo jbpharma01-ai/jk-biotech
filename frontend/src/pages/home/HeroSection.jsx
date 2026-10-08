@@ -5,9 +5,10 @@ import { ChevronLeft, ChevronRight, ArrowRight, ShieldCheck, Award, Microscope }
 import Container from '../../components/common/Container';
 import Button from '../../components/common/Button';
 import { fadeUp, staggerContainer } from '../../animations/variants';
+import { fetchHeroSlides } from '../../services/api';
 import heroCapsule from '/images/hero/hero-capsule.png';
-import womenHealthcare  from '/images/hero/women-healthcare.png';
-import heroPediatric  from '/images/hero/pediatric-care.png';
+import womenHealthcare from '/images/hero/women-healthcare.png';
+import heroPediatric from '/images/hero/pediatric-care.png';
 
 // Slide data – each slide has its own headline, description and gradient theme
 const HERO_SLIDES = [
@@ -27,33 +28,33 @@ const HERO_SLIDES = [
     IllustrationComponent: 'slide1',
   },
   {
-     id: 2,
-  badge: 'Women\'s Healthcare Solutions',
+    id: 2,
+    badge: 'Women\'s Healthcare Solutions',
 
-  titleLines: [
-    "Empowering",
-    "Women's",
-    "Health",
-    "Every Day"
-  ],
+    titleLines: [
+      "Empowering",
+      "Women's",
+      "Health",
+      "Every Day"
+    ],
 
-  subheading:
-    'Advanced formulations designed to support women\'s health with quality, safety, and innovation across every stage of life.',
+    subheading:
+      'Advanced formulations designed to support women\'s health with quality, safety, and innovation across every stage of life.',
 
-  theme: 'orange',
+    theme: 'orange',
 
-  IllustrationComponent: 'womenHealthcare',
+    IllustrationComponent: 'womenHealthcare',
   },
   {
     id: 3,
     badge: "PEDIATRIC CARE SOLUTIONS",
 
     titleLines: [
-    "Healthy",
-    "Childhood",
-    "Starts With",
-    "Trusted Care"
-  ],
+      "Healthy",
+      "Childhood",
+      "Starts With",
+      "Trusted Care"
+    ],
 
     subheading:
       "Safe, effective and child-friendly formulations designed to support healthy growth, immunity and pediatric wellness with trusted pharmaceutical quality.",
@@ -125,9 +126,40 @@ const HERO_STATS = [
 const HeroSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [heroSlides, setHeroSlides] = useState([]);
+  const [isLoadingSlides, setIsLoadingSlides] = useState(true);
+
   const intervalRef = useRef(null);
 
-  const totalSlides = HERO_SLIDES.length;
+  useEffect(() => {
+    const loadHeroSlides = async () => {
+      try {
+        const slides = await fetchHeroSlides();
+
+        if (slides && slides.length > 0) {
+          const formattedSlides = slides.map((slide) => ({
+            ...slide,
+            subheading: slide.subtitle || slide.subheading || '',
+            imageUrl: slide.image?.url || null,
+          }));
+
+          setHeroSlides(formattedSlides);
+        } else {
+          setHeroSlides(HERO_SLIDES);
+        }
+      } catch (error) {
+        console.error('Failed to load hero slides:', error);
+        setHeroSlides(HERO_SLIDES);
+      } finally {
+        setIsLoadingSlides(false);
+      }
+    };
+
+    loadHeroSlides();
+  }, []);
+
+  const slides = heroSlides.length > 0 ? heroSlides : HERO_SLIDES;
+  const totalSlides = slides.length;
 
   const goToSlide = useCallback((index) => {
     setCurrentSlide((index + totalSlides) % totalSlides);
@@ -138,12 +170,12 @@ const HeroSection = () => {
 
   // Auto-slide every 5 seconds
   useEffect(() => {
-      console.log("Auto Slider Running", isPaused);
+    console.log("Auto Slider Running", isPaused);
 
     if (isPaused) return;
-    
+
     intervalRef.current = setInterval(goNext, 5000);
-        console.log("Next Slide");
+    console.log("Next Slide");
 
     return () => clearInterval(intervalRef.current);
   }, [isPaused, goNext]);
@@ -158,20 +190,24 @@ const HeroSection = () => {
     return () => window.removeEventListener('keydown', handleKey);
   }, [goNext, goPrev]);
 
-  const slide = HERO_SLIDES[currentSlide];
+  const slide = slides[currentSlide];
   const theme = THEME_MAP.premium;
-  const Illustration = ILLUSTRATIONS[slide.IllustrationComponent];
-// const handleMouseEnter = () => {
-//   if (window.innerWidth >= 1024) {
-//     setIsPaused(true);
-//   }
-// };
 
-// const handleMouseLeave = () => {
-//   if (window.innerWidth >= 1024) {
-//     setIsPaused(false);
-//   }
-// };
+  const Illustration = slide?.IllustrationComponent
+    ? ILLUSTRATIONS[slide.IllustrationComponent]
+    : null;
+
+  // const handleMouseEnter = () => {
+  //   if (window.innerWidth >= 1024) {
+  //     setIsPaused(true);
+  //   }
+  // };
+
+  // const handleMouseLeave = () => {
+  //   if (window.innerWidth >= 1024) {
+  //     setIsPaused(false);
+  //   }
+  // };
   return (
     <section
       className={`relative min-h-screen flex items-center overflow-hidden bg-[#09090B]`}
@@ -225,8 +261,8 @@ const HeroSection = () => {
                   <span
                     key={index}
                     className={`block text-4xl sm:text-5xl lg:text-6xl xl:text-7xl ${index === slide.titleLines.length - 1
-                        ? "text-premium-orange"
-                        : "text-white"
+                      ? "text-premium-orange"
+                      : "text-white"
                       }`}
                   >
                     {line}
@@ -312,13 +348,16 @@ const HeroSection = () => {
               {/* Soft White Glow */}
               <div className="absolute bottom-10 left-10 w-32 h-32 rounded-full bg-white/5 blur-[70px]" />
               <div className="relative w-full max-w-[620px] aspect-square animate-heroFloat drop-shadow-[0_35px_80px_rgba(255,123,0,.35)]">
-                {/* <img
-                  src={Illustration}
-                  alt={slide.heading}
-                  className="w-full h-full object-contain select-none"
-                  draggable={false}
-                /> */}
-                <Illustration />
+                {slide?.imageUrl ? (
+                  <img
+                    src={slide.imageUrl}
+                    alt={slide.image?.alt || slide.title || 'J K BIOTECH'}
+                    className="w-full h-full object-contain select-none"
+                    draggable={false}
+                  />
+                ) : Illustration ? (
+                  <Illustration />
+                ) : null}
               </div>
             </motion.div>
           </AnimatePresence>
@@ -332,18 +371,17 @@ const HeroSection = () => {
 
             {/* Dot Indicators */}
             <div className="flex items-center gap-2" role="tablist" aria-label="Slide indicators">
-              {HERO_SLIDES.map((_, idx) => (
+              {slides.map((_, idx) => (
                 <button
                   key={idx}
                   role="tab"
                   aria-selected={idx === currentSlide}
                   aria-label={`Go to slide ${idx + 1}`}
                   onClick={() => goToSlide(idx)}
-                  className={`transition-all duration-300 rounded-full focus:outline-none focus:ring-2 focus:ring-white/50 ${
-                    idx === currentSlide
-                      ? `w-8 h-2.5 ${theme.dot}`
-                      : 'w-2.5 h-2.5 bg-white/30 hover:bg-white/50'
-                  }`}
+                  className={`transition-all duration-300 rounded-full focus:outline-none focus:ring-2 focus:ring-white/50 ${idx === currentSlide
+                    ? `w-8 h-2.5 ${theme.dot}`
+                    : 'w-2.5 h-2.5 bg-white/30 hover:bg-white/50'
+                    }`}
                 />
               ))}
             </div>

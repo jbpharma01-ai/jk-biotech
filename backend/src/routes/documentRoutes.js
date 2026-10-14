@@ -4,6 +4,7 @@ const {
   getActiveDocuments,
   getDocumentsByCategory,
   getDocumentById,
+  viewDocumentFile,
   createDocument,
   updateDocument,
   deactivateDocument,
@@ -20,6 +21,9 @@ router.get('/', getActiveDocuments);
 router.get('/all', protect, getAllDocuments);
 router.get('/category/:categoryIdentifier', getDocumentsByCategory);
 router.get('/:id', validateObjectId('id'), getDocumentById);
+router.get('/:id/view', validateObjectId('id'), viewDocumentFile);
+router.get('/:id/download', validateObjectId('id'), viewDocumentFile);
+router.get('/:id/file', validateObjectId('id'), viewDocumentFile);
 
 // Protected Admin routes
 router.post('/', protect, upload.single('file'), createDocument);

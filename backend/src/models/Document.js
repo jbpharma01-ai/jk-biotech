@@ -38,6 +38,10 @@ const documentSchema = new mongoose.Schema(
         type: String,
         default: '',
       },
+      resourceType: {
+        type: String,
+        default: 'image',
+      },
     },
 
     displayOrder: {

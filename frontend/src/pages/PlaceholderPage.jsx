@@ -21,7 +21,7 @@ const PlaceholderPage = ({
   useEffect(() => {
     if (type === 'download') {
       let isMounted = true;
-      const catSlug = title.toLowerCase();
+      const catSlug = title.toLowerCase().trim().replace(/\s+/g, '-');
       fetchDocuments(catSlug).then((data) => {
         if (isMounted && data && Array.isArray(data) && data.length > 0) {
           setDocuments(data);

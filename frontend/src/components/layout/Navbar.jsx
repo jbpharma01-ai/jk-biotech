@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Container from '../common/Container';
 import Button from '../common/Button';
 import { PRODUCT_CATEGORIES, DOWNLOAD_CATEGORIES, COMPANY_INFO } from '../../constants/navigation';
-import { fetchActiveCategories } from '../../services/api';
+import { fetchActiveCategories, fetchActiveDocumentCategories, fetchDocuments } from '../../services/api';
 import {
   Menu,
   X,
@@ -27,6 +27,10 @@ import {
   TestTube,
   Heart,
   Star,
+  Baby,
+  Bone,
+  HeartHandshake,
+  FileText,
 } from 'lucide-react';
 import jkLogo from '/images/logo/jk-logo.png';
 
@@ -43,6 +47,10 @@ const ICON_MAP = {
   testtube: TestTube,
   heart: Heart,
   star: Star,
+  baby: Baby,
+  bone: Bone,
+  hearthandshake: HeartHandshake,
+  filetext: FileText,
 };
 
 const Navbar = () => {
@@ -52,6 +60,7 @@ const Navbar = () => {
   const [mobileAccordion, setMobileAccordion] = useState(null); // 'products' | 'downloads' | null
   
   const [categories, setCategories] = useState([]);
+  const [downloadCategories, setDownloadCategories] = useState([]);
 
   const location = useLocation();
 
@@ -98,6 +107,51 @@ const Navbar = () => {
     };
   }, []);
 
+  useEffect(() => {
+    let isMounted = true;
+
+    Promise.all([fetchActiveDocumentCategories(), fetchDocuments()]).then(([cats, docs]) => {
+      if (!isMounted) return;
+
+      if (Array.isArray(cats) && cats.length > 0) {
+        const activeDocs = Array.isArray(docs) ? docs : [];
+        const formatted = cats
+          .filter((cat) => cat.isActive !== false)
+          .sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0))
+          .map((cat) => {
+            const doc = activeDocs.find((d) => {
+              const catId = typeof d.documentCategoryId === 'object' ? d.documentCategoryId?._id : d.documentCategoryId;
+              const catSlug = typeof d.documentCategoryId === 'object' ? d.documentCategoryId?.slug : null;
+              return catId === cat._id || (catSlug && catSlug.toLowerCase() === cat.slug?.toLowerCase());
+            });
+
+            const staticFallback = DOWNLOAD_CATEGORIES.find((sc) => sc.slug === cat.slug);
+
+            const IconComponent =
+              ICON_MAP[String(cat.icon || '').toLowerCase()] ||
+              staticFallback?.icon ||
+              FileText;
+
+            return {
+              name: cat.name,
+              slug: cat.slug,
+              path: `/downloads/${cat.slug}`,
+              icon: IconComponent,
+              desc: cat.description || staticFallback?.desc || 'Official pharmaceutical literature & catalog',
+              pdfUrl: doc?.file?.url || staticFallback?.pdfUrl || `/downloads/${cat.slug}`,
+            };
+          });
+
+        if (formatted.length > 0) {
+          setDownloadCategories(formatted);
+        }
+      }
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   // Close mobile drawer on route change
   useEffect(() => {
@@ -113,7 +167,10 @@ const Navbar = () => {
   };
 
   const productCategories =
-  categories.length > 0 ? categories : PRODUCT_CATEGORIES;
+    categories.length > 0 ? categories : PRODUCT_CATEGORIES;
+
+  const downloadItems =
+    downloadCategories.length > 0 ? downloadCategories : DOWNLOAD_CATEGORIES;
 
   return (
     <header className="sticky top-0 z-50 w-full transition-all duration-300 ease-out">
@@ -294,7 +351,7 @@ const Navbar = () => {
                       Specialty Product Literature
                     </div>
 
-                    {DOWNLOAD_CATEGORIES.map((item) => {
+                    {downloadItems.map((item) => {
                       const Icon = item.icon;
                       return (
                         <a
@@ -408,6 +465,40 @@ const Navbar = () => {
                           <Icon className="w-4 h-4 text-premium-orange" />
                           <span>{cat.name}</span>
                         </Link>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+
+              {/* DOWNLOADS Mobile Accordion */}
+              <div className="border border-slate-100 rounded-2xl overflow-hidden">
+                <button
+                  type="button"
+                  onClick={() => setMobileAccordion(mobileAccordion === 'downloads' ? null : 'downloads')}
+                  className="w-full px-4 py-3 bg-slate-50/80 flex items-center justify-between text-base font-bold text-slate-800"
+                >
+                  <span>DOWNLOADS</span>
+                  <ChevronDown className={`w-5 h-5 transition-transform ${
+                    mobileAccordion === 'downloads' ? 'rotate-180 text-premium-orange' : 'text-slate-400'
+                  }`} />
+                </button>
+
+                {mobileAccordion === 'downloads' && (
+                  <div className="p-3 bg-white space-y-1 max-h-64 overflow-y-auto">
+                    {downloadItems.map((cat) => {
+                      const Icon = cat.icon;
+                      return (
+                        <a
+                          key={cat.slug}
+                          href={cat.pdfUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-3 p-2 rounded-lg hover:bg-orange-50 text-sm font-medium text-slate-700"
+                        >
+                          <Icon className="w-4 h-4 text-premium-orange" />
+                          <span>{cat.name}</span>
+                        </a>
                       );
                     })}
                   </div>

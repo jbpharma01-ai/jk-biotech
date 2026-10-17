@@ -21,10 +21,15 @@ export const AuthProvider = ({ children }) => {
       if (storedToken) {
         try {
           const res = await authService.getMe();
-          if (res.success && res.data) {
+          
+          if (res?.success && res?.data) {
             setUser(res.data);
+            setToken(storedToken);
             localStorage.setItem("admin", JSON.stringify(res.data));
+          } else {
+            logout();
           }
+
         } catch (err) {
           console.error("Token verification failed:", err);
           logout();

@@ -7,6 +7,7 @@ import ProductsPage from '../pages/ProductsPage';
 import ProductDetailsPage from '../pages/ProductDetailsPage';
 import PRODUCTS from '../constants/products';
 import ContactPage from '../pages/contact/ContactPage';
+import { fetchProductBySlug } from '../services/api';
 
 const DynamicDownloadPage = () => {
   const { category } = useParams();
@@ -28,16 +29,70 @@ const DynamicDownloadPage = () => {
 };
 
 // Route dispatcher that differentiates category pages (/products/:category) vs product details pages (/products/:slug)
+
 const ProductRouteDispatcher = () => {
   const { identifier } = useParams();
 
-  if (!identifier) return <ProductsPage />;
+  const [pageType, setPageType] = React.useState('loading');
 
-  const isProductSlug = PRODUCTS.some(
-    (p) => p.slug && p.slug.toLowerCase() === identifier.toLowerCase()
-  );
+  React.useEffect(() => {
+    let isMounted = true;
 
-  if (isProductSlug) {
+    const checkProduct = async () => {
+      if (!identifier) {
+        if (isMounted) setPageType('catalog');
+        return;
+      }
+
+      // First check existing static products
+      const isStaticProduct = PRODUCTS.some(
+        (p) =>
+          p.slug &&
+          p.slug.toLowerCase() === identifier.toLowerCase()
+      );
+
+      if (isStaticProduct) {
+        if (isMounted) setPageType('details');
+        return;
+      }
+
+      // Then check products added from the Admin Panel
+      try {
+        const apiData = await fetchProductBySlug(identifier);
+
+        if (!isMounted) return;
+
+        if (apiData) {
+          setPageType('details');
+        } else {
+          // Not a product: treat it as a category
+          setPageType('catalog');
+        }
+      } catch (error) {
+        console.error('Error checking product slug:', error);
+
+        if (isMounted) {
+          setPageType('catalog');
+        }
+      }
+    };
+
+    checkProduct();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [identifier]);
+
+  if (pageType === 'loading') {
+    return (
+      <div className="min-h-[50vh] flex items-center justify-center">
+        Loading...
+      </div>
+    );
+  }
+
+  if (pageType === 'details') {
     return <ProductDetailsPage />;
   }
 

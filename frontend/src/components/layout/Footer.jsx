@@ -10,6 +10,7 @@ import {
   Instagram,
   Linkedin,
   Youtube,
+  MessageCircle 
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeUp, staggerContainer } from "../../animations/variants";
@@ -40,11 +41,11 @@ const CONTACT = {
 const SOCIAL_LINKS = [
   {
     icon: Facebook,
-    href: "#",
+    href: "https://www.facebook.com/share/1CUSe2HUTy/",
   },
   {
     icon: Instagram,
-    href: "#",
+    href: "https://www.instagram.com/jk.biotech?utm_source=qr&vrfl=Z3NtZW5lb2R0ZHc1",
   },
   {
     icon: Linkedin,
@@ -273,45 +274,72 @@ const Footer = () => {
         </div>
 
       </Container>
+     
+<div className="border-t border-orange-100/80 bg-white/60 backdrop-blur-sm">
+  <Container>
+    <div className="py-6 flex flex-col md:flex-row justify-between items-center gap-5">
 
-      <div className="border-t border-orange-100/80 bg-white/60 backdrop-blur-sm">
+      {/* Existing Company Copyright */}
+      <p className="text-sm text-slate-500 text-center md:text-left">
+        © {new Date().getFullYear()} JK Biotech Pvt. Ltd.
+        {" "}All Rights Reserved.
+      </p>
 
-        <Container>
+      {/* Existing Legal Links */}
+      <div className="flex flex-wrap justify-center gap-6 md:gap-10 text-sm">
+        <Link
+          to="/privacy-policy"
+          className="text-slate-500 hover:text-premium-orange transition-colors"
+        >
+          Privacy Policy
+        </Link>
 
-          <div className="py-6 flex flex-col md:flex-row justify-between items-center gap-4">
+        <Link
+          to="/terms"
+          className="text-slate-500 hover:text-premium-orange transition-colors font-medium"
+        >
+          Terms & Conditions
+        </Link>
+      </div>
 
-            <p className="text-sm text-slate-500">
+      {/* Developer Credit */}
+      <div className="flex flex-col items-center gap-2 text-center">
 
-              © {new Date().getFullYear()} JK Biotech Pvt. Ltd.
-              All Rights Reserved.
+        <p className="text-sm text-slate-500">
+          Designed & Developed by{" "}
+          <span className="font-semibold text-premium-orange">
+            Nirali Maghodiya
+          </span>
+        </p>
 
-            </p>
+              <p className="mt-2 text-sm text-gray-400">
+                Need a website for your business?{" "}
+                <a
+                  href={`https://wa.me/919104848302?text=${encodeURIComponent(
+                    "Hi, I saw your website development work and would like to discuss a website project."
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 font-medium
+                 text-orange-500 transition-colors
+                 hover:text-orange-400 hover:underline"
+                  aria-label="Contact Miss Maghodiya on WhatsApp for website development"
+                >
+                  <span>Let's connect on WhatsApp</span>
+                  <span aria-hidden="true">↗</span>
+                </a>
+              </p>
 
-            <div className="flex gap-10 text-sm">
-
-              <Link
-                to="/privacy-policy"
-                className="text-slate-500 hover:text-premium-orange transition-colors"
-              >
-                Privacy Policy
-              </Link>
-
-              <Link
-                to="/terms"
-                className="text-slate-500 hover:text-premium-orange transition-colors font-medium"
-              >
-                Terms & Conditions
-              </Link>
-
-            </div>
-
-          </div>
-
-        </Container>
 
       </div>
 
-    </motion.footer>
+    </div>
+
+  </Container>
+
+</div>
+
+</motion.footer>
   );
 };
 

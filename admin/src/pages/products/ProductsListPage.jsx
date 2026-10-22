@@ -20,6 +20,7 @@ import { Badge } from "../../components/common/Badge";
 import { Spinner } from "../../components/common/Spinner";
 import { EmptyState } from "../../components/common/EmptyState";
 import { ConfirmModal } from "../../components/common/ConfirmModal";
+import { getThumbnailUrl } from "../../utils/imageOptimizer";
 
 export const ProductsListPage = () => {
   const [products, setProducts] = useState([]);
@@ -31,6 +32,10 @@ export const ProductsListPage = () => {
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
 
+  // Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 12;
+
   // Delete modal state
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [productToDelete, setProductToDelete] = useState(null);
@@ -38,12 +43,12 @@ export const ProductsListPage = () => {
 
   const { success, error: toastError } = useToast();
 
-  const loadData = async () => {
+  const loadData = async (bypassCache = false) => {
     setLoading(true);
     try {
       const [prodRes, catRes] = await Promise.all([
-        productService.getAll(),
-        categoryService.getAll(),
+        productService.getAll(bypassCache),
+        categoryService.getAll(bypassCache),
       ]);
       setProducts(prodRes.data || []);
       setCategories(catRes.data || []);
@@ -58,6 +63,11 @@ export const ProductsListPage = () => {
     loadData();
   }, []);
 
+  // Reset page when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, categoryFilter, statusFilter]);
+
   const handleDeletePrompt = (prod) => {
     setProductToDelete(prod);
     setDeleteModalOpen(true);
@@ -71,7 +81,7 @@ export const ProductsListPage = () => {
       success(`Product "${productToDelete.name}" deleted.`);
       setDeleteModalOpen(false);
       setProductToDelete(null);
-      loadData();
+      loadData(true);
     } catch (err) {
       toastError(err.response?.data?.message || "Failed to delete product.");
     } finally {
@@ -88,7 +98,7 @@ export const ProductsListPage = () => {
         await productService.activate(prod._id);
         success(`"${prod.name}" activated.`);
       }
-      loadData();
+      loadData(true);
     } catch (err) {
       toastError(err.response?.data?.message || "Failed to update product status.");
     }
@@ -97,8 +107,9 @@ export const ProductsListPage = () => {
   // Filtered products list
   const filteredProducts = useMemo(() => {
     return products.filter((p) => {
-      const query = searchQuery.toLowerCase();
+      const query = searchQuery.toLowerCase().trim();
       const matchesSearch =
+        !query ||
         p.name?.toLowerCase().includes(query) ||
         p.composition?.toLowerCase().includes(query) ||
         p.dosageForm?.toLowerCase().includes(query);
@@ -114,6 +125,13 @@ export const ProductsListPage = () => {
       return matchesSearch && matchesCategory && matchesStatus;
     });
   }, [products, searchQuery, categoryFilter, statusFilter]);
+
+  // Paginated slice
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage) || 1;
+  const paginatedProducts = useMemo(() => {
+    const start = (currentPage - 1) * itemsPerPage;
+    return filteredProducts.slice(start, start + itemsPerPage);
+  }, [filteredProducts, currentPage, itemsPerPage]);
 
   return (
     <div className="space-y-6">
@@ -220,7 +238,7 @@ export const ProductsListPage = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {filteredProducts.map((p) => {
+                {paginatedProducts.map((p) => {
                   const catName =
                     typeof p.categoryId === "object"
                       ? p.categoryId?.name
@@ -233,8 +251,10 @@ export const ProductsListPage = () => {
                           <div className="w-12 h-12 rounded-xl bg-slate-100 border border-slate-200 overflow-hidden shrink-0 flex items-center justify-center">
                             {p.image?.url ? (
                               <img
-                                src={p.image.url}
+                                src={getThumbnailUrl(p.image.url, { width: 96, height: 96 })}
                                 alt={p.name}
+                                loading="lazy"
+                                decoding="async"
                                 className="w-full h-full object-cover"
                               />
                             ) : (
@@ -310,6 +330,76 @@ export const ProductsListPage = () => {
               </tbody>
             </table>
           </div>
+
+          {/* Pagination Controls */}
+          {filteredProducts.length > 0 && (
+            <div className="px-6 py-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
+              <p>
+                Showing{" "}
+                <span className="font-semibold text-slate-700">
+                  {Math.min((currentPage - 1) * itemsPerPage + 1, filteredProducts.length)}
+                </span>{" "}
+                to{" "}
+                <span className="font-semibold text-slate-700">
+                  {Math.min(currentPage * itemsPerPage, filteredProducts.length)}
+                </span>{" "}
+                of <span className="font-semibold text-slate-700">{filteredProducts.length}</span> formulations
+              </p>
+
+              {totalPages > 1 && (
+                <div className="flex items-center gap-1.5">
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    disabled={currentPage === 1}
+                    onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                  >
+                    Previous
+                  </Button>
+
+                  <div className="flex items-center gap-1 px-2">
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((pg) => {
+                      if (
+                        pg === 1 ||
+                        pg === totalPages ||
+                        Math.abs(pg - currentPage) <= 1
+                      ) {
+                        return (
+                          <button
+                            key={pg}
+                            onClick={() => setCurrentPage(pg)}
+                            className={`w-7 h-7 rounded-lg font-semibold transition ${
+                              currentPage === pg
+                                ? "bg-premium-orange text-white shadow-xs"
+                                : "text-slate-600 hover:bg-slate-100"
+                            }`}
+                          >
+                            {pg}
+                          </button>
+                        );
+                      }
+                      if (pg === 2 && currentPage > 3) {
+                        return <span key="dots-prev" className="px-1 text-slate-400">...</span>;
+                      }
+                      if (pg === totalPages - 1 && currentPage < totalPages - 2) {
+                        return <span key="dots-next" className="px-1 text-slate-400">...</span>;
+                      }
+                      return null;
+                    })}
+                  </div>
+
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    disabled={currentPage === totalPages}
+                    onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                  >
+                    Next
+                  </Button>
+                </div>
+              )}
+            </div>
+          )}
         </Card>
       )}
 

@@ -12,6 +12,7 @@ import {
   CheckCircle2,
   AlertCircle,
 } from "lucide-react";
+import { dashboardService } from "../../services/dashboardService";
 import { categoryService } from "../../services/categoryService";
 import { productService } from "../../services/productService";
 import { heroSlideService } from "../../services/heroSlideService";
@@ -36,8 +37,34 @@ export const DashboardPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let isMounted = true;
+
     const fetchDashboardData = async () => {
-      setLoading(true);
+      try {
+        // Fast primary path: Single aggregated statistics endpoint
+        const res = await dashboardService.getStats();
+        if (!isMounted) return;
+
+        if (res?.success && res?.data) {
+          const { counts, recentEnquiries: rEnq, recentProducts: rProd } = res.data;
+          setStats({
+            categories: counts?.categories || 0,
+            products: counts?.products || 0,
+            heroSlides: counts?.heroSlides || 0,
+            documents: counts?.documents || 0,
+            enquiries: counts?.enquiries || 0,
+            newEnquiries: counts?.newEnquiries || 0,
+          });
+          setRecentEnquiries(rEnq || []);
+          setRecentProducts(rProd || []);
+          setLoading(false);
+          return;
+        }
+      } catch (err) {
+        console.warn("Aggregated stats endpoint fallback:", err);
+      }
+
+      // Fallback path: Parallel queries if aggregated stats unavailable
       try {
         const [catRes, prodRes, heroRes, docRes, enqRes] = await Promise.allSettled([
           categoryService.getAll(),
@@ -46,6 +73,8 @@ export const DashboardPage = () => {
           documentService.getAll(),
           enquiryService.getAll(),
         ]);
+
+        if (!isMounted) return;
 
         const categories = catRes.status === "fulfilled" && catRes.value?.data ? catRes.value.data : [];
         const products = prodRes.status === "fulfilled" && prodRes.value?.data ? prodRes.value.data : [];
@@ -69,11 +98,17 @@ export const DashboardPage = () => {
       } catch (err) {
         console.error("Dashboard data load error:", err);
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
 
     fetchDashboardData();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   if (loading) {

@@ -1,17 +1,14 @@
-import api from "./api";
+import api, { cachedGet } from "./api";
 
 export const documentService = {
-  getAll: async () => {
-    const res = await api.get("/documents/all");
-    return res.data;
+  getAll: async (bypassCache = false) => {
+    return await cachedGet("/documents/all", { ttl: 20000, bypassCache });
   },
-  getActive: async () => {
-    const res = await api.get("/documents");
-    return res.data;
+  getActive: async (bypassCache = false) => {
+    return await cachedGet("/documents", { ttl: 20000, bypassCache });
   },
-  getByCategory: async (idOrSlug) => {
-    const res = await api.get(`/documents/category/${idOrSlug}`);
-    return res.data;
+  getByCategory: async (idOrSlug, bypassCache = false) => {
+    return await cachedGet(`/documents/category/${idOrSlug}`, { ttl: 20000, bypassCache });
   },
   create: async (formData) => {
     const res = await api.post("/documents", formData, {

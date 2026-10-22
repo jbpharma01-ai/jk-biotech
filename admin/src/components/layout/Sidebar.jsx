@@ -119,7 +119,7 @@ export const Sidebar = ({ isOpen, onClose }) => {
         {/* Bottom actions & user badge */}
         <div className="p-4 border-t border-premium-border bg-premium-black/40 space-y-3">
           <a
-            href="http://localhost:5173"
+            href={import.meta.env.VITE_LIVE_SITE_URL || "/"}
             target="_blank"
             rel="noreferrer"
             className="flex items-center justify-center gap-2 w-full py-2.5 px-3 rounded-xl text-xs font-semibold bg-premium-surface hover:bg-premium-surfaceHover text-zinc-200 hover:text-white border border-premium-border transition"

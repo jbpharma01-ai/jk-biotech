@@ -19,6 +19,7 @@ import { Spinner } from "../../components/common/Spinner";
 import { EmptyState } from "../../components/common/EmptyState";
 import { ConfirmModal } from "../../components/common/ConfirmModal";
 import { HeroSlideModal } from "./HeroSlideModal";
+import { getHeroImageUrl } from "../../utils/imageOptimizer";
 
 export const HeroSlidesListPage = () => {
   const [slides, setSlides] = useState([]);
@@ -32,10 +33,10 @@ export const HeroSlidesListPage = () => {
 
   const { success, error: toastError } = useToast();
 
-  const fetchSlides = async () => {
+  const fetchSlides = async (bypassCache = false) => {
     setLoading(true);
     try {
-      const res = await heroSlideService.getAll();
+      const res = await heroSlideService.getAll(bypassCache);
       setSlides(res.data || []);
     } catch (err) {
       toastError("Failed to fetch hero slides.");
@@ -129,8 +130,10 @@ export const HeroSlidesListPage = () => {
               <div className="relative aspect-video bg-slate-900 overflow-hidden group">
                 {s.image?.url ? (
                   <img
-                    src={s.image.url}
+                    src={getHeroImageUrl(s.image.url, { width: 720 })}
                     alt={s.title}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-80"
                   />
                 ) : (

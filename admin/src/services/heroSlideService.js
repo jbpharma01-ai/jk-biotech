@@ -1,17 +1,14 @@
-import api from "./api";
+import api, { cachedGet } from "./api";
 
 export const heroSlideService = {
-  getAll: async () => {
-    const res = await api.get("/hero-slides/all");
-    return res.data;
+  getAll: async (bypassCache = false) => {
+    return await cachedGet("/hero-slides/all", { ttl: 20000, bypassCache });
   },
-  getActive: async () => {
-    const res = await api.get("/hero-slides");
-    return res.data;
+  getActive: async (bypassCache = false) => {
+    return await cachedGet("/hero-slides", { ttl: 20000, bypassCache });
   },
-  getById: async (id) => {
-    const res = await api.get(`/hero-slides/${id}`);
-    return res.data;
+  getById: async (id, bypassCache = false) => {
+    return await cachedGet(`/hero-slides/${id}`, { ttl: 20000, bypassCache });
   },
   create: async (formData) => {
     const res = await api.post("/hero-slides", formData, {

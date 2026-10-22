@@ -1,13 +1,11 @@
-import api from "./api";
+import api, { cachedGet } from "./api";
 
 export const documentCategoryService = {
-  getAll: async () => {
-    const res = await api.get("/document-categories/all");
-    return res.data;
+  getAll: async (bypassCache = false) => {
+    return await cachedGet("/document-categories/all", { ttl: 30000, bypassCache });
   },
-  getActive: async () => {
-    const res = await api.get("/document-categories");
-    return res.data;
+  getActive: async (bypassCache = false) => {
+    return await cachedGet("/document-categories", { ttl: 30000, bypassCache });
   },
   create: async (data) => {
     const res = await api.post("/document-categories", data);

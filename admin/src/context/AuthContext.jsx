@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
 import { authService } from "../services/authService";
+import { clearApiCache } from "../services/api";
 
 const AuthContext = createContext(null);
 
@@ -12,38 +13,76 @@ export const AuthProvider = ({ children }) => {
       return null;
     }
   });
+
   const [token, setToken] = useState(() => localStorage.getItem("token") || null);
-  const [loading, setLoading] = useState(true);
+  // If we already have stored credentials, don't block the UI!
+  const [loading, setLoading] = useState(() => {
+    const hasToken = !!localStorage.getItem("token");
+    const hasAdmin = !!localStorage.getItem("admin");
+    return !(hasToken && hasAdmin);
+  });
+  const [serverStatus, setServerStatus] = useState("ready"); // "ready" | "connecting" | "offline"
+
+  const logout = useCallback(() => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("admin");
+    clearApiCache();
+    setToken(null);
+    setUser(null);
+  }, []);
 
   useEffect(() => {
+    let isMounted = true;
+
     const verifyAuth = async () => {
       const storedToken = localStorage.getItem("token");
-      if (storedToken) {
-        try {
-          const res = await authService.getMe();
-          
-          if (res?.success && res?.data) {
-            setUser(res.data);
-            setToken(storedToken);
-            localStorage.setItem("admin", JSON.stringify(res.data));
-          } else {
-            logout();
-          }
+      if (!storedToken) {
+        if (isMounted) {
+          setUser(null);
+          setLoading(false);
+        }
+        return;
+      }
 
-        } catch (err) {
-          console.error("Token verification failed:", err);
+      try {
+        const res = await authService.getMe();
+        if (!isMounted) return;
+
+        if (res?.success && res?.data) {
+          setUser(res.data);
+          setToken(storedToken);
+          localStorage.setItem("admin", JSON.stringify(res.data));
+          setServerStatus("ready");
+        } else {
           logout();
         }
-      } else {
-        setUser(null);
+      } catch (err) {
+        if (!isMounted) return;
+        // Only log out if backend explicitly rejected with 401/403
+        if (err.response?.status === 401 || err.response?.status === 403) {
+          console.warn("Session expired or invalid, logging out.");
+          logout();
+        } else {
+          // Network error or Render cold start timeout: keep local session valid!
+          console.warn("Backend server connection pending (cold start or offline). Keeping local session active.");
+          setServerStatus("connecting");
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
       }
-      setLoading(false);
     };
 
     verifyAuth();
-  }, []);
+
+    return () => {
+      isMounted = false;
+    };
+  }, [logout]);
 
   const login = async (email, password) => {
+    clearApiCache();
     const res = await authService.login({ email, password });
     if (res.success && res.data) {
       const { admin, token: newToken } = res.data;
@@ -51,16 +90,10 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem("admin", JSON.stringify(admin));
       setToken(newToken);
       setUser(admin);
+      setServerStatus("ready");
       return admin;
     }
     throw new Error(res.message || "Invalid email or password");
-  };
-
-  const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("admin");
-    setToken(null);
-    setUser(null);
   };
 
   const updateUser = (updatedFields) => {
@@ -77,6 +110,7 @@ export const AuthProvider = ({ children }) => {
         user,
         token,
         loading,
+        serverStatus,
         isAuthenticated: !!token && !!user,
         login,
         logout,

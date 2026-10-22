@@ -13,21 +13,40 @@ export const ImageUpload = ({
 }) => {
   const [preview, setPreview] = useState(currentImageUrl || null);
   const fileInputRef = useRef(null);
+  const blobUrlRef = useRef(null);
 
   useEffect(() => {
     setPreview(currentImageUrl || null);
   }, [currentImageUrl]);
 
+  // Clean up any generated blob object URLs on unmount to avoid memory leaks
+  useEffect(() => {
+    return () => {
+      if (blobUrlRef.current) {
+        URL.revokeObjectURL(blobUrlRef.current);
+      }
+    };
+  }, []);
+
   const handleFileChange = (e) => {
     const file = e.target.files?.[0];
     if (file) {
+      // Revoke previous blob URL if any
+      if (blobUrlRef.current) {
+        URL.revokeObjectURL(blobUrlRef.current);
+      }
       const url = URL.createObjectURL(file);
+      blobUrlRef.current = url;
       setPreview(url);
       if (onChange) onChange(file);
     }
   };
 
   const handleClear = () => {
+    if (blobUrlRef.current) {
+      URL.revokeObjectURL(blobUrlRef.current);
+      blobUrlRef.current = null;
+    }
     setPreview(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
@@ -49,6 +68,8 @@ export const ImageUpload = ({
           <img
             src={preview}
             alt="Preview"
+            loading="lazy"
+            decoding="async"
             className="w-full h-full object-cover transition duration-300 group-hover:scale-105"
           />
           <div className="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">

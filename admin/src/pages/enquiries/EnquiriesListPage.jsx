@@ -25,6 +25,10 @@ export const EnquiriesListPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
 
+  // Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
   // Modal states
   const [detailModalOpen, setDetailModalOpen] = useState(false);
   const [selectedEnquiry, setSelectedEnquiry] = useState(null);
@@ -101,6 +105,18 @@ export const EnquiriesListPage = () => {
       closed: enquiries.filter((e) => e.status === "closed").length,
     };
   }, [enquiries]);
+
+  // Reset to first page whenever filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, statusFilter]);
+
+  // Paginated slice — only render current page rows in the DOM
+  const totalPages = Math.ceil(filteredEnquiries.length / itemsPerPage) || 1;
+  const paginatedEnquiries = useMemo(() => {
+    const start = (currentPage - 1) * itemsPerPage;
+    return filteredEnquiries.slice(start, start + itemsPerPage);
+  }, [filteredEnquiries, currentPage, itemsPerPage]);
 
   return (
     <div className="space-y-6">
@@ -188,7 +204,7 @@ export const EnquiriesListPage = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {filteredEnquiries.map((enq) => (
+                {paginatedEnquiries.map((enq) => (
                   <tr
                     key={enq._id}
                     onClick={() => handleOpenDetail(enq)}
@@ -258,8 +274,61 @@ export const EnquiriesListPage = () => {
               </tbody>
             </table>
           </div>
+
+          {/* Pagination Toolbar */}
+          {totalPages > 1 && (
+            <div className="flex items-center justify-between px-6 py-3 border-t border-slate-100 bg-slate-50/50">
+              <p className="text-xs text-slate-500">
+                Showing{" "}
+                <span className="font-semibold text-slate-700">
+                  {(currentPage - 1) * itemsPerPage + 1}–
+                  {Math.min(currentPage * itemsPerPage, filteredEnquiries.length)}
+                </span>{" "}
+                of{" "}
+                <span className="font-semibold text-slate-700">
+                  {filteredEnquiries.length}
+                </span>{" "}
+                messages
+              </p>
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                  disabled={currentPage === 1}
+                  className="px-2.5 py-1.5 text-xs font-medium rounded-lg border border-slate-200 text-slate-600 hover:bg-white disabled:opacity-40 disabled:cursor-not-allowed transition"
+                >
+                  Prev
+                </button>
+                {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                  const start = Math.max(1, Math.min(currentPage - 2, totalPages - 4));
+                  const page = start + i;
+                  if (page > totalPages) return null;
+                  return (
+                    <button
+                      key={page}
+                      onClick={() => setCurrentPage(page)}
+                      className={`px-2.5 py-1.5 text-xs font-medium rounded-lg border transition ${
+                        currentPage === page
+                          ? "bg-premium-orange border-premium-orange text-white"
+                          : "border-slate-200 text-slate-600 hover:bg-white"
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  );
+                })}
+                <button
+                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                  disabled={currentPage === totalPages}
+                  className="px-2.5 py-1.5 text-xs font-medium rounded-lg border border-slate-200 text-slate-600 hover:bg-white disabled:opacity-40 disabled:cursor-not-allowed transition"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          )}
         </Card>
       )}
+
 
       {/* Enquiry Detail Modal */}
       <EnquiryDetailModal

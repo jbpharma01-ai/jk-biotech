@@ -19,6 +19,7 @@ import { Spinner } from "../../components/common/Spinner";
 import { EmptyState } from "../../components/common/EmptyState";
 import { ConfirmModal } from "../../components/common/ConfirmModal";
 import { CategoryModal } from "./CategoryModal";
+import { getThumbnailUrl } from "../../utils/imageOptimizer";
 
 export const CategoriesListPage = () => {
   const [categories, setCategories] = useState([]);
@@ -35,10 +36,10 @@ export const CategoriesListPage = () => {
 
   const { success, error: toastError } = useToast();
 
-  const fetchCategories = async () => {
+  const fetchCategories = async (bypassCache = false) => {
     setLoading(true);
     try {
-      const res = await categoryService.getAll();
+      const res = await categoryService.getAll(bypassCache);
       setCategories(res.data || []);
     } catch (err) {
       toastError("Failed to load categories.");
@@ -74,7 +75,7 @@ export const CategoriesListPage = () => {
       success(`Category "${categoryToDelete.name}" deleted successfully.`);
       setDeleteModalOpen(false);
       setCategoryToDelete(null);
-      fetchCategories();
+      fetchCategories(true);
     } catch (err) {
       toastError(err.response?.data?.message || "Failed to delete category.");
     } finally {
@@ -91,7 +92,7 @@ export const CategoriesListPage = () => {
         await categoryService.activate(cat._id);
         success(`"${cat.name}" activated.`);
       }
-      fetchCategories();
+      fetchCategories(true);
     } catch (err) {
       toastError(err.response?.data?.message || "Failed to update category status.");
     }
@@ -200,8 +201,10 @@ export const CategoriesListPage = () => {
                         <div className="w-11 h-11 rounded-xl bg-slate-100 border border-slate-200 overflow-hidden shrink-0 flex items-center justify-center">
                           {cat.image?.url ? (
                             <img
-                              src={cat.image.url}
+                              src={getThumbnailUrl(cat.image.url, { width: 88, height: 88 })}
                               alt={cat.name}
+                              loading="lazy"
+                              decoding="async"
                               className="w-full h-full object-cover"
                             />
                           ) : (

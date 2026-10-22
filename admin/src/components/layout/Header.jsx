@@ -4,7 +4,7 @@ import { useAuth } from "../../hooks/useAuth";
 import jkLogo from "../../assets/logo/jk-logo.png";
 
 export const Header = ({ onOpenSidebar, title }) => {
-  const { user, logout } = useAuth();
+  const { user, logout, serverStatus } = useAuth();
 
   return (
     <header className="sticky top-0 z-30 h-16 bg-white/95 backdrop-blur-md border-b border-slate-200/80 px-4 sm:px-8 flex items-center justify-between transition-all">
@@ -29,6 +29,12 @@ export const Header = ({ onOpenSidebar, title }) => {
             <h2 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
               {title}
             </h2>
+            {serverStatus === "connecting" && (
+              <span className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-50 text-amber-700 border border-amber-200">
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+                Connecting to cloud...
+              </span>
+            )}
           </div>
         )}
       </div>
@@ -36,7 +42,7 @@ export const Header = ({ onOpenSidebar, title }) => {
       <div className="flex items-center gap-3 sm:gap-4">
         {/* Quick Website View */}
         <a
-          href="http://localhost:5173"
+          href={import.meta.env.VITE_LIVE_SITE_URL || "/"}
           target="_blank"
           rel="noreferrer"
           title="Open live website"

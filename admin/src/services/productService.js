@@ -1,21 +1,17 @@
-import api from "./api";
+import api, { cachedGet } from "./api";
 
 export const productService = {
-  getAll: async () => {
-    const res = await api.get("/products/all");
-    return res.data;
+  getAll: async (bypassCache = false) => {
+    return await cachedGet("/products/all", { ttl: 20000, bypassCache });
   },
-  getActive: async () => {
-    const res = await api.get("/products");
-    return res.data;
+  getActive: async (bypassCache = false) => {
+    return await cachedGet("/products", { ttl: 20000, bypassCache });
   },
-  getById: async (id) => {
-    const res = await api.get(`/products/${id}`);
-    return res.data;
+  getById: async (id, bypassCache = false) => {
+    return await cachedGet(`/products/${id}`, { ttl: 20000, bypassCache });
   },
-  getByCategory: async (catIdOrSlug) => {
-    const res = await api.get(`/products/category/${catIdOrSlug}`);
-    return res.data;
+  getByCategory: async (catIdOrSlug, bypassCache = false) => {
+    return await cachedGet(`/products/category/${catIdOrSlug}`, { ttl: 20000, bypassCache });
   },
   create: async (formData) => {
     const res = await api.post("/products", formData, {

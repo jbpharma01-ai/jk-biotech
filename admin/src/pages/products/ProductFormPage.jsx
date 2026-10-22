@@ -42,25 +42,34 @@ export const ProductFormPage = () => {
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
+    let isMounted = true;
     const loadCategories = async () => {
       try {
         const res = await categoryService.getAll();
-        setCategories(res.data || []);
+        if (isMounted) {
+          setCategories(res.data || []);
+        }
       } catch (err) {
-        toastError("Failed to fetch product categories.");
+        if (isMounted) {
+          toastError("Failed to fetch product categories.");
+        }
       }
     };
     loadCategories();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   useEffect(() => {
+    let isMounted = true;
     if (isEditing) {
       const loadProduct = async () => {
         setFetching(true);
         try {
           const res = await productService.getById(id);
           const p = res.data;
-          if (p) {
+          if (isMounted && p) {
             setFormData({
               name: p.name || "",
               slug: p.slug || "",
@@ -77,15 +86,22 @@ export const ProductFormPage = () => {
             setCurrentImageUrl(p.image?.url || "");
           }
         } catch (err) {
-          toastError("Failed to load product details.");
-          navigate("/products");
+          if (isMounted) {
+            toastError("Failed to load product details.");
+            navigate("/products");
+          }
         } finally {
-          setFetching(false);
+          if (isMounted) {
+            setFetching(false);
+          }
         }
       };
       loadProduct();
     }
-  }, [id, isEditing]);
+    return () => {
+      isMounted = false;
+    };
+  }, [id, isEditing, navigate]);
 
   const handleNameChange = (e) => {
     const name = e.target.value;
@@ -178,8 +194,9 @@ export const ProductFormPage = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <Link
-            to="/dashboard"
+            to="/products"
             className="p-2 bg-white rounded-xl border border-slate-200 text-slate-500 hover:text-premium-orange hover:border-orange-200 hover:bg-orange-50/50 transition shadow-xs"
+            title="Back to products list"
           >
             <ArrowLeft className="w-5 h-5" />
           </Link>

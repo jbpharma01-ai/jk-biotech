@@ -31,6 +31,10 @@ export const DocumentsListPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
 
+  // Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 12;
+
   // Modal states
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedDoc, setSelectedDoc] = useState(null);
@@ -40,12 +44,12 @@ export const DocumentsListPage = () => {
 
   const { success, error: toastError } = useToast();
 
-  const loadData = async () => {
+  const loadData = async (bypassCache = false) => {
     setLoading(true);
     try {
       const [docRes, catRes] = await Promise.all([
-        documentService.getAll(),
-        documentCategoryService.getAll(),
+        documentService.getAll(bypassCache),
+        documentCategoryService.getAll(bypassCache),
       ]);
       setDocuments(docRes.data || []);
       setCategories(catRes.data || []);
@@ -59,6 +63,11 @@ export const DocumentsListPage = () => {
   useEffect(() => {
     loadData();
   }, []);
+
+  // Reset page when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, categoryFilter]);
 
   const handleCreate = () => {
     setSelectedDoc(null);
@@ -83,7 +92,7 @@ export const DocumentsListPage = () => {
       success(`Document "${docToDelete.title}" deleted.`);
       setDeleteModalOpen(false);
       setDocToDelete(null);
-      loadData();
+      loadData(true);
     } catch (err) {
       toastError(err.response?.data?.message || "Failed to delete document.");
     } finally {
@@ -100,7 +109,7 @@ export const DocumentsListPage = () => {
         await documentService.activate(doc._id);
         success(`"${doc.title}" activated.`);
       }
-      loadData();
+      loadData(true);
     } catch (err) {
       toastError("Failed to update document status.");
     }
@@ -108,7 +117,8 @@ export const DocumentsListPage = () => {
 
   const filteredDocs = useMemo(() => {
     return documents.filter((doc) => {
-      const matchesSearch = doc.title?.toLowerCase().includes(searchQuery.toLowerCase());
+      const query = searchQuery.toLowerCase().trim();
+      const matchesSearch = !query || doc.title?.toLowerCase().includes(query);
       const catId =
         typeof doc.documentCategoryId === "object"
           ? doc.documentCategoryId?._id
@@ -117,6 +127,13 @@ export const DocumentsListPage = () => {
       return matchesSearch && matchesCategory;
     });
   }, [documents, searchQuery, categoryFilter]);
+
+  // Paginated slice
+  const totalPages = Math.ceil(filteredDocs.length / itemsPerPage) || 1;
+  const paginatedDocs = useMemo(() => {
+    const start = (currentPage - 1) * itemsPerPage;
+    return filteredDocs.slice(start, start + itemsPerPage);
+  }, [filteredDocs, currentPage, itemsPerPage]);
 
   return (
     <div className="space-y-6">
@@ -198,7 +215,7 @@ export const DocumentsListPage = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {filteredDocs.map((doc) => {
+                {paginatedDocs.map((doc) => {
                   const catName =
                     typeof doc.documentCategoryId === "object"
                       ? doc.documentCategoryId?.name
@@ -287,6 +304,61 @@ export const DocumentsListPage = () => {
               </tbody>
             </table>
           </div>
+
+          {/* Pagination Controls */}
+          {filteredDocs.length > 0 && (
+            <div className="px-6 py-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
+              <p>
+                Showing{" "}
+                <span className="font-semibold text-slate-700">
+                  {Math.min((currentPage - 1) * itemsPerPage + 1, filteredDocs.length)}
+                </span>{" "}
+                to{" "}
+                <span className="font-semibold text-slate-700">
+                  {Math.min(currentPage * itemsPerPage, filteredDocs.length)}
+                </span>{" "}
+                of <span className="font-semibold text-slate-700">{filteredDocs.length}</span> documents
+              </p>
+
+              {totalPages > 1 && (
+                <div className="flex items-center gap-1.5">
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    disabled={currentPage === 1}
+                    onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                  >
+                    Previous
+                  </Button>
+
+                  <div className="flex items-center gap-1 px-2">
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((pg) => (
+                      <button
+                        key={pg}
+                        onClick={() => setCurrentPage(pg)}
+                        className={`w-7 h-7 rounded-lg font-semibold transition ${
+                          currentPage === pg
+                            ? "bg-premium-orange text-white shadow-xs"
+                            : "text-slate-600 hover:bg-slate-100"
+                        }`}
+                      >
+                        {pg}
+                      </button>
+                    ))}
+                  </div>
+
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    disabled={currentPage === totalPages}
+                    onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                  >
+                    Next
+                  </Button>
+                </div>
+              )}
+            </div>
+          )}
         </Card>
       )}
 

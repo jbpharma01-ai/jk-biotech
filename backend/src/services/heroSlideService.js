@@ -3,7 +3,7 @@ const { uploadImage, deleteImage } = require('./cloudinaryService');
 
 // Get all hero slides (Admin)
 const getAllHeroSlides = async () => {
-  return await HeroSlide.find().sort({ displayOrder: 1, createdAt: -1 });
+  return await HeroSlide.find().sort({ displayOrder: 1, createdAt: -1 }).lean();
 };
 
 // Get active hero slides (Public)
@@ -11,12 +11,12 @@ const getActiveHeroSlides = async () => {
   return await HeroSlide.find({ isActive: true }).sort({
     displayOrder: 1,
     createdAt: -1,
-  });
+  }).lean();
 };
 
 // Get single hero slide by ID
 const getHeroSlideById = async (id) => {
-  return await HeroSlide.findById(id);
+  return await HeroSlide.findById(id).lean();
 };
 
 // Create hero slide

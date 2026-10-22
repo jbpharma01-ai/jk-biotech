@@ -68,6 +68,9 @@ const heroSlideSchema = new mongoose.Schema(
   }
 );
 
+// High performance query index
+heroSlideSchema.index({ isActive: 1, displayOrder: 1, createdAt: -1 });
+
 const HeroSlide = mongoose.model('HeroSlide', heroSlideSchema);
 
 module.exports = HeroSlide;

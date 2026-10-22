@@ -88,6 +88,10 @@ const productSchema = new mongoose.Schema(
   }
 );
 
+// High performance query indexes
+productSchema.index({ isActive: 1, displayOrder: 1, createdAt: -1 });
+productSchema.index({ categoryId: 1, isActive: 1 });
+
 const Product = mongoose.model('Product', productSchema);
 
 module.exports = Product;

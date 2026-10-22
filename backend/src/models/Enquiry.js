@@ -51,6 +51,9 @@ const enquirySchema = new mongoose.Schema(
   }
 );
 
+// High performance query index
+enquirySchema.index({ status: 1, createdAt: -1 });
+
 const Enquiry = mongoose.model('Enquiry', enquirySchema);
 
 module.exports = Enquiry;

@@ -1,10 +1,12 @@
 const dns = require('dns');
 try {
-  // Force IPv4 to avoid IPv6 DNS resolution issues
-  dns.setDefaultResultOrder('ipv4first');
-  dns.setServers(['8.8.8.8', '8.8.4.4', '1.1.1.1']);
+  // Prefer IPv4 to avoid IPv6 resolution delays if supported
+  if (typeof dns.setDefaultResultOrder === 'function') {
+    dns.setDefaultResultOrder('ipv4first');
+     dns.setServers(['8.8.8.8', '8.8.4.4', '1.1.1.1']);
+  }
 } catch (e) {
-  // Ignore DNS override errors
+  // Ignore
 }
 
 const mongoose = require('mongoose');
@@ -15,9 +17,11 @@ const connectDB = async (retries = 5, delay = 3000) => {
     try {
       console.log(`🔄 MongoDB connecting... (attempt ${attempt}/${retries})`);
       const connection = await mongoose.connect(config.mongoUri, {
-        serverSelectionTimeoutMS: 20000,
-        connectTimeoutMS: 20000,
+        serverSelectionTimeoutMS: 15000,
+        connectTimeoutMS: 15000,
         socketTimeoutMS: 45000,
+        maxPoolSize: 10,
+        minPoolSize: 2,
         family: 4, // Force IPv4
       });
 

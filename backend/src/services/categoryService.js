@@ -3,7 +3,7 @@ const { uploadImage, deleteImage } = require('./cloudinaryService');
 
 // Get all categories (Admin)
 const getAllCategories = async () => {
-  return await Category.find().sort({ displayOrder: 1, createdAt: -1 });
+  return await Category.find().sort({ displayOrder: 1, createdAt: -1 }).lean();
 };
 
 // Get active categories for public website
@@ -11,17 +11,17 @@ const getActiveCategories = async () => {
   return await Category.find({ isActive: true }).sort({
     displayOrder: 1,
     createdAt: -1,
-  });
+  }).lean();
 };
 
 // Get single category by ID
 const getCategoryById = async (id) => {
-  return await Category.findById(id);
+  return await Category.findById(id).lean();
 };
 
 // Get single category by slug
 const getCategoryBySlug = async (slug) => {
-  return await Category.findOne({ slug: slug.toLowerCase(), isActive: true });
+  return await Category.findOne({ slug: slug.toLowerCase(), isActive: true }).lean();
 };
 
 // Create new category

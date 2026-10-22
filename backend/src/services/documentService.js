@@ -26,7 +26,8 @@ const getAllDocuments = async () => {
     .sort({
       displayOrder: 1,
       createdAt: -1,
-    });
+    })
+    .lean();
   return docs.map(formatDocument);
 };
 
@@ -37,7 +38,8 @@ const getActiveDocuments = async () => {
     .sort({
       displayOrder: 1,
       createdAt: -1,
-    });
+    })
+    .lean();
   return docs.map(formatDocument);
 };
 
@@ -48,12 +50,12 @@ const getDocumentsByCategory = async (categoryIdentifier) => {
   if (!DocumentCategory.base.Types.ObjectId.isValid(categoryIdentifier)) {
     let category = await DocumentCategory.findOne({
       slug: categoryIdentifier.toLowerCase(),
-    });
+    }).lean();
 
     if (!category) {
       category = await DocumentCategory.findOne({
         name: { $regex: new RegExp(`^${categoryIdentifier}$`, 'i') },
-      });
+      }).lean();
     }
 
     if (!category) return [];
@@ -68,13 +70,14 @@ const getDocumentsByCategory = async (categoryIdentifier) => {
     .sort({
       displayOrder: 1,
       createdAt: -1,
-    });
+    })
+    .lean();
   return docs.map(formatDocument);
 };
 
 // Get single document by ID
 const getDocumentById = async (id) => {
-  const doc = await Document.findById(id).populate('documentCategoryId');
+  const doc = await Document.findById(id).populate('documentCategoryId').lean();
   return formatDocument(doc);
 };
 

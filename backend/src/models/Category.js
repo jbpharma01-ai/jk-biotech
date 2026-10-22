@@ -58,6 +58,9 @@ const categorySchema = new mongoose.Schema(
   }
 );
 
+// High performance query index
+categorySchema.index({ isActive: 1, displayOrder: 1, createdAt: -1 });
+
 const Category = mongoose.model('Category', categorySchema);
 
 module.exports = Category;

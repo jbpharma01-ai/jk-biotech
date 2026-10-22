@@ -59,6 +59,10 @@ const documentSchema = new mongoose.Schema(
   }
 );
 
+// High performance query indexes
+documentSchema.index({ documentCategoryId: 1, isActive: 1 });
+documentSchema.index({ isActive: 1, displayOrder: 1, createdAt: -1 });
+
 const Document = mongoose.model('Document', documentSchema);
 
 module.exports = Document;

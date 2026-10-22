@@ -37,9 +37,12 @@ const documentCategorySchema = new mongoose.Schema(
   }
 );
 
+// High performance query index
+documentCategorySchema.index({ isActive: 1, displayOrder: 1, createdAt: -1 });
+
 const DocumentCategory = mongoose.model(
   'DocumentCategory',
   documentCategorySchema
 );
 
-module.exports = DocumentCategory;
+module.exports = DocumentCategory;

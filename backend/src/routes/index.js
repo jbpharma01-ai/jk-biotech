@@ -10,11 +10,13 @@ const documentRoutes = require('./documentRoutes');
 const enquiryRoutes = require('./enquiryRoutes');
 const companyRoutes = require('./companyRoutes');
 const cloudinaryRoutes = require('./cloudinaryRoutes');
+const dashboardRoutes = require('./dashboardRoutes');
 
 const router = express.Router();
 
 router.use(healthRoutes);
 router.use('/auth', authRoutes);
+router.use('/dashboard', dashboardRoutes);
 router.use('/categories', categoryRoutes);
 router.use('/products', productRoutes);
 router.use('/hero-slides', heroSlideRoutes);

@@ -20,12 +20,12 @@ const createEnquiry = async (enquiryData) => {
 // Get all enquiries (Admin)
 const getAllEnquiries = async (status = null) => {
   const query = status ? { status } : {};
-  return await Enquiry.find(query).sort({ createdAt: -1 });
+  return await Enquiry.find(query).sort({ createdAt: -1 }).lean();
 };
 
 // Get single enquiry by ID (Admin)
 const getEnquiryById = async (id) => {
-  return await Enquiry.findById(id);
+  return await Enquiry.findById(id).lean();
 };
 
 // Update enquiry status & admin note (Admin)

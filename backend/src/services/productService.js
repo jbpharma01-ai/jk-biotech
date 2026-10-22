@@ -6,7 +6,8 @@ const { uploadImage, deleteImage } = require('./cloudinaryService');
 const getAllProducts = async () => {
   return await Product.find()
     .populate('categoryId')
-    .sort({ displayOrder: 1, createdAt: -1 });
+    .sort({ displayOrder: 1, createdAt: -1 })
+    .lean();
 };
 
 // Get active products for public website (with optional filter query)
@@ -14,12 +15,13 @@ const getActiveProducts = async (filters = {}) => {
   const query = { isActive: true, ...filters };
   return await Product.find(query)
     .populate('categoryId')
-    .sort({ displayOrder: 1, createdAt: -1 });
+    .sort({ displayOrder: 1, createdAt: -1 })
+    .lean();
 };
 
 // Get single product by ID
 const getProductById = async (id) => {
-  return await Product.findById(id).populate('categoryId');
+  return await Product.findById(id).populate('categoryId').lean();
 };
 
 // Get single product by Slug
@@ -27,7 +29,7 @@ const getProductBySlug = async (slug) => {
   return await Product.findOne({
     slug: slug.toLowerCase(),
     isActive: true,
-  }).populate('categoryId');
+  }).populate('categoryId').lean();
 };
 
 // Get products by Category Slug or Category ID
@@ -38,7 +40,7 @@ const getProductsByCategory = async (categoryIdentifier) => {
   if (!Category.base.Types.ObjectId.isValid(categoryIdentifier)) {
     const category = await Category.findOne({
       slug: categoryIdentifier.toLowerCase(),
-    });
+    }).lean();
 
     if (!category) {
       return [];
@@ -48,12 +50,13 @@ const getProductsByCategory = async (categoryIdentifier) => {
 
   return await Product.find({ categoryId, isActive: true })
     .populate('categoryId')
-    .sort({ displayOrder: 1, createdAt: -1 });
+    .sort({ displayOrder: 1, createdAt: -1 })
+    .lean();
 };
 
 // Get related products in the same category
 const getRelatedProducts = async (productId, limit = 3) => {
-  const product = await Product.findById(productId);
+  const product = await Product.findById(productId).lean();
   if (!product) return [];
 
   return await Product.find({
@@ -63,7 +66,8 @@ const getRelatedProducts = async (productId, limit = 3) => {
   })
     .populate('categoryId')
     .limit(limit)
-    .sort({ displayOrder: 1, createdAt: -1 });
+    .sort({ displayOrder: 1, createdAt: -1 })
+    .lean();
 };
 
 // Create new product

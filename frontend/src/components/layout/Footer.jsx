@@ -19,7 +19,6 @@ const QUICK_LINKS = [
   { name: "Home", path: "/" },
   { name: "About", path: "/about" },
   { name: "Products", path: "/products" },
-  { name: "Downloads", path: "/downloads" },
   { name: "Contact", path: "/contact" },
 ];
 
@@ -197,15 +196,14 @@ const Footer = () => {
 
                 <li key={item}>
 
-                  <Link
-                    to="/products"
+                  <div
                     className="group flex items-center gap-2 text-slate-600 hover:text-premium-orange transition-all duration-300"
                   >
                     <span className="w-0 group-hover:w-3 h-[2px] bg-premium-orange transition-all duration-300 rounded-full"></span>
 
                     <span>{item}</span>
 
-                  </Link>
+                  </div>
 
                 </li>
 
@@ -300,37 +298,6 @@ const Footer = () => {
         >
           Terms & Conditions
         </Link>
-      </div>
-
-      {/* Developer Credit */}
-      <div className="flex flex-col items-center gap-2 text-center">
-
-        <p className="text-sm text-slate-500">
-          Designed & Developed by{" "}
-          <span className="font-semibold text-premium-orange">
-            Nirali Maghodiya
-          </span>
-        </p>
-
-              <p className="mt-2 text-sm text-gray-400">
-                Need a website for your business?{" "}
-                <a
-                  href={`https://wa.me/919104848302?text=${encodeURIComponent(
-                    "Hi, I saw your website development work and would like to discuss a website project."
-                  )}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 font-medium
-                 text-orange-500 transition-colors
-                 hover:text-orange-400 hover:underline"
-                  aria-label="Contact Miss Maghodiya on WhatsApp for website development"
-                >
-                  <span>Let's connect on WhatsApp</span>
-                  <span aria-hidden="true">↗</span>
-                </a>
-              </p>
-
-
       </div>
 
     </div>

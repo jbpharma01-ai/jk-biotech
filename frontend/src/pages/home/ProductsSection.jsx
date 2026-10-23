@@ -1,19 +1,50 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Container from "../../components/common/Container";
 import { fadeUp } from "../../animations/variants";
-import PRODUCTS from "../../constants/products";
 import HomeProductCard from "../../components/common/HomeProductCard";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import Button from "../../components/common/Button";
+import { fetchActiveProducts } from "../../services/api";
 
 const ProductsSection = () => {
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        let isMounted = true;
+
+        const loadProducts = async () => {
+            try {
+                const data = await fetchActiveProducts();
+
+                if (isMounted) {
+                    setProducts(Array.isArray(data) ? data : []);
+                }
+            } catch (error) {
+                console.error("Failed to fetch products:", error);
+
+                if (isMounted) {
+                    setProducts([]);
+                }
+            } finally {
+                if (isMounted) {
+                    setLoading(false);
+                }
+            }
+        };
+
+        loadProducts();
+
+        return () => {
+            isMounted = false;
+        };
+    }, []);
+
     return (
         <section className="py-20 bg-white overflow-hidden">
-
             <Container>
-
                 {/* Heading */}
                 <motion.div
                     variants={fadeUp}
@@ -37,29 +68,36 @@ const ProductsSection = () => {
                     </h2>
 
                     <div className="flex justify-center mt-6">
-                        <div className="w-24 h-1 rounded-full bg-gradient-to-r from-orange-500 via-orange-400 to-orange-300"></div>
+                        <div className="w-24 h-1 rounded-full bg-gradient-to-r from-orange-500 via-orange-400 to-orange-300" />
                     </div>
                 </motion.div>
 
-                {/*  Products Grid */}
-
+                {/* Live Products Grid */}
                 <div className="relative mt-16 overflow-hidden">
+                    {loading ? (
+                        <div className="py-12 text-center text-slate-500">
+                            Loading products...
+                        </div>
+                    ) : products.length === 0 ? (
+                        <div className="py-12 text-center text-slate-500">
+                            No products available at the moment.
+                        </div>
+                    ) : (
+                        <>
+                            <div className="pointer-events-none absolute left-0 top-0 z-20 h-full w-28 bg-gradient-to-r from-white to-transparent" />
 
-                    <div className="pointer-events-none absolute left-0 top-0 z-20 h-full w-28 bg-gradient-to-r from-white to-transparent"></div>
+                            <div className="pointer-events-none absolute right-0 top-0 z-20 h-full w-28 bg-gradient-to-l from-white to-transparent" />
 
-                    <div className="pointer-events-none absolute right-0 top-0 z-20 h-full w-28 bg-gradient-to-l from-white to-transparent"></div>
-
-                    <div className="flex animate-product-scroll gap-8 w-max hover:[animation-play-state:paused]">
-
-                        {[...PRODUCTS, ...PRODUCTS].map((product, index) => (
-                            <HomeProductCard
-                                key={`${product.id}-${index}`}
-                                product={product}
-                            />
-                        ))}
-
-                    </div>
-
+                            <div className="flex animate-product-scroll gap-8 w-max hover:[animation-play-state:paused]">
+                                {[...products, ...products].map((product, index) => (
+                                    <HomeProductCard
+                                        key={`${product._id || product.id || product.slug}-${index}`}
+                                        product={product}
+                                    />
+                                ))}
+                            </div>
+                        </>
+                    )}
                 </div>
 
                 {/* View All Products Button */}
@@ -82,9 +120,7 @@ const ProductsSection = () => {
                         </Button>
                     </Link>
                 </motion.div>
-
             </Container>
-
         </section>
     );
 };

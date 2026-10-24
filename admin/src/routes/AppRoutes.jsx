@@ -15,8 +15,8 @@ const CategoriesListPage = lazy(() => import("../pages/categories/CategoriesList
 const ProductsListPage   = lazy(() => import("../pages/products/ProductsListPage").then(m => ({ default: m.ProductsListPage })));
 const ProductFormPage    = lazy(() => import("../pages/products/ProductFormPage").then(m => ({ default: m.ProductFormPage })));
 const HeroSlidesListPage = lazy(() => import("../pages/hero/HeroSlidesListPage").then(m => ({ default: m.HeroSlidesListPage })));
-const DocCategoriesListPage = lazy(() => import("../pages/downloads/DocCategoriesListPage").then(m => ({ default: m.DocCategoriesListPage })));
-const DocumentsListPage  = lazy(() => import("../pages/downloads/DocumentsListPage").then(m => ({ default: m.DocumentsListPage })));
+// const DocCategoriesListPage = lazy(() => import("../pages/downloads/DocCategoriesListPage").then(m => ({ default: m.DocCategoriesListPage })));
+// const DocumentsListPage  = lazy(() => import("../pages/downloads/DocumentsListPage").then(m => ({ default: m.DocumentsListPage })));
 const EnquiriesListPage  = lazy(() => import("../pages/enquiries/EnquiriesListPage").then(m => ({ default: m.EnquiriesListPage })));
 const CompanySettingsPage = lazy(() => import("../pages/settings/CompanySettingsPage").then(m => ({ default: m.CompanySettingsPage })));
 const ProfilePage        = lazy(() => import("../pages/profile/ProfilePage").then(m => ({ default: m.ProfilePage })));
@@ -60,8 +60,8 @@ export const AppRoutes = () => {
           <Route path="hero-slides" element={<HeroSlidesListPage />} />
 
           {/* Downloads & Documents */}
-          <Route path="document-categories" element={<DocCategoriesListPage />} />
-          <Route path="documents" element={<DocumentsListPage />} />
+          {/* <Route path="document-categories" element={<DocCategoriesListPage />} />
+          <Route path="documents" element={<DocumentsListPage />} /> */}
 
           {/* Enquiries */}
           <Route path="enquiries" element={<EnquiriesListPage />} />

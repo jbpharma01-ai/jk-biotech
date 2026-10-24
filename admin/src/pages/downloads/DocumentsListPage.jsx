@@ -1,385 +1,385 @@
-import React, { useState, useEffect, useMemo } from "react";
-import {
-  FileText,
-  Plus,
-  Search,
-  Edit2,
-  Trash2,
-  Download,
-  ExternalLink,
-  CheckCircle2,
-  XCircle,
-  FileCode,
-} from "lucide-react";
-import { documentService } from "../../services/documentService";
-import { documentCategoryService } from "../../services/documentCategoryService";
-import { useToast } from "../../hooks/useToast";
-import { Card } from "../../components/common/Card";
-import { Button } from "../../components/common/Button";
-import { Badge } from "../../components/common/Badge";
-import { Spinner } from "../../components/common/Spinner";
-import { EmptyState } from "../../components/common/EmptyState";
-import { ConfirmModal } from "../../components/common/ConfirmModal";
-import { DocumentModal } from "./DocumentModal";
+// import React, { useState, useEffect, useMemo } from "react";
+// import {
+//   FileText,
+//   Plus,
+//   Search,
+//   Edit2,
+//   Trash2,
+//   Download,
+//   ExternalLink,
+//   CheckCircle2,
+//   XCircle,
+//   FileCode,
+// } from "lucide-react";
+// import { documentService } from "../../services/documentService";
+// import { documentCategoryService } from "../../services/documentCategoryService";
+// import { useToast } from "../../hooks/useToast";
+// import { Card } from "../../components/common/Card";
+// import { Button } from "../../components/common/Button";
+// import { Badge } from "../../components/common/Badge";
+// import { Spinner } from "../../components/common/Spinner";
+// import { EmptyState } from "../../components/common/EmptyState";
+// import { ConfirmModal } from "../../components/common/ConfirmModal";
+// import { DocumentModal } from "./DocumentModal";
 
-export const DocumentsListPage = () => {
-  const [documents, setDocuments] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
+// export const DocumentsListPage = () => {
+//   const [documents, setDocuments] = useState([]);
+//   const [categories, setCategories] = useState([]);
+//   const [loading, setLoading] = useState(true);
 
-  // Filters
-  const [searchQuery, setSearchQuery] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState("all");
+//   // Filters
+//   const [searchQuery, setSearchQuery] = useState("");
+//   const [categoryFilter, setCategoryFilter] = useState("all");
 
-  // Pagination
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 12;
+//   // Pagination
+//   const [currentPage, setCurrentPage] = useState(1);
+//   const itemsPerPage = 12;
 
-  // Modal states
-  const [modalOpen, setModalOpen] = useState(false);
-  const [selectedDoc, setSelectedDoc] = useState(null);
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [docToDelete, setDocToDelete] = useState(null);
-  const [actionLoading, setActionLoading] = useState(false);
+//   // Modal states
+//   const [modalOpen, setModalOpen] = useState(false);
+//   const [selectedDoc, setSelectedDoc] = useState(null);
+//   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+//   const [docToDelete, setDocToDelete] = useState(null);
+//   const [actionLoading, setActionLoading] = useState(false);
 
-  const { success, error: toastError } = useToast();
+//   const { success, error: toastError } = useToast();
 
-  const loadData = async (bypassCache = false) => {
-    setLoading(true);
-    try {
-      const [docRes, catRes] = await Promise.all([
-        documentService.getAll(bypassCache),
-        documentCategoryService.getAll(bypassCache),
-      ]);
-      setDocuments(docRes.data || []);
-      setCategories(catRes.data || []);
-    } catch (err) {
-      toastError("Failed to fetch documents.");
-    } finally {
-      setLoading(false);
-    }
-  };
+//   const loadData = async (bypassCache = false) => {
+//     setLoading(true);
+//     try {
+//       const [docRes, catRes] = await Promise.all([
+//         documentService.getAll(bypassCache),
+//         documentCategoryService.getAll(bypassCache),
+//       ]);
+//       setDocuments(docRes.data || []);
+//       setCategories(catRes.data || []);
+//     } catch (err) {
+//       toastError("Failed to fetch documents.");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
 
-  useEffect(() => {
-    loadData();
-  }, []);
+//   useEffect(() => {
+//     loadData();
+//   }, []);
 
-  // Reset page when filters change
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [searchQuery, categoryFilter]);
+//   // Reset page when filters change
+//   useEffect(() => {
+//     setCurrentPage(1);
+//   }, [searchQuery, categoryFilter]);
 
-  const handleCreate = () => {
-    setSelectedDoc(null);
-    setModalOpen(true);
-  };
+//   const handleCreate = () => {
+//     setSelectedDoc(null);
+//     setModalOpen(true);
+//   };
 
-  const handleEdit = (doc) => {
-    setSelectedDoc(doc);
-    setModalOpen(true);
-  };
+//   const handleEdit = (doc) => {
+//     setSelectedDoc(doc);
+//     setModalOpen(true);
+//   };
 
-  const handleDeletePrompt = (doc) => {
-    setDocToDelete(doc);
-    setDeleteModalOpen(true);
-  };
+//   const handleDeletePrompt = (doc) => {
+//     setDocToDelete(doc);
+//     setDeleteModalOpen(true);
+//   };
 
-  const confirmDelete = async () => {
-    if (!docToDelete) return;
-    setActionLoading(true);
-    try {
-      await documentService.delete(docToDelete._id);
-      success(`Document "${docToDelete.title}" deleted.`);
-      setDeleteModalOpen(false);
-      setDocToDelete(null);
-      loadData(true);
-    } catch (err) {
-      toastError(err.response?.data?.message || "Failed to delete document.");
-    } finally {
-      setActionLoading(false);
-    }
-  };
+//   const confirmDelete = async () => {
+//     if (!docToDelete) return;
+//     setActionLoading(true);
+//     try {
+//       await documentService.delete(docToDelete._id);
+//       success(`Document "${docToDelete.title}" deleted.`);
+//       setDeleteModalOpen(false);
+//       setDocToDelete(null);
+//       loadData(true);
+//     } catch (err) {
+//       toastError(err.response?.data?.message || "Failed to delete document.");
+//     } finally {
+//       setActionLoading(false);
+//     }
+//   };
 
-  const handleToggleStatus = async (doc) => {
-    try {
-      if (doc.isActive) {
-        await documentService.deactivate(doc._id);
-        success(`"${doc.title}" deactivated.`);
-      } else {
-        await documentService.activate(doc._id);
-        success(`"${doc.title}" activated.`);
-      }
-      loadData(true);
-    } catch (err) {
-      toastError("Failed to update document status.");
-    }
-  };
+//   const handleToggleStatus = async (doc) => {
+//     try {
+//       if (doc.isActive) {
+//         await documentService.deactivate(doc._id);
+//         success(`"${doc.title}" deactivated.`);
+//       } else {
+//         await documentService.activate(doc._id);
+//         success(`"${doc.title}" activated.`);
+//       }
+//       loadData(true);
+//     } catch (err) {
+//       toastError("Failed to update document status.");
+//     }
+//   };
 
-  const filteredDocs = useMemo(() => {
-    return documents.filter((doc) => {
-      const query = searchQuery.toLowerCase().trim();
-      const matchesSearch = !query || doc.title?.toLowerCase().includes(query);
-      const catId =
-        typeof doc.documentCategoryId === "object"
-          ? doc.documentCategoryId?._id
-          : doc.documentCategoryId;
-      const matchesCategory = categoryFilter === "all" || catId === categoryFilter;
-      return matchesSearch && matchesCategory;
-    });
-  }, [documents, searchQuery, categoryFilter]);
+//   const filteredDocs = useMemo(() => {
+//     return documents.filter((doc) => {
+//       const query = searchQuery.toLowerCase().trim();
+//       const matchesSearch = !query || doc.title?.toLowerCase().includes(query);
+//       const catId =
+//         typeof doc.documentCategoryId === "object"
+//           ? doc.documentCategoryId?._id
+//           : doc.documentCategoryId;
+//       const matchesCategory = categoryFilter === "all" || catId === categoryFilter;
+//       return matchesSearch && matchesCategory;
+//     });
+//   }, [documents, searchQuery, categoryFilter]);
 
-  // Paginated slice
-  const totalPages = Math.ceil(filteredDocs.length / itemsPerPage) || 1;
-  const paginatedDocs = useMemo(() => {
-    const start = (currentPage - 1) * itemsPerPage;
-    return filteredDocs.slice(start, start + itemsPerPage);
-  }, [filteredDocs, currentPage, itemsPerPage]);
+//   // Paginated slice
+//   const totalPages = Math.ceil(filteredDocs.length / itemsPerPage) || 1;
+//   const paginatedDocs = useMemo(() => {
+//     const start = (currentPage - 1) * itemsPerPage;
+//     return filteredDocs.slice(start, start + itemsPerPage);
+//   }, [filteredDocs, currentPage, itemsPerPage]);
 
-  return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
-            Downloads & Documents
-          </h1>
-          <p className="text-sm text-slate-500 mt-0.5">
-            Manage public downloadable PDF brochures, WHO-GMP certificates, and product lists
-          </p>
-        </div>
-        <Button variant="primary" icon={Plus} onClick={handleCreate}>
-          Upload Document
-        </Button>
-      </div>
+//   return (
+//     <div className="space-y-6">
+//       {/* Header */}
+//       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+//         <div>
+//           <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+//             Downloads & Documents
+//           </h1>
+//           <p className="text-sm text-slate-500 mt-0.5">
+//             Manage public downloadable PDF brochures, WHO-GMP certificates, and product lists
+//           </p>
+//         </div>
+//         <Button variant="primary" icon={Plus} onClick={handleCreate}>
+//           Upload Document
+//         </Button>
+//       </div>
 
-      {/* Filter and Search Bar */}
-      <Card padding="sm">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="relative w-full sm:w-80">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-            <input
-              type="text"
-              placeholder="Search document by title..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-premium-orange/25 focus:border-premium-orange focus:bg-white transition"
-            />
-          </div>
+//       {/* Filter and Search Bar */}
+//       <Card padding="sm">
+//         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+//           <div className="relative w-full sm:w-80">
+//             <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+//             <input
+//               type="text"
+//               placeholder="Search document by title..."
+//               value={searchQuery}
+//               onChange={(e) => setSearchQuery(e.target.value)}
+//               className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-premium-orange/25 focus:border-premium-orange focus:bg-white transition"
+//             />
+//           </div>
 
-          <div className="flex items-center gap-3 w-full sm:w-auto">
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-              Category:
-            </span>
-            <select
-              value={categoryFilter}
-              onChange={(e) => setCategoryFilter(e.target.value)}
-              className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-premium-orange/25 focus:border-premium-orange focus:bg-white transition"
-            >
-              <option value="all">All Categories ({documents.length})</option>
-              {categories.map((c) => (
-                <option key={c._id} value={c._id}>
-                  {c.name}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-      </Card>
+//           <div className="flex items-center gap-3 w-full sm:w-auto">
+//             <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+//               Category:
+//             </span>
+//             <select
+//               value={categoryFilter}
+//               onChange={(e) => setCategoryFilter(e.target.value)}
+//               className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-premium-orange/25 focus:border-premium-orange focus:bg-white transition"
+//             >
+//               <option value="all">All Categories ({documents.length})</option>
+//               {categories.map((c) => (
+//                 <option key={c._id} value={c._id}>
+//                   {c.name}
+//                 </option>
+//               ))}
+//             </select>
+//           </div>
+//         </div>
+//       </Card>
 
-      {/* Content */}
-      {loading ? (
-        <Spinner size="lg" message="Loading documents..." />
-      ) : filteredDocs.length === 0 ? (
-        <EmptyState
-          icon={FileText}
-          title="No documents uploaded"
-          description={
-            searchQuery || categoryFilter !== "all"
-              ? "No files matched your search criteria."
-              : "Upload brochures, price lists, or certificates for your website."
-          }
-          actionLabel={searchQuery || categoryFilter !== "all" ? undefined : "Upload Document"}
-          onAction={searchQuery || categoryFilter !== "all" ? undefined : handleCreate}
-        />
-      ) : (
-        <Card padding="none">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse text-sm">
-              <thead>
-                <tr className="bg-slate-50/80 border-b border-slate-100 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
-                  <th className="py-3.5 px-6">Document Title</th>
-                  <th className="py-3.5 px-4">Category</th>
-                  <th className="py-3.5 px-4">File Type</th>
-                  <th className="py-3.5 px-4 text-center">Status</th>
-                  <th className="py-3.5 px-6 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100">
-                {paginatedDocs.map((doc) => {
-                  const catName =
-                    typeof doc.documentCategoryId === "object"
-                      ? doc.documentCategoryId?.name
-                      : categories.find((c) => c._id === doc.documentCategoryId)?.name || "General";
+//       {/* Content */}
+//       {loading ? (
+//         <Spinner size="lg" message="Loading documents..." />
+//       ) : filteredDocs.length === 0 ? (
+//         <EmptyState
+//           icon={FileText}
+//           title="No documents uploaded"
+//           description={
+//             searchQuery || categoryFilter !== "all"
+//               ? "No files matched your search criteria."
+//               : "Upload brochures, price lists, or certificates for your website."
+//           }
+//           actionLabel={searchQuery || categoryFilter !== "all" ? undefined : "Upload Document"}
+//           onAction={searchQuery || categoryFilter !== "all" ? undefined : handleCreate}
+//         />
+//       ) : (
+//         <Card padding="none">
+//           <div className="overflow-x-auto">
+//             <table className="w-full text-left border-collapse text-sm">
+//               <thead>
+//                 <tr className="bg-slate-50/80 border-b border-slate-100 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+//                   <th className="py-3.5 px-6">Document Title</th>
+//                   <th className="py-3.5 px-4">Category</th>
+//                   <th className="py-3.5 px-4">File Type</th>
+//                   <th className="py-3.5 px-4 text-center">Status</th>
+//                   <th className="py-3.5 px-6 text-right">Actions</th>
+//                 </tr>
+//               </thead>
+//               <tbody className="divide-y divide-slate-100">
+//                 {paginatedDocs.map((doc) => {
+//                   const catName =
+//                     typeof doc.documentCategoryId === "object"
+//                       ? doc.documentCategoryId?.name
+//                       : categories.find((c) => c._id === doc.documentCategoryId)?.name || "General";
 
-                  return (
-                    <tr key={doc._id} className="hover:bg-slate-50/60 transition group">
-                      <td className="py-4 px-6">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-xl bg-orange-50 text-premium-orange flex items-center justify-center shrink-0">
-                            <FileText className="w-5 h-5" />
-                          </div>
-                          <div>
-                            <p className="font-semibold text-slate-800">{doc.title}</p>
-                            {doc.file?.fileName && (
-                              <p className="text-xs text-slate-400 font-mono">
-                                {doc.file.fileName}
-                              </p>
-                            )}
-                          </div>
-                        </div>
-                      </td>
+//                   return (
+//                     <tr key={doc._id} className="hover:bg-slate-50/60 transition group">
+//                       <td className="py-4 px-6">
+//                         <div className="flex items-center gap-3">
+//                           <div className="w-10 h-10 rounded-xl bg-orange-50 text-premium-orange flex items-center justify-center shrink-0">
+//                             <FileText className="w-5 h-5" />
+//                           </div>
+//                           <div>
+//                             <p className="font-semibold text-slate-800">{doc.title}</p>
+//                             {doc.file?.fileName && (
+//                               <p className="text-xs text-slate-400 font-mono">
+//                                 {doc.file.fileName}
+//                               </p>
+//                             )}
+//                           </div>
+//                         </div>
+//                       </td>
 
-                      <td className="py-4 px-4">
-                        <Badge variant="purple" size="sm">
-                          {catName}
-                        </Badge>
-                      </td>
+//                       <td className="py-4 px-4">
+//                         <Badge variant="purple" size="sm">
+//                           {catName}
+//                         </Badge>
+//                       </td>
 
-                      <td className="py-4 px-4 text-xs font-mono text-slate-500 uppercase">
-                        {doc.file?.fileType || "PDF"}
-                      </td>
+//                       <td className="py-4 px-4 text-xs font-mono text-slate-500 uppercase">
+//                         {doc.file?.fileType || "PDF"}
+//                       </td>
 
-                      <td className="py-4 px-4 text-center">
-                        <button
-                          onClick={() => handleToggleStatus(doc)}
-                          title="Click to toggle status"
-                          className="inline-flex items-center focus:outline-none"
-                        >
-                          <Badge variant={doc.isActive ? "success" : "default"}>
-                            {doc.isActive ? (
-                              <>
-                                <CheckCircle2 className="w-3 h-3 text-emerald-600" /> Active
-                              </>
-                            ) : (
-                              <>
-                                <XCircle className="w-3 h-3 text-slate-400" /> Inactive
-                              </>
-                            )}
-                          </Badge>
-                        </button>
-                      </td>
+//                       <td className="py-4 px-4 text-center">
+//                         <button
+//                           onClick={() => handleToggleStatus(doc)}
+//                           title="Click to toggle status"
+//                           className="inline-flex items-center focus:outline-none"
+//                         >
+//                           <Badge variant={doc.isActive ? "success" : "default"}>
+//                             {doc.isActive ? (
+//                               <>
+//                                 <CheckCircle2 className="w-3 h-3 text-emerald-600" /> Active
+//                               </>
+//                             ) : (
+//                               <>
+//                                 <XCircle className="w-3 h-3 text-slate-400" /> Inactive
+//                               </>
+//                             )}
+//                           </Badge>
+//                         </button>
+//                       </td>
 
-                      <td className="py-4 px-6 text-right">
-                        <div className="flex items-center justify-end gap-1.5">
-                          {doc.file?.url && (
-                            <a
-                              href={doc.file.url}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="p-1.5 text-slate-400 hover:text-premium-orange hover:bg-orange-50 rounded-lg transition"
-                              title="Download / View Attachment"
-                            >
-                              <Download className="w-4 h-4" />
-                            </a>
-                          )}
-                          <button
-                            onClick={() => handleEdit(doc)}
-                            className="p-1.5 text-slate-400 hover:text-premium-orange hover:bg-orange-50 rounded-lg transition"
-                            title="Edit Document Details"
-                          >
-                            <Edit2 className="w-4 h-4" />
-                          </button>
-                          <button
-                            onClick={() => handleDeletePrompt(doc)}
-                            className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition"
-                            title="Delete Document"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+//                       <td className="py-4 px-6 text-right">
+//                         <div className="flex items-center justify-end gap-1.5">
+//                           {doc.file?.url && (
+//                             <a
+//                               href={doc.file.url}
+//                               target="_blank"
+//                               rel="noreferrer"
+//                               className="p-1.5 text-slate-400 hover:text-premium-orange hover:bg-orange-50 rounded-lg transition"
+//                               title="Download / View Attachment"
+//                             >
+//                               <Download className="w-4 h-4" />
+//                             </a>
+//                           )}
+//                           <button
+//                             onClick={() => handleEdit(doc)}
+//                             className="p-1.5 text-slate-400 hover:text-premium-orange hover:bg-orange-50 rounded-lg transition"
+//                             title="Edit Document Details"
+//                           >
+//                             <Edit2 className="w-4 h-4" />
+//                           </button>
+//                           <button
+//                             onClick={() => handleDeletePrompt(doc)}
+//                             className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition"
+//                             title="Delete Document"
+//                           >
+//                             <Trash2 className="w-4 h-4" />
+//                           </button>
+//                         </div>
+//                       </td>
+//                     </tr>
+//                   );
+//                 })}
+//               </tbody>
+//             </table>
+//           </div>
 
-          {/* Pagination Controls */}
-          {filteredDocs.length > 0 && (
-            <div className="px-6 py-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
-              <p>
-                Showing{" "}
-                <span className="font-semibold text-slate-700">
-                  {Math.min((currentPage - 1) * itemsPerPage + 1, filteredDocs.length)}
-                </span>{" "}
-                to{" "}
-                <span className="font-semibold text-slate-700">
-                  {Math.min(currentPage * itemsPerPage, filteredDocs.length)}
-                </span>{" "}
-                of <span className="font-semibold text-slate-700">{filteredDocs.length}</span> documents
-              </p>
+//           {/* Pagination Controls */}
+//           {filteredDocs.length > 0 && (
+//             <div className="px-6 py-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
+//               <p>
+//                 Showing{" "}
+//                 <span className="font-semibold text-slate-700">
+//                   {Math.min((currentPage - 1) * itemsPerPage + 1, filteredDocs.length)}
+//                 </span>{" "}
+//                 to{" "}
+//                 <span className="font-semibold text-slate-700">
+//                   {Math.min(currentPage * itemsPerPage, filteredDocs.length)}
+//                 </span>{" "}
+//                 of <span className="font-semibold text-slate-700">{filteredDocs.length}</span> documents
+//               </p>
 
-              {totalPages > 1 && (
-                <div className="flex items-center gap-1.5">
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    disabled={currentPage === 1}
-                    onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                  >
-                    Previous
-                  </Button>
+//               {totalPages > 1 && (
+//                 <div className="flex items-center gap-1.5">
+//                   <Button
+//                     variant="secondary"
+//                     size="sm"
+//                     disabled={currentPage === 1}
+//                     onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+//                   >
+//                     Previous
+//                   </Button>
 
-                  <div className="flex items-center gap-1 px-2">
-                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((pg) => (
-                      <button
-                        key={pg}
-                        onClick={() => setCurrentPage(pg)}
-                        className={`w-7 h-7 rounded-lg font-semibold transition ${
-                          currentPage === pg
-                            ? "bg-premium-orange text-white shadow-xs"
-                            : "text-slate-600 hover:bg-slate-100"
-                        }`}
-                      >
-                        {pg}
-                      </button>
-                    ))}
-                  </div>
+//                   <div className="flex items-center gap-1 px-2">
+//                     {Array.from({ length: totalPages }, (_, i) => i + 1).map((pg) => (
+//                       <button
+//                         key={pg}
+//                         onClick={() => setCurrentPage(pg)}
+//                         className={`w-7 h-7 rounded-lg font-semibold transition ${
+//                           currentPage === pg
+//                             ? "bg-premium-orange text-white shadow-xs"
+//                             : "text-slate-600 hover:bg-slate-100"
+//                         }`}
+//                       >
+//                         {pg}
+//                       </button>
+//                     ))}
+//                   </div>
 
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    disabled={currentPage === totalPages}
-                    onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-                  >
-                    Next
-                  </Button>
-                </div>
-              )}
-            </div>
-          )}
-        </Card>
-      )}
+//                   <Button
+//                     variant="secondary"
+//                     size="sm"
+//                     disabled={currentPage === totalPages}
+//                     onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+//                   >
+//                     Next
+//                   </Button>
+//                 </div>
+//               )}
+//             </div>
+//           )}
+//         </Card>
+//       )}
 
-      {/* Modal for Add / Edit */}
-      <DocumentModal
-        isOpen={modalOpen}
-        doc={selectedDoc}
-        onClose={() => setModalOpen(false)}
-        onSuccess={loadData}
-      />
+//       {/* Modal for Add / Edit */}
+//       <DocumentModal
+//         isOpen={modalOpen}
+//         doc={selectedDoc}
+//         onClose={() => setModalOpen(false)}
+//         onSuccess={loadData}
+//       />
 
-      {/* Delete Confirmation Modal */}
-      <ConfirmModal
-        isOpen={deleteModalOpen}
-        title="Delete Document"
-        message={`Are you sure you want to permanently delete "${docToDelete?.title}"? The file will also be deleted from Cloudinary storage.`}
-        confirmText="Delete Document"
-        loading={actionLoading}
-        onConfirm={confirmDelete}
-        onClose={() => setDeleteModalOpen(false)}
-      />
-    </div>
-  );
-};
+//       {/* Delete Confirmation Modal */}
+//       <ConfirmModal
+//         isOpen={deleteModalOpen}
+//         title="Delete Document"
+//         message={`Are you sure you want to permanently delete "${docToDelete?.title}"? The file will also be deleted from Cloudinary storage.`}
+//         confirmText="Delete Document"
+//         loading={actionLoading}
+//         onConfirm={confirmDelete}
+//         onClose={() => setDeleteModalOpen(false)}
+//       />
+//     </div>
+//   );
+// };

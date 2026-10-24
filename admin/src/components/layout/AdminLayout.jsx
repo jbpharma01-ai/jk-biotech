@@ -13,8 +13,8 @@ export const AdminLayout = () => {
     if (pathname.includes("/categories")) return "Categories Management";
     if (pathname.includes("/products")) return "Products Catalog";
     if (pathname.includes("/hero-slides")) return "Hero Banner Slides";
-    if (pathname.includes("/document-categories")) return "Document Categories";
-    if (pathname.includes("/documents")) return "Downloads & Documents";
+    // if (pathname.includes("/document-categories")) return "Document Categories";
+    // if (pathname.includes("/documents")) return "Downloads & Documents";
     if (pathname.includes("/enquiries")) return "Contact Enquiries";
     if (pathname.includes("/settings")) return "Company Settings";
     if (pathname.includes("/profile")) return "Administrator Profile";

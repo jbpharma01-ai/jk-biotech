@@ -16,7 +16,7 @@ import { dashboardService } from "../../services/dashboardService";
 import { categoryService } from "../../services/categoryService";
 import { productService } from "../../services/productService";
 import { heroSlideService } from "../../services/heroSlideService";
-import { documentService } from "../../services/documentService";
+// import { documentService } from "../../services/documentService";
 import { enquiryService } from "../../services/enquiryService";
 import { Card } from "../../components/common/Card";
 import { Badge } from "../../components/common/Badge";
@@ -28,7 +28,7 @@ export const DashboardPage = () => {
     categories: 0,
     products: 0,
     heroSlides: 0,
-    documents: 0,
+    // documents: 0,
     enquiries: 0,
     newEnquiries: 0,
   });
@@ -51,7 +51,7 @@ export const DashboardPage = () => {
             categories: counts?.categories || 0,
             products: counts?.products || 0,
             heroSlides: counts?.heroSlides || 0,
-            documents: counts?.documents || 0,
+            // documents: counts?.documents || 0,
             enquiries: counts?.enquiries || 0,
             newEnquiries: counts?.newEnquiries || 0,
           });
@@ -70,7 +70,7 @@ export const DashboardPage = () => {
           categoryService.getAll(),
           productService.getAll(),
           heroSlideService.getAll(),
-          documentService.getAll(),
+          // documentService.getAll(),
           enquiryService.getAll(),
         ]);
 
@@ -79,7 +79,7 @@ export const DashboardPage = () => {
         const categories = catRes.status === "fulfilled" && catRes.value?.data ? catRes.value.data : [];
         const products = prodRes.status === "fulfilled" && prodRes.value?.data ? prodRes.value.data : [];
         const heroSlides = heroRes.status === "fulfilled" && heroRes.value?.data ? heroRes.value.data : [];
-        const documents = docRes.status === "fulfilled" && docRes.value?.data ? docRes.value.data : [];
+        // const documents = docRes.status === "fulfilled" && docRes.value?.data ? docRes.value.data : [];
         const enquiries = enqRes.status === "fulfilled" && enqRes.value?.data ? enqRes.value.data : [];
 
         const newCount = enquiries.filter((e) => e.status === "new").length;
@@ -88,7 +88,7 @@ export const DashboardPage = () => {
           categories: categories.length,
           products: products.length,
           heroSlides: heroSlides.length,
-          documents: documents.length,
+          // documents: documents.length,
           enquiries: enquiries.length,
           newEnquiries: newCount,
         });
@@ -132,14 +132,14 @@ export const DashboardPage = () => {
       link: "/categories",
       actionText: "Manage Categories",
     },
-    {
-      title: "Downloads & Docs",
-      count: stats.documents,
-      icon: FileText,
-      color: "bg-orange-50/60 text-premium-orangeDark border-orange-100",
-      link: "/documents",
-      actionText: "View Documents",
-    },
+    // {
+    //   title: "Downloads & Docs",
+    //   count: stats.documents,
+    //   icon: FileText,
+    //   color: "bg-orange-50/60 text-premium-orangeDark border-orange-100",
+    //   link: "/documents",
+    //   actionText: "View Documents",
+    // },
     {
       title: "Hero Banner Slides",
       count: stats.heroSlides,

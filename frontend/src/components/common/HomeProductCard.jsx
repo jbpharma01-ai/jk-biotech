@@ -21,7 +21,8 @@ const HomeProductCard = ({ product }) => {
                             src={imageUrl}
                             alt={product.name || "J K BIOTECH product"}
                             loading="lazy"
-                            className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:rotate-[1deg]"
+                            decoding="async"
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                         />
                     ) : (
                         <div className="flex h-full items-center justify-center text-sm text-slate-400">

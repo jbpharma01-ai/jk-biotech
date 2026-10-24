@@ -63,29 +63,29 @@ export const fetchHeroSlides = async () => {
 };
 
 // Documents API
-export const fetchDocuments = async (categoryIdentifier = null) => {
-  try {
-    const endpoint = categoryIdentifier
-      ? `/documents/category/${categoryIdentifier}`
-      : '/documents';
-    const response = await API.get(endpoint);
-    return response.data?.data || [];
-  } catch (error) {
-    console.warn('API Error fetching documents:', error.message);
-    return null;
-  }
-};
+// export const fetchDocuments = async (categoryIdentifier = null) => {
+//   try {
+//     const endpoint = categoryIdentifier
+//       ? `/documents/category/${categoryIdentifier}`
+//       : '/documents';
+//     const response = await API.get(endpoint);
+//     return response.data?.data || [];
+//   } catch (error) {
+//     console.warn('API Error fetching documents:', error.message);
+//     return null;
+//   }
+// };
 
 // Document Categories API
-export const fetchActiveDocumentCategories = async () => {
-  try {
-    const response = await API.get('/document-categories');
-    return response.data?.data || [];
-  } catch (error) {
-    console.warn('API Error fetching document categories, falling back:', error.message);
-    return null;
-  }
-};
+// export const fetchActiveDocumentCategories = async () => {
+//   try {
+//     const response = await API.get('/document-categories');
+//     return response.data?.data || [];
+//   } catch (error) {
+//     console.warn('API Error fetching document categories, falling back:', error.message);
+//     return null;
+//   }
+// };
 
 // Contact Enquiry API
 export const submitContactEnquiry = async (enquiryData) => {

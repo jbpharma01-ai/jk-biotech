@@ -3,8 +3,8 @@ import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import Container from '../common/Container';
 import Button from '../common/Button';
-import { PRODUCT_CATEGORIES, DOWNLOAD_CATEGORIES, COMPANY_INFO } from '../../constants/navigation';
-import { fetchActiveCategories, fetchActiveDocumentCategories, fetchDocuments } from '../../services/api';
+import { PRODUCT_CATEGORIES, COMPANY_INFO } from '../../constants/navigation';
+import { fetchActiveCategories } from '../../services/api';
 import {
   Menu,
   X,
@@ -107,51 +107,51 @@ const Navbar = () => {
     };
   }, []);
 
-  useEffect(() => {
-    let isMounted = true;
+  // useEffect(() => {
+  //   let isMounted = true;
 
-    Promise.all([fetchActiveDocumentCategories(), fetchDocuments()]).then(([cats, docs]) => {
-      if (!isMounted) return;
+  //   Promise.all([fetchActiveDocumentCategories(), fetchDocuments()]).then(([cats, docs]) => {
+  //     if (!isMounted) return;
 
-      if (Array.isArray(cats) && cats.length > 0) {
-        const activeDocs = Array.isArray(docs) ? docs : [];
-        const formatted = cats
-          .filter((cat) => cat.isActive !== false)
-          .sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0))
-          .map((cat) => {
-            const doc = activeDocs.find((d) => {
-              const catId = typeof d.documentCategoryId === 'object' ? d.documentCategoryId?._id : d.documentCategoryId;
-              const catSlug = typeof d.documentCategoryId === 'object' ? d.documentCategoryId?.slug : null;
-              return catId === cat._id || (catSlug && catSlug.toLowerCase() === cat.slug?.toLowerCase());
-            });
+  //     if (Array.isArray(cats) && cats.length > 0) {
+  //       const activeDocs = Array.isArray(docs) ? docs : [];
+  //       const formatted = cats
+  //         .filter((cat) => cat.isActive !== false)
+  //         .sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0))
+  //         .map((cat) => {
+  //           const doc = activeDocs.find((d) => {
+  //             const catId = typeof d.documentCategoryId === 'object' ? d.documentCategoryId?._id : d.documentCategoryId;
+  //             const catSlug = typeof d.documentCategoryId === 'object' ? d.documentCategoryId?.slug : null;
+  //             return catId === cat._id || (catSlug && catSlug.toLowerCase() === cat.slug?.toLowerCase());
+  //           });
 
-            const staticFallback = DOWNLOAD_CATEGORIES.find((sc) => sc.slug === cat.slug);
+  //           const staticFallback = DOWNLOAD_CATEGORIES.find((sc) => sc.slug === cat.slug);
 
-            const IconComponent =
-              ICON_MAP[String(cat.icon || '').toLowerCase()] ||
-              staticFallback?.icon ||
-              FileText;
+  //           const IconComponent =
+  //             ICON_MAP[String(cat.icon || '').toLowerCase()] ||
+  //             staticFallback?.icon ||
+  //             FileText;
 
-            return {
-              name: cat.name,
-              slug: cat.slug,
-              path: `/downloads/${cat.slug}`,
-              icon: IconComponent,
-              desc: cat.description || staticFallback?.desc || 'Official pharmaceutical literature & catalog',
-              pdfUrl: doc?.file?.url || staticFallback?.pdfUrl || `/downloads/${cat.slug}`,
-            };
-          });
+  //           return {
+  //             name: cat.name,
+  //             slug: cat.slug,
+  //             path: `/downloads/${cat.slug}`,
+  //             icon: IconComponent,
+  //             desc: cat.description || staticFallback?.desc || 'Official pharmaceutical literature & catalog',
+  //             pdfUrl: doc?.file?.url || staticFallback?.pdfUrl || `/downloads/${cat.slug}`,
+  //           };
+  //         });
 
-        if (formatted.length > 0) {
-          setDownloadCategories(formatted);
-        }
-      }
-    });
+  //       if (formatted.length > 0) {
+  //         setDownloadCategories(formatted);
+  //       }
+  //     }
+  //   });
 
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+  //   return () => {
+  //     isMounted = false;
+  //   };
+  // }, []);
 
   // Close mobile drawer on route change
   useEffect(() => {
@@ -169,8 +169,8 @@ const Navbar = () => {
   const productCategories =
     categories.length > 0 ? categories : PRODUCT_CATEGORIES;
 
-  const downloadItems =
-    downloadCategories.length > 0 ? downloadCategories : DOWNLOAD_CATEGORIES;
+  // const downloadItems =
+  //   downloadCategories.length > 0 ? downloadCategories : DOWNLOAD_CATEGORIES;
 
   return (
     <header className="sticky top-0 z-50 w-full transition-all duration-300 ease-out">
@@ -317,7 +317,7 @@ const Navbar = () => {
             </div>
 
             {/* DOWNLOADS Dropdown Trigger */}
-            <div
+            {/* <div
               className="relative"
               onMouseEnter={() => setActiveDropdown('downloads')}
               onMouseLeave={() => setActiveDropdown(null)}
@@ -335,10 +335,10 @@ const Navbar = () => {
                 <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${
                   activeDropdown === 'downloads' ? 'rotate-180 text-premium-orange' : 'text-slate-400'
                 }`} />
-              </button>
+              </button> */}
 
               {/* DOWNLOADS Animated Dropdown Menu */}
-              <AnimatePresence>
+              {/* <AnimatePresence>
                 {activeDropdown === 'downloads' && (
                   <motion.div
                     initial={{ opacity: 0, y: 12, scale: 0.98 }}
@@ -378,7 +378,7 @@ const Navbar = () => {
                   </motion.div>
                 )}
               </AnimatePresence>
-            </div>
+            </div> */}
 
             {/* CONTACT */}
             <Link
@@ -472,7 +472,7 @@ const Navbar = () => {
               </div>
 
               {/* DOWNLOADS Mobile Accordion */}
-              <div className="border border-slate-100 rounded-2xl overflow-hidden">
+              {/* <div className="border border-slate-100 rounded-2xl overflow-hidden">
                 <button
                   type="button"
                   onClick={() => setMobileAccordion(mobileAccordion === 'downloads' ? null : 'downloads')}
@@ -503,7 +503,7 @@ const Navbar = () => {
                     })}
                   </div>
                 )}
-              </div>
+              </div> */}
 
               <Link
                 to="/contact"

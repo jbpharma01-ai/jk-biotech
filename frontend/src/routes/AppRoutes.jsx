@@ -9,24 +9,24 @@ import PRODUCTS from '../constants/products';
 import ContactPage from '../pages/contact/ContactPage';
 import { fetchProductBySlug } from '../services/api';
 
-const DynamicDownloadPage = () => {
-  const { category } = useParams();
-  const formattedTitle = category
-    ? category.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
-    : 'Downloads';
+// const DynamicDownloadPage = () => {
+//   const { category } = useParams();
+//   const formattedTitle = category
+//     ? category.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
+//     : 'Downloads';
 
-  return (
-    <PlaceholderPage
-      title={formattedTitle}
-      subtitle={`${formattedTitle} Visual Aids, Product Catalogs & Prescribing Literature`}
-      breadcrumbs={[
-        { label: 'Downloads', path: '/downloads' },
-        { label: formattedTitle, path: `/downloads/${category}` },
-      ]}
-      type="download"
-    />
-  );
-};
+//   return (
+//     <PlaceholderPage
+//       title={formattedTitle}
+//       subtitle={`${formattedTitle} Visual Aids, Product Catalogs & Prescribing Literature`}
+//       breadcrumbs={[
+//         { label: 'Downloads', path: '/downloads' },
+//         { label: formattedTitle, path: `/downloads/${category}` },
+//       ]}
+//       type="download"
+//     />
+//   );
+// };
 
 // Route dispatcher that differentiates category pages (/products/:category) vs product details pages (/products/:slug)
 
@@ -118,7 +118,7 @@ const AppRoutes = () => {
       <Route path="/products/:identifier" element={<ProductRouteDispatcher />} />
 
       {/* Downloads Main Route */}
-      <Route
+      {/* <Route
         path="/downloads"
         element={
           <PlaceholderPage
@@ -128,10 +128,10 @@ const AppRoutes = () => {
             type="download"
           />
         }
-      />
+      /> */}
 
       {/* Specific Download Category Routes (3 Specialties) */}
-      <Route
+      {/* <Route
         path="/downloads/pediatrician"
         element={
           <PlaceholderPage
@@ -174,13 +174,13 @@ const AppRoutes = () => {
             type="download"
           />
         }
-      />
+      /> */}
 
       {/* Dynamic Download Category Route */}
-      <Route
+      {/* <Route
         path="/downloads/:category"
         element={<DynamicDownloadPage />}
-      />
+      /> */}
 
       {/* Contact Route */}
       <Route

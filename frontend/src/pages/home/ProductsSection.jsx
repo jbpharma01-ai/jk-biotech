@@ -88,14 +88,16 @@ const ProductsSection = () => {
 
                             <div className="pointer-events-none absolute right-0 top-0 z-20 h-full w-28 bg-gradient-to-l from-white to-transparent" />
 
-                            <div className="flex animate-product-scroll gap-8 w-max hover:[animation-play-state:paused]">
-                                {[...products, ...products].map((product, index) => (
-                                    <HomeProductCard
-                                        key={`${product._id || product.id || product.slug}-${index}`}
-                                        product={product}
-                                    />
-                                ))}
-                            </div>
+                                    <div className="flex animate-product-scroll gap-8 w-max hover:[animation-play-state:paused]">
+                                        {[...products.slice(0, 8), ...products.slice(0, 8)].map(
+                                            (product, index) => (
+                                                <HomeProductCard
+                                                    key={`${product._id || product.id || product.slug}-${index}`}
+                                                    product={product}
+                                                />
+                                            )
+                                        )}
+                                    </div>
                         </>
                     )}
                 </div>

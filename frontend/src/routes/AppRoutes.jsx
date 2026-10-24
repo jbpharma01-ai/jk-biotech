@@ -5,7 +5,6 @@ import HomePage from '../pages/home/HomePage';
 import AboutPage from '../pages/about/AboutPage';
 import ProductsPage from '../pages/ProductsPage';
 import ProductDetailsPage from '../pages/ProductDetailsPage';
-import PRODUCTS from '../constants/products';
 import ContactPage from '../pages/contact/ContactPage';
 import { fetchProductBySlug } from '../services/api';
 
@@ -45,17 +44,17 @@ const ProductRouteDispatcher = () => {
       }
 
       // First check existing static products
-      const isStaticProduct = PRODUCTS.some(
-        (p) =>
-          p.slug &&
-          p.slug.toLowerCase() === identifier.toLowerCase()
-      );
+      // const isStaticProduct = PRODUCTS.some(
+      //   (p) =>
+      //     p.slug &&
+      //     p.slug.toLowerCase() === identifier.toLowerCase()
+      // );
 
-      if (isStaticProduct) {
-        if (isMounted) setPageType('details');
-        return;
-      }
-
+      // if (isStaticProduct) {
+      //   if (isMounted) setPageType('details');
+      //   return;
+      // }
+ 
       // Then check products added from the Admin Panel
       try {
         const apiData = await fetchProductBySlug(identifier);

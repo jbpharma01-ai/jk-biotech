@@ -5,7 +5,7 @@ import { Sparkles, ChevronRight, Pill } from 'lucide-react';
 import Container from '../components/common/Container';
 import ProductCard from '../components/common/ProductCard';
 import Button from '../components/common/Button';
-import PRODUCTS from '../constants/products';
+// import PRODUCTS from '../constants/products';
 import { fadeUp, staggerContainer } from '../animations/variants';
 import { fetchActiveProducts , fetchActiveCategories, } from '../services/api';
 

@@ -17,8 +17,8 @@ import {
 import Container from '../components/common/Container';
 import ProductCard from '../components/common/ProductCard';
 import Button from '../components/common/Button';
-import PRODUCTS from '../constants/products';
-import { fetchProductBySlug } from '../services/api';
+import { fetchProductBySlug, fetchProductsByCategory,
+} from '../services/api';
 
 const ProductDetailsPage = () => {
   const { slug, identifier } = useParams();
@@ -28,6 +28,9 @@ const ProductDetailsPage = () => {
   const [product, setProduct] = useState(null);
   const [imageError, setImageError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+
+  const [relatedProducts, setRelatedProducts] = useState([]);
+  const [relatedLoading, setRelatedLoading] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -71,6 +74,69 @@ const ProductDetailsPage = () => {
     };
   }, [productSlug]);
 
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadRelatedProducts = async () => {
+      if (!product?.category) {
+        setRelatedProducts([]);
+        return;
+      }
+
+      setRelatedLoading(true);
+
+      try {
+        const categoryProducts = await fetchProductsByCategory(
+          product.category
+        );
+
+        if (!isMounted) return;
+
+        const currentSlug = product.slug?.toLowerCase();
+
+        const filteredProducts = (categoryProducts || [])
+          .filter(
+            (item) =>
+              item.slug?.toLowerCase() !== currentSlug
+          )
+          .map((item) => ({
+            ...item,
+            id: item._id || item.id,
+            category:
+              typeof item.categoryId === 'object'
+                ? item.categoryId?.slug || ''
+                : item.category || '',
+            categoryName:
+              typeof item.categoryId === 'object'
+                ? item.categoryId?.name || ''
+                : '',
+            image:
+              typeof item.image === 'string'
+                ? item.image
+                : item.image?.url || '',
+          }));
+
+        setRelatedProducts(filteredProducts);
+      } catch (error) {
+        console.error('Failed to load related products:', error);
+        if (isMounted) {
+          setRelatedProducts([]);
+        }
+      } finally {
+        if (isMounted) {
+          setRelatedLoading(false);
+        }
+      }
+    };
+
+    loadRelatedProducts();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [product?.category, product?.slug]);
+
+
   // 404 State if product not found and loading complete
   if (!product && !isLoading) {
     return (
@@ -110,15 +176,6 @@ const ProductDetailsPage = () => {
       </div>
     );
   }
-
-  // Related products from static constant or same category
-  const relatedProducts = PRODUCTS.filter(
-    (p) =>
-      p.category &&
-      product.category &&
-      p.category.toLowerCase() === product.category.toLowerCase() &&
-      p.slug !== product.slug
-  ).slice(0, 3);
 
   // Format Category Label
   const formattedCategory = product.categoryName
@@ -318,33 +375,44 @@ const ProductDetailsPage = () => {
           </div>
 
           {/* Related Products Grid */}
-          {relatedProducts.length > 0 && (
-            <div className="mt-16 pt-12 border-t border-[#E5E7EB]">
-              <div className="flex items-center justify-between mb-6 sm:mb-8">
-                <div>
-                  <span className="text-xs font-bold text-premium-orange uppercase tracking-wider">
-                    More in {formattedCategory}
-                  </span>
-                  <h3 className="font-heading text-2xl font-black text-[#111827] mt-1">
-                    Related Products
-                  </h3>
+          {(relatedLoading || relatedProducts.length > 0) && (
+            <section className="py-16">
+              <Container>
+                <div className="mb-8 flex items-center justify-between gap-4">
+                  <div>
+                    <p className="mb-2 text-sm font-semibold uppercase tracking-wider text-orange-500">
+                      More in {formattedCategory}
+                    </p>
+
+                    <h2 className="text-2xl font-bold text-gray-900 md:text-3xl">
+                      Related Products
+                    </h2>
+                  </div>
+
+                  <Link
+                    to={`/products/${product.category}`}
+                    className="shrink-0 font-semibold text-orange-600 transition hover:text-orange-700"
+                  >
+                    View Category →
+                  </Link>
                 </div>
 
-                <Link
-                  to={`/products/${product.category}`}
-                  className="text-xs sm:text-sm font-bold text-premium-orange hover:underline flex items-center gap-1 shrink-0"
-                >
-                  <span>View Category</span>
-                  <ChevronRight className="w-4 h-4" />
-                </Link>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                {relatedProducts.map((relProduct) => (
-                  <ProductCard key={relProduct.id || relProduct.slug} product={relProduct} />
-                ))}
-              </div>
-            </div>
+                {relatedLoading ? (
+                  <p className="py-8 text-center text-gray-500">
+                    Loading related products...
+                  </p>
+                ) : (
+                  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                    {relatedProducts.map((relProduct) => (
+                      <ProductCard
+                        key={relProduct.id || relProduct.slug}
+                        product={relProduct}
+                      />
+                    ))}
+                  </div>
+                )}
+              </Container>
+            </section>
           )}
         </Container>
       </section>

@@ -11,8 +11,8 @@ const Admin = require('../models/Admin');
 const Category = require('../models/Category');
 const Product = require('../models/Product');
 const HeroSlide = require('../models/HeroSlide');
-const DocumentCategory = require('../models/DocumentCategory');
-const Document = require('../models/Document');
+// const DocumentCategory = require('../models/DocumentCategory');
+// const Document = require('../models/Document');
 const CompanySetting = require('../models/CompanySetting');
 
 const categoriesData = [
@@ -338,29 +338,29 @@ const heroSlidesData = [
   },
 ];
 
-const documentCategoriesData = [
-  {
-    name: 'Pediatrician',
-    slug: 'pediatrician',
-    description: 'Pediatric dosage charts, product brochures & visual aids',
-    displayOrder: 1,
-    pdfUrl: 'https://www.jkbiotech.in/apanel/assets/admin_assets/document/3c8820090867b1cb7ea21bc452fd86feNew%20PED%20catalogue.pdf',
-  },
-  {
-    name: 'Orthopedic',
-    slug: 'orthopedic',
-    description: 'Joint care, calcium & bone health product catalogs',
-    displayOrder: 2,
-    pdfUrl: 'https://www.jkbiotech.in/apanel/assets/admin_assets/document/58d28a8a771b3dfa042427d97f1eddfaNEW%20ORTHO.pdf',
-  },
-  {
-    name: 'Gynecologist',
-    slug: 'gynecologist',
-    description: "Women's health, iron & prenatal care literature",
-    displayOrder: 3,
-    pdfUrl: 'https://www.jkbiotech.in/apanel/assets/admin_assets/document/b92a85796250aa7fac1c0c4317c32452New%20GYN.pdf',
-  },
-];
+// const documentCategoriesData = [
+//   {
+//     name: 'Pediatrician',
+//     slug: 'pediatrician',
+//     description: 'Pediatric dosage charts, product brochures & visual aids',
+//     displayOrder: 1,
+//     pdfUrl: 'https://www.jkbiotech.in/apanel/assets/admin_assets/document/3c8820090867b1cb7ea21bc452fd86feNew%20PED%20catalogue.pdf',
+//   },
+//   {
+//     name: 'Orthopedic',
+//     slug: 'orthopedic',
+//     description: 'Joint care, calcium & bone health product catalogs',
+//     displayOrder: 2,
+//     pdfUrl: 'https://www.jkbiotech.in/apanel/assets/admin_assets/document/58d28a8a771b3dfa042427d97f1eddfaNEW%20ORTHO.pdf',
+//   },
+//   {
+//     name: 'Gynecologist',
+//     slug: 'gynecologist',
+//     description: "Women's health, iron & prenatal care literature",
+//     displayOrder: 3,
+//     pdfUrl: 'https://www.jkbiotech.in/apanel/assets/admin_assets/document/b92a85796250aa7fac1c0c4317c32452New%20GYN.pdf',
+//   },
+// ];
 
 const seedDatabase = async () => {
   try {
@@ -371,8 +371,8 @@ const seedDatabase = async () => {
     await Category.deleteMany({});
     await Product.deleteMany({});
     await HeroSlide.deleteMany({});
-    await DocumentCategory.deleteMany({});
-    await Document.deleteMany({});
+    // await DocumentCategory.deleteMany({});
+    // await Document.deleteMany({});
     await CompanySetting.deleteMany({});
 
     console.log('👤 Seeding Super Admin account...');
@@ -421,31 +421,31 @@ const seedDatabase = async () => {
     const createdSlides = await HeroSlide.insertMany(heroSlidesData);
     console.log(`✅ ${createdSlides.length} Hero Slides created.`);
 
-    console.log('📄 Seeding Document Categories & Documents...');
-    for (const docCatData of documentCategoriesData) {
-      const docCat = await DocumentCategory.create({
-        name: docCatData.name,
-        slug: docCatData.slug,
-        description: docCatData.description,
-        displayOrder: docCatData.displayOrder,
-        isActive: true,
-      });
+    // console.log('📄 Seeding Document Categories & Documents...');
+    // for (const docCatData of documentCategoriesData) {
+    //   const docCat = await DocumentCategory.create({
+    //     name: docCatData.name,
+    //     slug: docCatData.slug,
+    //     description: docCatData.description,
+    //     displayOrder: docCatData.displayOrder,
+    //     isActive: true,
+    //   });
 
-      await Document.create({
-        title: `${docCatData.name} Product Catalog & Visual Aid 2026`,
-        documentCategoryId: docCat._id,
-        description: docCatData.description,
-        file: {
-          url: docCatData.pdfUrl,
-          publicId: '',
-          fileName: `${docCatData.name}-Catalog.pdf`,
-          fileType: 'application/pdf',
-        },
-        displayOrder: 1,
-        isActive: true,
-      });
-    }
-    console.log('✅ Document Categories & Documents created.');
+    //   await Document.create({
+    //     title: `${docCatData.name} Product Catalog & Visual Aid 2026`,
+    //     documentCategoryId: docCat._id,
+    //     description: docCatData.description,
+    //     file: {
+    //       url: docCatData.pdfUrl,
+    //       publicId: '',
+    //       fileName: `${docCatData.name}-Catalog.pdf`,
+    //       fileType: 'application/pdf',
+    //     },
+    //     displayOrder: 1,
+    //     isActive: true,
+    //   });
+    // }
+    // console.log('✅ Document Categories & Documents created.');
 
     console.log('🏢 Seeding Company Settings...');
     await CompanySetting.create({

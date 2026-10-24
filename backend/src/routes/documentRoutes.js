@@ -1,34 +1,34 @@
-const express = require('express');
-const {
-  getAllDocuments,
-  getActiveDocuments,
-  getDocumentsByCategory,
-  getDocumentById,
-  viewDocumentFile,
-  createDocument,
-  updateDocument,
-  deactivateDocument,
-  deleteDocument,
-} = require('../controllers/documentController');
-const upload = require('../middleware/upload');
-const { protect } = require('../middleware/authMiddleware');
-const { validateObjectId } = require('../middleware/validation');
+// const express = require('express');
+// const {
+//   getAllDocuments,
+//   getActiveDocuments,
+//   getDocumentsByCategory,
+//   getDocumentById,
+//   viewDocumentFile,
+//   createDocument,
+//   updateDocument,
+//   deactivateDocument,
+//   deleteDocument,
+// } = require('../controllers/documentController');
+// const upload = require('../middleware/upload');
+// const { protect } = require('../middleware/authMiddleware');
+// const { validateObjectId } = require('../middleware/validation');
 
-const router = express.Router();
+// const router = express.Router();
 
-// Public routes
-router.get('/', getActiveDocuments);
-router.get('/all', protect, getAllDocuments);
-router.get('/category/:categoryIdentifier', getDocumentsByCategory);
-router.get('/:id', validateObjectId('id'), getDocumentById);
-router.get('/:id/view', validateObjectId('id'), viewDocumentFile);
-router.get('/:id/download', validateObjectId('id'), viewDocumentFile);
-router.get('/:id/file', validateObjectId('id'), viewDocumentFile);
+// // Public routes
+// router.get('/', getActiveDocuments);
+// router.get('/all', protect, getAllDocuments);
+// router.get('/category/:categoryIdentifier', getDocumentsByCategory);
+// router.get('/:id', validateObjectId('id'), getDocumentById);
+// router.get('/:id/view', validateObjectId('id'), viewDocumentFile);
+// router.get('/:id/download', validateObjectId('id'), viewDocumentFile);
+// router.get('/:id/file', validateObjectId('id'), viewDocumentFile);
 
-// Protected Admin routes
-router.post('/', protect, upload.single('file'), createDocument);
-router.put('/:id', protect, validateObjectId('id'), upload.single('file'), updateDocument);
-router.patch('/:id/deactivate', protect, validateObjectId('id'), deactivateDocument);
-router.delete('/:id', protect, validateObjectId('id'), deleteDocument);
+// // Protected Admin routes
+// router.post('/', protect, upload.single('file'), createDocument);
+// router.put('/:id', protect, validateObjectId('id'), upload.single('file'), updateDocument);
+// router.patch('/:id/deactivate', protect, validateObjectId('id'), deactivateDocument);
+// router.delete('/:id', protect, validateObjectId('id'), deleteDocument);
 
-module.exports = router;
+// module.exports = router;

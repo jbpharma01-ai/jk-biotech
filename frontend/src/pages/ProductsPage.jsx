@@ -5,7 +5,7 @@ import { Sparkles, ChevronRight, Pill } from 'lucide-react';
 import Container from '../components/common/Container';
 import ProductCard from '../components/common/ProductCard';
 import Button from '../components/common/Button';
-// import PRODUCTS from '../constants/products';
+import PRODUCTS from '../constants/products';
 import { fadeUp, staggerContainer } from '../animations/variants';
 import { fetchActiveProducts , fetchActiveCategories, } from '../services/api';
 
@@ -16,29 +16,53 @@ const ProductsPage = () => {
 
 const [categories, setCategories] = useState([]);
 
-const [apiProducts, setApiProducts] = useState(null);
+const [apiProducts, setApiProducts] = useState([]);
 
   useEffect(() => {
     let isMounted = true;
-    fetchActiveProducts().then((data) => {
-      if (isMounted && data && Array.isArray(data) && data.length > 0) {
-        // Map backend product format to frontend component expected format
-        const formatted = data.map((p) => ({
-          id: p._id || p.id,
-          slug: p.slug,
-          category: typeof p.categoryId === 'object' ? p.categoryId?.slug || p.category : p.category,
-          name: p.name,
-          image: p.image?.url || p.image || '/images/products/capsule/IMG_1539.JPG',
-          shortDescription: p.shortDescription,
-          description: p.description,
-          composition: p.composition,
-          packaging: p.packaging,
-          dosageForm: p.dosageForm,
-          indications: p.indications,
-        }));
-        setApiProducts(formatted);
+
+    const loadProducts = async () => {
+      try {
+        const data = await fetchActiveProducts();
+
+        if (!isMounted) return;
+
+        if (Array.isArray(data) && data.length > 0) {
+          const formatted = data.map((p) => ({
+            id: p._id || p.id,
+            slug: p.slug,
+            category:
+              typeof p.categoryId === 'object' && p.categoryId !== null
+                ? p.categoryId.slug || p.category || ''
+                : p.category || '',
+            name: p.name,
+            image:
+              typeof p.image === 'string'
+                ? p.image
+                : p.image?.url || '/images/products/capsule/IMG_1539.JPG',
+            shortDescription: p.shortDescription,
+            description: p.description,
+            composition: p.composition,
+            packaging: p.packaging,
+            dosageForm: p.dosageForm,
+            indications: p.indications,
+          }));
+
+          setApiProducts(formatted);
+        } else {
+          setApiProducts(PRODUCTS);
+        }
+      } catch (error) {
+        console.error('Failed to load products:', error);
+
+        if (isMounted) {
+          setApiProducts(PRODUCTS);
+        }
       }
-    });
+    };
+
+    loadProducts();
+
     return () => {
       isMounted = false;
     };
@@ -65,7 +89,7 @@ const [apiProducts, setApiProducts] = useState(null);
     };
   }, []);
 
-  const allProducts = apiProducts || PRODUCTS;
+  const allProducts = Array.isArray(apiProducts) ? apiProducts : PRODUCTS;
 
   // Helper to normalize category slugs for comparison
   const normalizeSlug = (slug) => {

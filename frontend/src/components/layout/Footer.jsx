@@ -48,11 +48,11 @@ const SOCIAL_LINKS = [
   },
   {
     icon: Linkedin,
-    href: "#",
+    href: "https://in.linkedin.com/",
   },
   {
     icon: Youtube,
-    href: "#",
+    href: "https://www.youtube.com/",
   },
 ];
 

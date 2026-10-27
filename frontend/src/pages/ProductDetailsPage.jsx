@@ -19,6 +19,7 @@ import ProductCard from '../components/common/ProductCard';
 import Button from '../components/common/Button';
 import { fetchProductBySlug, fetchProductsByCategory,
 } from '../services/api';
+import PRODUCTS from '../constants/products';
 
 const ProductDetailsPage = () => {
   const { slug, identifier } = useParams();

@@ -29,43 +29,52 @@ import { fetchProductBySlug } from '../services/api';
 
 // Route dispatcher that differentiates category pages (/products/:category) vs product details pages (/products/:slug)
 
+const normalizeSlug = (value = '') =>
+  value.toLowerCase().trim().replace(/[^a-z0-9]/g, '').replace(/s$/, '');
+
+const CATEGORY_SLUGS = [
+  'capsule',
+  'drop',
+  'injection',
+  'powder',
+  'sachet',
+  'suppository',
+  'soft-gel-capsule',
+  'suspension',
+  'syrup',
+  'tablet',
+  'liquid',
+];
+
 const ProductRouteDispatcher = () => {
   const { identifier } = useParams();
-
   const [pageType, setPageType] = React.useState('loading');
 
   React.useEffect(() => {
     let isMounted = true;
 
-    const checkProduct = async () => {
+    const checkRoute = async () => {
       if (!identifier) {
         if (isMounted) setPageType('catalog');
         return;
       }
 
-      // First check existing static products
-      // const isStaticProduct = PRODUCTS.some(
-      //   (p) =>
-      //     p.slug &&
-      //     p.slug.toLowerCase() === identifier.toLowerCase()
-      // );
+      // Known category URLs should never be checked as product slugs.
+      const isCategory = CATEGORY_SLUGS.some(
+        (slug) => normalizeSlug(slug) === normalizeSlug(identifier)
+      );
 
-      // if (isStaticProduct) {
-      //   if (isMounted) setPageType('details');
-      //   return;
-      // }
- 
-      // Then check products added from the Admin Panel
+      if (isCategory) {
+        if (isMounted) setPageType('catalog');
+        return;
+      }
+
+      // Only check the API for actual product details.
       try {
         const apiData = await fetchProductBySlug(identifier);
 
-        if (!isMounted) return;
-
-        if (apiData) {
-          setPageType('details');
-        } else {
-          // Not a product: treat it as a category
-          setPageType('catalog');
+        if (isMounted) {
+          setPageType(apiData ? 'details' : 'catalog');
         }
       } catch (error) {
         console.error('Error checking product slug:', error);
@@ -76,7 +85,7 @@ const ProductRouteDispatcher = () => {
       }
     };
 
-    checkProduct();
+    checkRoute();
 
     return () => {
       isMounted = false;

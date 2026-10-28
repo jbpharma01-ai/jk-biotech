@@ -16,7 +16,7 @@ const ProductsPage = () => {
 
 const [categories, setCategories] = useState([]);
 
-const [apiProducts, setApiProducts] = useState([]);
+const [apiProducts, setApiProducts] = useState(PRODUCTS);
 
   useEffect(() => {
     let isMounted = true;

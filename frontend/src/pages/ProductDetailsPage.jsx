@@ -20,15 +20,20 @@ import Button from '../components/common/Button';
 import { fetchProductBySlug, fetchProductsByCategory,
 } from '../services/api';
 import PRODUCTS from '../constants/products';
+import { getOptimizedImageUrl } from '../utils/imageOptimizer';
 
 const ProductDetailsPage = () => {
   const { slug, identifier } = useParams();
   const productSlug = slug || identifier;
   const navigate = useNavigate();
 
-  const [product, setProduct] = useState(null);
+    const initialFallback = PRODUCTS.find(
+    (p) => p.slug && p.slug.toLowerCase() === (productSlug || '').toLowerCase()
+  ) || null;
+
+  const [product, setProduct] = useState(initialFallback);
   const [imageError, setImageError] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(!initialFallback);
 
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [relatedLoading, setRelatedLoading] = useState(false);
@@ -241,7 +246,7 @@ const ProductDetailsPage = () => {
 
                 {product.image && !imageError ? (
                   <img
-                    src={product.image}
+                    src={getOptimizedImageUrl(product.image, 800)} loading="lazy" decoding="async"
                     alt={product.name}
                     onError={() => setImageError(true)}
                     className="w-full h-auto max-h-[340px] object-contain filter drop-shadow-[0_18px_25px_rgba(0,0,0,0.18)] z-10 transition-transform duration-500 hover:scale-105"

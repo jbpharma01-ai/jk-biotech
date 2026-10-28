@@ -10,6 +10,7 @@ const getAllProducts = asyncHandler(async (req, res) => {
 
 // Get active products for public website
 const getActiveProducts = asyncHandler(async (req, res) => {
+  res.set('Cache-Control', 'public, max-age=300, stale-while-revalidate=600');
   const products = await productService.getActiveProducts();
   return successResponse(res, 'Active products fetched successfully', products, 200);
 });
@@ -25,6 +26,7 @@ const getProductById = asyncHandler(async (req, res) => {
 
 // Get single product by Slug
 const getProductBySlug = asyncHandler(async (req, res) => {
+  res.set('Cache-Control', 'public, max-age=300, stale-while-revalidate=600');
   const product = await productService.getProductBySlug(req.params.slug);
   if (!product) {
     return errorResponse(res, 'Product not found', 404);
@@ -34,6 +36,7 @@ const getProductBySlug = asyncHandler(async (req, res) => {
 
 // Get products by Category Slug or Category ID
 const getProductsByCategory = asyncHandler(async (req, res) => {
+  res.set('Cache-Control', 'public, max-age=300, stale-while-revalidate=600');
   const products = await productService.getProductsByCategory(req.params.categoryIdentifier);
   return successResponse(res, 'Products by category fetched successfully', products, 200);
 });

@@ -15,6 +15,7 @@ const getAllCategories = asyncHandler(async (req, res) => {
 
 // Get active categories for public website
 const getActiveCategories = asyncHandler(async (req, res) => {
+  res.set('Cache-Control', 'public, max-age=300, stale-while-revalidate=600');
   const categories = await categoryService.getActiveCategories();
   return successResponse(
     res,

@@ -4,6 +4,7 @@ const { successResponse, errorResponse } = require('../utils/response');
 
 // Get active hero slides (Public)
 const getActiveHeroSlides = asyncHandler(async (req, res) => {
+  res.set('Cache-Control', 'public, max-age=300, stale-while-revalidate=600');
   const slides = await heroSlideService.getActiveHeroSlides();
   return successResponse(res, 'Hero slides fetched successfully', slides, 200);
 });

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import Container from "../../components/common/Container";
 import { fadeUp } from "../../animations/variants";
@@ -7,10 +7,13 @@ import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import Button from "../../components/common/Button";
 import { fetchActiveProducts } from "../../services/api";
+import PRODUCTS from "../../constants/products";
+
+const INITIAL_FALLBACK_PRODUCTS = PRODUCTS.slice(0, 8);
 
 const ProductsSection = () => {
-    const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
+    // Initialize immediately with fallback products for zero loading time
+    const [products, setProducts] = useState(INITIAL_FALLBACK_PRODUCTS);
 
     useEffect(() => {
         let isMounted = true;
@@ -19,19 +22,12 @@ const ProductsSection = () => {
             try {
                 const data = await fetchActiveProducts();
 
-                if (isMounted) {
-                    setProducts(Array.isArray(data) ? data : []);
+                if (isMounted && Array.isArray(data) && data.length > 0) {
+                    setProducts(data.slice(0, 8));
                 }
             } catch (error) {
-                console.error("Failed to fetch products:", error);
-
-                if (isMounted) {
-                    setProducts([]);
-                }
-            } finally {
-                if (isMounted) {
-                    setLoading(false);
-                }
+                console.error("Failed to fetch fresh products for home section:", error);
+                // Retains initial fallback products cleanly
             }
         };
 
@@ -41,6 +37,12 @@ const ProductsSection = () => {
             isMounted = false;
         };
     }, []);
+
+    // Duplicate list to power infinite marquee loop smoothly
+    const scrollProducts = useMemo(() => {
+        const activeList = products.length > 0 ? products : INITIAL_FALLBACK_PRODUCTS;
+        return [...activeList, ...activeList];
+    }, [products]);
 
     return (
         <section className="py-20 bg-white overflow-hidden">
@@ -72,34 +74,19 @@ const ProductsSection = () => {
                     </div>
                 </motion.div>
 
-                {/* Live Products Grid */}
+                {/* Live Products Grid - Infinite GPU Hardware-Accelerated Marquee */}
                 <div className="relative mt-16 overflow-hidden">
-                    {loading ? (
-                        <div className="py-12 text-center text-slate-500">
-                            Loading products...
-                        </div>
-                    ) : products.length === 0 ? (
-                        <div className="py-12 text-center text-slate-500">
-                            No products available at the moment.
-                        </div>
-                    ) : (
-                        <>
-                            <div className="pointer-events-none absolute left-0 top-0 z-20 h-full w-28 bg-gradient-to-r from-white to-transparent" />
+                    <div className="pointer-events-none absolute left-0 top-0 z-20 h-full w-24 sm:w-28 bg-gradient-to-r from-white to-transparent" />
+                    <div className="pointer-events-none absolute right-0 top-0 z-20 h-full w-24 sm:w-28 bg-gradient-to-l from-white to-transparent" />
 
-                            <div className="pointer-events-none absolute right-0 top-0 z-20 h-full w-28 bg-gradient-to-l from-white to-transparent" />
-
-                                    <div className="flex animate-product-scroll gap-8 w-max hover:[animation-play-state:paused]">
-                                        {[...products.slice(0, 8), ...products.slice(0, 8)].map(
-                                            (product, index) => (
-                                                <HomeProductCard
-                                                    key={`${product._id || product.id || product.slug}-${index}`}
-                                                    product={product}
-                                                />
-                                            )
-                                        )}
-                                    </div>
-                        </>
-                    )}
+                    <div className="flex animate-product-scroll gap-8 w-max transform-gpu [will-change:transform] hover:[animation-play-state:paused]">
+                        {scrollProducts.map((product, index) => (
+                            <HomeProductCard
+                                key={`${product._id || product.id || product.slug}-${index}`}
+                                product={product}
+                            />
+                        ))}
+                    </div>
                 </div>
 
                 {/* View All Products Button */}

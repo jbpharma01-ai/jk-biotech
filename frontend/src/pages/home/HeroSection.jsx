@@ -170,12 +170,12 @@ const HeroSection = () => {
 
   // Auto-slide every 5 seconds
   useEffect(() => {
-    console.log("Auto Slider Running", isPaused);
+    
 
     if (isPaused) return;
 
     intervalRef.current = setInterval(goNext, 5000);
-    console.log("Next Slide");
+    
 
     return () => clearInterval(intervalRef.current);
   }, [isPaused, goNext]);

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Pill, ShieldCheck } from 'lucide-react';
 import Button from './Button';
+import { getOptimizedImageUrl } from '../../utils/imageOptimizer';
 
 const ProductCard = ({
   product,
@@ -31,7 +32,7 @@ const ProductCard = ({
     'WHO-GMP certified pharmaceutical formulation engineered for patient health and compliance.';
   const productSlug =
     item.slug || slug || productName.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-  const productImage = item.image || image;
+  const productImage = getOptimizedImageUrl(item.image || image, 600);
 
   // Format category badge title
   const formattedCategory =
@@ -52,6 +53,8 @@ const ProductCard = ({
           <img
             src={productImage}
             alt={productName}
+            loading="lazy"
+            decoding="async"
             onError={() => setImageError(true)}
             className="max-h-56 max-w-[90%] object-contain drop-shadow-xl transition-all duration-500 group-hover:scale-105"
           />
@@ -121,4 +124,4 @@ const ProductCard = ({
   );
 };
 
-export default ProductCard;
+export default React.memo(ProductCard);

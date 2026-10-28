@@ -42,7 +42,7 @@ export const Header = ({ onOpenSidebar, title }) => {
       <div className="flex items-center gap-3 sm:gap-4">
         {/* Quick Website View */}
         <a
-          href={import.meta.env.VITE_LIVE_SITE_URL || "/"}
+          href="https://www.jkbiotech.in/"
           target="_blank"
           rel="noreferrer"
           title="Open live website"

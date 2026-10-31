@@ -137,7 +137,7 @@ const [apiProducts, setApiProducts] = useState(PRODUCTS);
 
   const pageSubtitle = activeCategoryMeta
     ? activeCategoryMeta.description
-    : 'Explore JK BIOTECH’s comprehensive portfolio of WHO-GMP certified high-potency formulations across 11 therapeutic dosage forms.';
+    : 'J.K. Biotech offers a comprehensive range of pharmaceutical products designed to address diverse medical needs. Our portfolio spans tablets, capsules, syrups, injections, and ointments across four primary segments';
 
 
   // Handle Tab Navigation
@@ -195,13 +195,13 @@ const [apiProducts, setApiProducts] = useState(PRODUCTS);
               {pageSubtitle}
             </p>
 
-            <div className="mt-6 inline-flex items-center gap-3 rounded-full border border-orange-400/30 bg-orange-500/10 px-5 py-2 backdrop-blur-sm">
+            {/* <div className="mt-6 inline-flex items-center gap-3 rounded-full border border-orange-400/30 bg-orange-500/10 px-5 py-2 backdrop-blur-sm">
               <div className="h-2.5 w-2.5 rounded-full bg-premium-orange animate-pulse"></div>
 
               <span className="text-sm font-semibold text-orange-200">
                 {filteredProducts.length} Product{filteredProducts.length > 1 ? "s" : ""} Available
               </span>
-            </div>
+            </div> */}
           </div>
         </Container>
       </section>

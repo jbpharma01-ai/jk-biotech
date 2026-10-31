@@ -4,12 +4,12 @@ const aboutData = {
   hero: {
     badge: "About JK Biotech",
 
-    title1: "Building Trust",
+    title1: "Who We Are",
 
-    title2: "Through Innovation",
+    title2: "",
 
     description:
-      "At JK Biotech, we are committed to delivering high-quality pharmaceutical solutions that improve lives through innovation, integrity and excellence.",
+      "J.K. Biotech is a dynamic pharmaceutical company headquartered in the healthcare hub of Ahmedabad. Since our inception on February 20, 2012, we have focused on a singular mission: improving patient outcomes through quality healthcare solutions.",
 
     image: aboutHero,
   },

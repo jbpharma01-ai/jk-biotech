@@ -16,10 +16,10 @@ const HERO_SLIDES = [
     id: 1,
     badge: 'WHO & GMP Certified Manufacturer',
     titleLines: [
-      "Advancing",
+      "Innovating",
       "Healthcare",
-      "Through",
-      "Quality Solutions"
+      "Enhancing",
+      "Life"
     ],
     subheading:
       'J K BIOTECH delivers precisely engineered, safe, and effective pharmaceutical formulations to healthcare professionals and patients across India and beyond.',

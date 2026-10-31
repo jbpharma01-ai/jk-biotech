@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MapPin, Phone, Mail, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { MapPin, Phone, Mail, AlertCircle, CheckCircle2, CalendarDays } from 'lucide-react';
 import { submitContactEnquiry } from '../../services/api';
 
 const ContactPage = () => {
@@ -83,9 +83,7 @@ const ContactPage = () => {
               </h2>
 
               <p className="mt-4 text-slate-600 leading-relaxed">
-                Whether you have a product enquiry, business enquiry,
-                franchise requirement or any other question, feel free
-                to contact our team.
+                Whether you are a healthcare professional, a distribution partner, or a patient with a query, we would love to hear from you.
               </p>
 
               {/* Contact Cards */}
@@ -150,6 +148,24 @@ const ContactPage = () => {
                     </a>
                   </div>
                 </div>
+              
+              {/* Office */}
+               <div className="flex items-start gap-4 p-5 rounded-2xl border border-orange-100 bg-orange-50/50">
+                  <div className="w-11 h-11 rounded-xl bg-orange-100 text-[#FF7B00] flex items-center justify-center flex-shrink-0">
+                    <CalendarDays className="w-5 h-5" />
+                  </div>
+
+                  <div>
+                    <h3 className="font-bold text-slate-800">
+                      Inception Date
+                    </h3>
+
+                    <p className="mt-1 text-sm text-slate-600 leading-relaxed">
+                      February 20, 2019
+                    </p>
+                  </div>
+                </div>
+
               </div>
             </div>
 

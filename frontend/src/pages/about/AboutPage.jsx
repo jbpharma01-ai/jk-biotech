@@ -60,9 +60,7 @@ const AboutPage = () => {
 
               {/* Heading */}
               <h2 className="mt-6 text-4xl lg:text-5xl font-extrabold leading-tight text-slate-900 ">
-                Building Trust
-                <br /> 
-                Through Innovation
+                Who We Are
               </h2>
 
               {/* Orange Line */}
@@ -70,11 +68,9 @@ const AboutPage = () => {
 
               {/* Paragraph */}
               <p className="mt-8 text-lg leading-8 text-slate-600">
-                J K BIOTECH is committed to delivering high-quality pharmaceutical
-                formulations with a strong focus on innovation, quality assurance,
-                and customer satisfaction. Our mission is to provide reliable
-                healthcare solutions that improve lives while maintaining the
-                highest manufacturing standards.
+                J.K. Biotech is a dynamic pharmaceutical company headquartered in the healthcare hub of Ahmedabad. Since our inception on February 20, 2012, we have focused on a singular mission: improving patient outcomes through quality healthcare solutions.
+                <br/> <br/>
+                Today, we proudly market and trade over 65 trusted brands across Gujarat. Our extensive product portfolio reflects our deep expertise in specialized segments, including Gynecology, Orthopedics, Pediatrics, and General Medicine. We collaborate closely with healthcare professionals, distributors, and partners to ensure that our life-enhancing medicines reach those who need them most.
               </p>
 
               <div className="mt-8 space-y-4">
@@ -86,12 +82,6 @@ const AboutPage = () => {
                   </span>
                 </div>
 
-                <div className="flex items-center gap-3">
-                  <div className="w-2 h-2 rounded-full bg-orange-500"></div>
-                  <span className="text-slate-700">
-                    Trusted Pharmaceutical Partner
-                  </span>
-                </div>
 
                 <div className="flex items-center gap-3">
                   <div className="w-2 h-2 rounded-full bg-orange-500"></div>
@@ -110,7 +100,7 @@ const AboutPage = () => {
                   <div className="absolute left-5 right-5 top-0 h-[2px] rounded-full bg-gradient-to-r from-orange-500 via-orange-300 to-transparent"></div>
 
                   <h3 className="text-3xl font-bold text-orange-500">
-                    500+
+                    50+
                   </h3>
 
                   <p className="mt-2 text-sm font-medium text-white whitespace-nowrap">
@@ -183,8 +173,7 @@ const AboutPage = () => {
                 </h3>
 
                 <p className="mt-4 text-gray-400 leading-7">
-                  Deliver high-quality pharmaceutical products through innovation,
-                  precision manufacturing and uncompromising quality standards.
+                  To improve quality of life by delivering safe, effective, and affordable pharmaceutical formulations, backed by stringent quality standards and customer-centric service.
                 </p>
 
               </div>
@@ -200,8 +189,7 @@ const AboutPage = () => {
                 </h3>
 
                 <p className="mt-4 text-gray-400 leading-7">
-                  To become a trusted pharmaceutical company recognized for innovation,
-                  excellence and delivering healthcare solutions that improve lives.
+                  To emerge as a premier global healthcare provider recognized for innovation, operational integrity, and an unwavering commitment to patient well-being.
                 </p>
 
               </div>

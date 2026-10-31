@@ -1,39 +1,39 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ShieldCheck, FlaskConical, Handshake, Factory } from 'lucide-react';
+import { ShieldCheck, Layers3, BadgeCheck, MapPinned } from "lucide-react";
 import Container from '../../components/common/Container';
 import { staggerContainer, fadeUp } from '../../animations/variants';
 
 const FEATURES = [
   {
     icon: ShieldCheck,
-    title: "WHO-GMP Certified",
+    title: "7+ Years of Trust",
     description:
-      "Manufactured under stringent WHO-GMP quality standards ensuring safety, consistency and reliability.",
+      "Serving the medical community with integrity since 2019.",
     color: "primary",
   },
 
   {
-    icon: FlaskConical,
-    title: "11 Dosage Forms",
+    icon: Layers3,
+    title: "Diverse Portfolio",
     description:
-      "Comprehensive formulations including tablets, capsules, syrups, injectables and specialty products.",
+      "65+ established brands catering to critical therapeutic areas.",
     color: "secondary",
   },
 
   {
-    icon: Handshake,
-    title: "Trusted Healthcare Partner",
+    icon: BadgeCheck,
+    title: "Uncompromising Quality",
     description:
-      "Building long-term relationships with healthcare professionals through dependable pharmaceutical solutions.",
+      "Every product undergoes rigorous testing to meet regulatory standards.",
     color: "primary",
   },
 
   {
-    icon: Factory,
-    title: "Advanced Manufacturing",
+    icon: MapPinned,
+    title: "Ahmedabad Roots, Nationwide Reach",
     description:
-      "Modern manufacturing infrastructure delivering precision, hygiene and pharmaceutical excellence.",
+      "Leveraging a robust supply chain to serve healthcare providers across the country.",
     color: "secondary",
   },
 ];
@@ -117,7 +117,7 @@ const FeatureCardsSection = () => {
           className="text-center mb-20"
         >
           <span className="inline-flex items-center px-5 py-2 rounded-full bg-orange-50 border border-premium-orange/20 text-premium-orange text-xs font-bold tracking-[0.28em] px-6 uppercase">
-            Why Choose Us
+            Why Choose J.K. Biotech?
           </span>
 
           <h2 className="mt-6 font-heading font-black leading-[0.95] tracking-tight">

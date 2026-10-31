@@ -60,16 +60,16 @@ export const COMPANY_INFO = {
   name: 'J K BIOTECH',
   tagline: 'Delivering Excellence in Healthcare & Pharmaceuticals',
   phone: '+91 (0) 7383936095',
-  altPhone: '+91 (0) 12345 67890',
-  email: 'info@jkbiotech.in',
-  salesEmail: 'sales@jkbiotech.com',
+  altPhone: '+91 (0) 6352150566',
+  email: 'hr@jkbiotech.in',
+  salesEmail: 'mb.statement.gujrat@jkbiotech.in',
   address: 'Office no 22, First floor, Satyam Arcade, Near Intas Pharma, Opposite Moraiya patiya, Ahmedabad-382213',
   workingHours: 'Mon - Sat: 10:00 AM - 7:30 PM',
   certifications: ['GMP Certified', 'WHO Compliant', 'ISO 9001:2015'],
   social: {
     linkedin: 'https://linkedin.com',
-    facebook: 'https://facebook.com',
+    facebook: 'https://www.facebook.com/share/1CUSe2HUTy/',
     twitter: 'https://twitter.com',
-    instagram: 'https://instagram.com'
+    instagram: 'https://www.instagram.com/jk.biotech?utm_source=qr&vrfl=Z3NtZW5lb2R0ZHc1'
   }
 };
